@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8021427A-41E5-4EED-95A7-D3BDA9D4972D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cirnix.JassNative</RootNamespace>
+    <AssemblyName>Cirnix.JassNative</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\Cirnix.CLRHook\Resources\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\Cirnix.CLRHook\Resources\Plugins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Jass\JassAbility.cs" />
+    <Compile Include="Jass\JassAgent.cs" />
+    <Compile Include="Jass\JassAIDifficulty.cs" />
+    <Compile Include="Jass\JassAllianceType.cs" />
+    <Compile Include="Jass\JassAPIPlugin.cs" />
+    <Compile Include="Jass\JassAttackType.cs" />
+    <Compile Include="Jass\JassBlendMode.cs" />
+    <Compile Include="Jass\JassBoolean.cs" />
+    <Compile Include="Jass\JassBooleanExpression.cs" />
+    <Compile Include="Jass\JassBuff.cs" />
+    <Compile Include="Jass\JassButton.cs" />
+    <Compile Include="Jass\JassCameraField.cs" />
+    <Compile Include="Jass\JassCameraSetup.cs" />
+    <Compile Include="Jass\JassCode.cs" />
+    <Compile Include="Jass\JassConditionFunction.cs" />
+    <Compile Include="Jass\JassDamageType.cs" />
+    <Compile Include="Jass\JassDefeatCondition.cs" />
+    <Compile Include="Jass\JassDestructable.cs" />
+    <Compile Include="Jass\JassDialog.cs" />
+    <Compile Include="Jass\JassDialogEvent.cs" />
+    <Compile Include="Jass\JassEffect.cs" />
+    <Compile Include="Jass\JassEffectType.cs" />
+    <Compile Include="Jass\JassEvent.cs" />
+    <Compile Include="Jass\JassEventIndex.cs" />
+    <Compile Include="Jass\JassFGameState.cs" />
+    <Compile Include="Jass\JassFilterFunction.cs" />
+    <Compile Include="Jass\JassFogModifier.cs" />
+    <Compile Include="Jass\JassFogState.cs" />
+    <Compile Include="Jass\JassForce.cs" />
+    <Compile Include="Jass\JassGameCache.cs" />
+    <Compile Include="Jass\JassGameDifficulty.cs" />
+    <Compile Include="Jass\JassGameEvent.cs" />
+    <Compile Include="Jass\JassGameSpeed.cs" />
+    <Compile Include="Jass\JassGameState.cs" />
+    <Compile Include="Jass\JassGameType.cs" />
+    <Compile Include="Jass\JassGroup.cs" />
+    <Compile Include="Jass\JassHandle.cs" />
+    <Compile Include="Jass\JassHashTable.cs" />
+    <Compile Include="Jass\JassIGameState.cs" />
+    <Compile Include="Jass\JassImage.cs" />
+    <Compile Include="Jass\JassInteger.cs" />
+    <Compile Include="Jass\JassItem.cs" />
+    <Compile Include="Jass\JassItemPool.cs" />
+    <Compile Include="Jass\JassItemType.cs" />
+    <Compile Include="Jass\JassLeaderboard.cs" />
+    <Compile Include="Jass\JassLightning.cs" />
+    <Compile Include="Jass\JassLimitOp.cs" />
+    <Compile Include="Jass\JassLocation.cs" />
+    <Compile Include="Jass\JassMapControl.cs" />
+    <Compile Include="Jass\JassMapDensity.cs" />
+    <Compile Include="Jass\JassMapFlag.cs" />
+    <Compile Include="Jass\JassMapSetting.cs" />
+    <Compile Include="Jass\JassMapVisibility.cs" />
+    <Compile Include="Jass\JassMultiboard.cs" />
+    <Compile Include="Jass\JassMultiboardItem.cs" />
+    <Compile Include="Jass\JassObjectId.cs" />
+    <Compile Include="Jass\JassOrder.cs" />
+    <Compile Include="Jass\JassPathingType.cs" />
+    <Compile Include="Jass\JassPlacement.cs" />
+    <Compile Include="Jass\JassPlayer.cs" />
+    <Compile Include="Jass\JassPlayerColor.cs" />
+    <Compile Include="Jass\JassPlayerEvent.cs" />
+    <Compile Include="Jass\JassPlayerGameResult.cs" />
+    <Compile Include="Jass\JassPlayerScore.cs" />
+    <Compile Include="Jass\JassPlayerSlotState.cs" />
+    <Compile Include="Jass\JassPlayerState.cs" />
+    <Compile Include="Jass\JassPlayerUnitEvent.cs" />
+    <Compile Include="Jass\JassQuest.cs" />
+    <Compile Include="Jass\JassQuestItem.cs" />
+    <Compile Include="Jass\JassRace.cs" />
+    <Compile Include="Jass\JassRacePreference.cs" />
+    <Compile Include="Jass\JassRarityControl.cs" />
+    <Compile Include="Jass\JassRealArg.cs" />
+    <Compile Include="Jass\JassRealRet.cs" />
+    <Compile Include="Jass\JassRect.cs" />
+    <Compile Include="Jass\JassRegion.cs" />
+    <Compile Include="Jass\JassSound.cs" />
+    <Compile Include="Jass\JassSoundType.cs" />
+    <Compile Include="Jass\JassStartLocationPriority.cs" />
+    <Compile Include="Jass\JassStringArg.cs" />
+    <Compile Include="Jass\JassStringRet.cs" />
+    <Compile Include="Jass\JassTerrainDeformation.cs" />
+    <Compile Include="Jass\JassTextTag.cs" />
+    <Compile Include="Jass\JassTextureMapFlags.cs" />
+    <Compile Include="Jass\JassTimer.cs" />
+    <Compile Include="Jass\JassTimerDialog.cs" />
+    <Compile Include="Jass\JassTrackable.cs" />
+    <Compile Include="Jass\JassTrigger.cs" />
+    <Compile Include="Jass\JassTriggerAction.cs" />
+    <Compile Include="Jass\JassTriggerCondition.cs" />
+    <Compile Include="Jass\JassTypeAttribute.cs" />
+    <Compile Include="Jass\JassUberSplat.cs" />
+    <Compile Include="Jass\JassUnit.cs" />
+    <Compile Include="Jass\JassUnitEvent.cs" />
+    <Compile Include="Jass\JassUnitPool.cs" />
+    <Compile Include="Jass\JassUnitState.cs" />
+    <Compile Include="Jass\JassUnitType.cs" />
+    <Compile Include="Jass\JassVersion.cs" />
+    <Compile Include="Jass\JassVolumeGroup.cs" />
+    <Compile Include="Jass\JassWeaponType.cs" />
+    <Compile Include="Jass\JassWeatherEffect.cs" />
+    <Compile Include="Jass\JassWidget.cs" />
+    <Compile Include="Jass\JassWidgetEvent.cs" />
+    <Compile Include="Jass\NativeDeclaration.cs" />
+    <Compile Include="Jass\Natives.cs" />
+    <Compile Include="Jass\Script.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Warcraft\Game.cs" />
+    <Compile Include="Warcraft\GameAddresses.cs" />
+    <Compile Include="Warcraft\GameFunctions.cs" />
+    <Compile Include="Warcraft\StringPtr.cs" />
+    <Compile Include="Warcraft\Types\AbilDataCacheNode.cs" />
+    <Compile Include="Warcraft\Types\AbilDataCacheNodePtr.cs" />
+    <Compile Include="Warcraft\Types\AbilityLevelData.cs" />
+    <Compile Include="Warcraft\Types\AbilityLevelDataPtr.cs" />
+    <Compile Include="Warcraft\Types\CAbility.cs" />
+    <Compile Include="Warcraft\Types\CAbilityAttack.cs" />
+    <Compile Include="Warcraft\Types\CAbilityAttackPtr.cs" />
+    <Compile Include="Warcraft\Types\CAbilityPtr.cs" />
+    <Compile Include="Warcraft\Types\CAbilityVTable.cs" />
+    <Compile Include="Warcraft\Types\CAgent.cs" />
+    <Compile Include="Warcraft\Types\CAgentInternal.cs" />
+    <Compile Include="Warcraft\Types\CDestructable.cs" />
+    <Compile Include="Warcraft\Types\CDestructablePtr.cs" />
+    <Compile Include="Warcraft\Types\CDestructableVTable.cs" />
+    <Compile Include="Warcraft\Types\CEffect.cs" />
+    <Compile Include="Warcraft\Types\CGameUI.cs" />
+    <Compile Include="Warcraft\Types\ChatRecipients.cs" />
+    <Compile Include="Warcraft\Types\CItem.cs" />
+    <Compile Include="Warcraft\Types\CItemPtr.cs" />
+    <Compile Include="Warcraft\Types\CItemVTable.cs" />
+    <Compile Include="Warcraft\Types\ClassPrototype.cs" />
+    <Compile Include="Warcraft\Types\ClassPrototypePtr.cs" />
+    <Compile Include="Warcraft\Types\CodeResult.cs" />
+    <Compile Include="Warcraft\Types\Color.cs" />
+    <Compile Include="Warcraft\Types\COrderTarget.cs" />
+    <Compile Include="Warcraft\Types\COrderTargetPtr.cs" />
+    <Compile Include="Warcraft\Types\CSimpleMessageFrame.cs" />
+    <Compile Include="Warcraft\Types\CTriggerWar3.cs" />
+    <Compile Include="Warcraft\Types\CTriggerWar3Ptr.cs" />
+    <Compile Include="Warcraft\Types\CTriggerWar3VTable.cs" />
+    <Compile Include="Warcraft\Types\CUnit.cs" />
+    <Compile Include="Warcraft\Types\CUnitInternal.cs" />
+    <Compile Include="Warcraft\Types\Hashtable.cs" />
+    <Compile Include="Warcraft\Types\HT_Bucket.cs" />
+    <Compile Include="Warcraft\Types\HT_Node.cs" />
+    <Compile Include="Warcraft\Types\IAgentInternal`1.cs" />
+    <Compile Include="Warcraft\Types\IAgent`1.cs" />
+    <Compile Include="Warcraft\Types\Jass.cs" />
+    <Compile Include="Warcraft\Types\JassArray.cs" />
+    <Compile Include="Warcraft\Types\JassPtr.cs" />
+    <Compile Include="Warcraft\Types\JassString.cs" />
+    <Compile Include="Warcraft\Types\JassStringManager.cs" />
+    <Compile Include="Warcraft\Types\JassType.cs" />
+    <Compile Include="Warcraft\Types\LocalScope.cs" />
+    <Compile Include="Warcraft\Types\ObjectIdB.cs" />
+    <Compile Include="Warcraft\Types\ObjectIdL.cs" />
+    <Compile Include="Warcraft\Types\OpCode.cs" />
+    <Compile Include="Warcraft\Types\OpCodeType.cs" />
+    <Compile Include="Warcraft\Types\RCString.cs" />
+    <Compile Include="Warcraft\Types\StringNode.cs" />
+    <Compile Include="Warcraft\Types\StringNodePtr.cs" />
+    <Compile Include="Warcraft\Types\StringPool.cs" />
+    <Compile Include="Warcraft\Types\StringPoolPtr.cs" />
+    <Compile Include="Warcraft\Types\SymbolTable.cs" />
+    <Compile Include="Warcraft\Types\SymbolTablePtr.cs" />
+    <Compile Include="Warcraft\Types\ThreadLocalStorage.cs" />
+    <Compile Include="Warcraft\Types\Variable.cs" />
+    <Compile Include="Warcraft\Types\VirtualMachine.cs" />
+    <Compile Include="Warcraft\WarAPIPlugin.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cirnix.JassNative.Plugin\Cirnix.JassNative.Plugin.csproj">
+      <Project>{c815a16b-b220-4582-a3b8-3950820ddf1d}</Project>
+      <Name>Cirnix.JassNative.Plugin</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Cirnix.JassNative.Runtime\Cirnix.JassNative.Runtime.csproj">
+      <Project>{9d3b4267-60fa-4cde-becd-0b97a9f4ed7b}</Project>
+      <Name>Cirnix.JassNative.Runtime</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

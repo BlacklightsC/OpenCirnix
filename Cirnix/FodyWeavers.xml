@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <Costura IncludeDebugSymbols='false'>
+    <Unmanaged32Assemblies>
+      Magick.Native-Q8-x86
+      EasyHook32
+    </Unmanaged32Assemblies>
+    <PreloadOrder>
+      Magick.Native-Q8-x86
+      EasyHook32
+      EasyLoad32
+    </PreloadOrder>
+  </Costura>
+</Weavers>

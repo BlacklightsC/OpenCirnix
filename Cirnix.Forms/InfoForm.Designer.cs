@@ -1,0 +1,203 @@
+﻿namespace Cirnix.Forms
+{
+    partial class InfoForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoForm));
+            this.Picture = new System.Windows.Forms.PictureBox();
+            this.CopyRight = new MetroFramework.Controls.MetroLabel();
+            this.Label_CurrentVersion = new MetroFramework.Controls.MetroLabel();
+            this.Label_LatestVersion = new MetroFramework.Controls.MetroLabel();
+            this.UpdateButton = new MetroFramework.Controls.MetroButton();
+            this.LatestVersion = new MetroFramework.Controls.MetroLabel();
+            this.CurrentVersion = new MetroFramework.Controls.MetroLabel();
+            this.HiddenButton = new System.Windows.Forms.Label();
+            this.Toggle_BetaUser = new MetroFramework.Controls.MetroToggle();
+            this.Label_BetaUser = new MetroFramework.Controls.MetroLabel();
+            ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // Picture
+            // 
+            this.Picture.Image = ((System.Drawing.Image)(resources.GetObject("Picture.Image")));
+            this.Picture.Location = new System.Drawing.Point(10, 65);
+            this.Picture.Name = "Picture";
+            this.Picture.Size = new System.Drawing.Size(256, 256);
+            this.Picture.TabIndex = 0;
+            this.Picture.TabStop = false;
+            // 
+            // CopyRight
+            // 
+            this.CopyRight.BackColor = System.Drawing.Color.Transparent;
+            this.CopyRight.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.CopyRight.Location = new System.Drawing.Point(10, 330);
+            this.CopyRight.Name = "CopyRight";
+            this.CopyRight.Size = new System.Drawing.Size(256, 20);
+            this.CopyRight.Style = MetroFramework.MetroColorStyle.Blue;
+            this.CopyRight.TabIndex = 1;
+            this.CopyRight.Text = "제작: 평타천국 (BlacklightsC)\r\n\r\n";
+            this.CopyRight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CopyRight.UseStyleColors = true;
+            // 
+            // Label_CurrentVersion
+            // 
+            this.Label_CurrentVersion.BackColor = System.Drawing.Color.Transparent;
+            this.Label_CurrentVersion.Location = new System.Drawing.Point(39, 385);
+            this.Label_CurrentVersion.Name = "Label_CurrentVersion";
+            this.Label_CurrentVersion.Size = new System.Drawing.Size(72, 20);
+            this.Label_CurrentVersion.TabIndex = 2;
+            this.Label_CurrentVersion.Text = "현재 버전:";
+            this.Label_CurrentVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Label_LatestVersion
+            // 
+            this.Label_LatestVersion.BackColor = System.Drawing.Color.Transparent;
+            this.Label_LatestVersion.Location = new System.Drawing.Point(39, 415);
+            this.Label_LatestVersion.Name = "Label_LatestVersion";
+            this.Label_LatestVersion.Size = new System.Drawing.Size(72, 20);
+            this.Label_LatestVersion.TabIndex = 3;
+            this.Label_LatestVersion.Text = "최신 버전:";
+            this.Label_LatestVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // UpdateButton
+            // 
+            this.UpdateButton.Enabled = false;
+            this.UpdateButton.Highlight = true;
+            this.UpdateButton.Location = new System.Drawing.Point(88, 445);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(100, 35);
+            this.UpdateButton.TabIndex = 4;
+            this.UpdateButton.Text = "업데이트";
+            this.UpdateButton.UseSelectable = true;
+            this.UpdateButton.Click += new System.EventHandler(this.Update_Click);
+            // 
+            // LatestVersion
+            // 
+            this.LatestVersion.BackColor = System.Drawing.Color.Transparent;
+            this.LatestVersion.Location = new System.Drawing.Point(117, 415);
+            this.LatestVersion.Name = "LatestVersion";
+            this.LatestVersion.Size = new System.Drawing.Size(120, 20);
+            this.LatestVersion.TabIndex = 6;
+            this.LatestVersion.Text = "연결 중...";
+            this.LatestVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // CurrentVersion
+            // 
+            this.CurrentVersion.BackColor = System.Drawing.Color.Transparent;
+            this.CurrentVersion.Location = new System.Drawing.Point(117, 385);
+            this.CurrentVersion.Name = "CurrentVersion";
+            this.CurrentVersion.Size = new System.Drawing.Size(120, 20);
+            this.CurrentVersion.TabIndex = 5;
+            this.CurrentVersion.Text = "확인 중...";
+            this.CurrentVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CurrentVersion.Click += new System.EventHandler(this.CurrentVersion_Click);
+            // 
+            // HiddenButton
+            // 
+            this.HiddenButton.BackColor = System.Drawing.Color.Transparent;
+            this.HiddenButton.ForeColor = System.Drawing.Color.Transparent;
+            this.HiddenButton.Image = ((System.Drawing.Image)(resources.GetObject("HiddenButton.Image")));
+            this.HiddenButton.Location = new System.Drawing.Point(119, 157);
+            this.HiddenButton.Name = "HiddenButton";
+            this.HiddenButton.Size = new System.Drawing.Size(10, 10);
+            this.HiddenButton.TabIndex = 7;
+            this.HiddenButton.Click += new System.EventHandler(this.HiddenBTN_Click);
+            this.HiddenButton.MouseEnter += new System.EventHandler(this.HiddenBTN_MouseEnter);
+            this.HiddenButton.MouseLeave += new System.EventHandler(this.HiddenBTN_MouseLeave);
+            // 
+            // Toggle_BetaUser
+            // 
+            this.Toggle_BetaUser.BackColor = System.Drawing.SystemColors.ControlText;
+            this.Toggle_BetaUser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Toggle_BetaUser.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Toggle_BetaUser.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.Toggle_BetaUser.Location = new System.Drawing.Point(140, 359);
+            this.Toggle_BetaUser.Name = "Toggle_BetaUser";
+            this.Toggle_BetaUser.Size = new System.Drawing.Size(70, 15);
+            this.Toggle_BetaUser.Style = MetroFramework.MetroColorStyle.Green;
+            this.Toggle_BetaUser.TabIndex = 70;
+            this.Toggle_BetaUser.Text = "Off";
+            this.Toggle_BetaUser.UseSelectable = true;
+            this.Toggle_BetaUser.UseStyleColors = true;
+            this.Toggle_BetaUser.CheckedChanged += new System.EventHandler(this.Toggle_BetaUser_CheckedChanged);
+            // 
+            // Label_BetaUser
+            // 
+            this.Label_BetaUser.BackColor = System.Drawing.Color.Transparent;
+            this.Label_BetaUser.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.Label_BetaUser.Location = new System.Drawing.Point(56, 356);
+            this.Label_BetaUser.Name = "Label_BetaUser";
+            this.Label_BetaUser.Size = new System.Drawing.Size(80, 20);
+            this.Label_BetaUser.Style = MetroFramework.MetroColorStyle.Green;
+            this.Label_BetaUser.TabIndex = 72;
+            this.Label_BetaUser.Text = "베타 버전";
+            this.Label_BetaUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_BetaUser.UseStyleColors = true;
+            // 
+            // InfoForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(276, 490);
+            this.Controls.Add(this.Label_BetaUser);
+            this.Controls.Add(this.Toggle_BetaUser);
+            this.Controls.Add(this.HiddenButton);
+            this.Controls.Add(this.LatestVersion);
+            this.Controls.Add(this.CurrentVersion);
+            this.Controls.Add(this.UpdateButton);
+            this.Controls.Add(this.Label_LatestVersion);
+            this.Controls.Add(this.Label_CurrentVersion);
+            this.Controls.Add(this.CopyRight);
+            this.Controls.Add(this.Picture);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "InfoForm";
+            this.Padding = new System.Windows.Forms.Padding(10, 60, 10, 10);
+            this.Resizable = false;
+            this.Text = "프로그램 정보";
+            this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
+            this.Shown += new System.EventHandler(this.InfoForm_Shown);
+            ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.PictureBox Picture;
+        private MetroFramework.Controls.MetroLabel CopyRight;
+        private MetroFramework.Controls.MetroLabel Label_CurrentVersion;
+        private MetroFramework.Controls.MetroLabel Label_LatestVersion;
+        public MetroFramework.Controls.MetroButton UpdateButton;
+        public MetroFramework.Controls.MetroLabel LatestVersion;
+        public MetroFramework.Controls.MetroLabel CurrentVersion;
+        private System.Windows.Forms.Label HiddenButton;
+        private MetroFramework.Controls.MetroToggle Toggle_BetaUser;
+        private MetroFramework.Controls.MetroLabel Label_BetaUser;
+    }
+}
