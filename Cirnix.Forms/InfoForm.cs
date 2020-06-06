@@ -93,47 +93,7 @@ namespace Cirnix.Forms
 
         private void Update_Click(object sender, EventArgs e)
         {
-            new UpdateForm("Cirnix", Settings.BetaUser ? LatestURL : RecommandedURL).ShowDialog();
-        }
-
-        private bool IsEECorrect()
-        {
-            if (Settings.SmartKeyFlag != 503
-             || Settings.KeyMap7 != 67
-             || Settings.KeyMap8 != 78
-             || Settings.KeyMap4 != 73
-             || Settings.KeyMap5 != 79
-             || Settings.KeyMap1 != 82
-             || Settings.KeyMap2 != 57
-             || Settings.CommandPreset3.IndexOf("치르노의 퍼펙트 산수교실") == -1)
-                return false;
-            return true;
-        }
-
-        private void HiddenBTN_Click(object sender, EventArgs e)
-        {
-            if(Settings.EEStatus)
-            {
-                Settings.EEStatus = false;
-                Cursor = Cursors.Default;
-                MetroDialog.OK("개발자 모드 해제", "개발자 모드가 해제되었습니다.\n더 이상 추가 기능을 사용하실 수 없습니다.");
-                return;
-            }
-            if (!IsEECorrect()) return;
-            Settings.EEStatus = true;
-            MetroDialog.OK("개발자 모드 해금", "개발자 모드를 발견하셨습니다.\n일부 비공개 추가 기능을 사용하실 수 있습니다.\n명령어: !mh (맵핵)\n기능: 전체 방 리스트 보기");
-        }
-
-        private void HiddenBTN_MouseEnter(object sender, EventArgs e)
-        {
-            if (!IsEECorrect() && !Settings.EEStatus) return;
-            Cursor = Cursors.Help;
-        }
-
-        private void HiddenBTN_MouseLeave(object sender, EventArgs e)
-        {
-            if (!IsEECorrect() && !Settings.EEStatus) return;
-            Cursor = Cursors.Default;
+            new UpdateForm("OpenCirnix", Settings.BetaUser ? LatestURL : RecommandedURL).ShowDialog();
         }
 
         private void CurrentVersion_Click(object sender, EventArgs e)
