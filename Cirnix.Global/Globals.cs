@@ -60,6 +60,7 @@ namespace Cirnix.Global
             Category[1] = Settings.HeroType;
             isOnline = false;
             isUpdated = IsUpdated;
+            Theme.LoadTheme();
             ExceptionSender.Init();
             Application.ThreadException += new ThreadExceptionEventHandler(ExceptionSender.Application_ThreadException);
             Thread.GetDomain().UnhandledException += new UnhandledExceptionEventHandler(ExceptionSender.Application_UnhandledException);

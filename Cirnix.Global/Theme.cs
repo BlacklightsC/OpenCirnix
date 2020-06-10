@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Cirnix.Global
 {
@@ -15,6 +16,24 @@ namespace Cirnix.Global
 
         public static string MsgTitle { get; private set; } = "「OpenCirnix」";
 
+
+        public static void LoadTheme()
+        {
+            if (File.Exists("Theme.json"))
+            {
+                JObject theme = JObject.Parse(File.ReadAllText("Theme.json"));
+                string mainImageFile = theme[nameof(MainImageFile)]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(mainImageFile)) MainImageFile = mainImageFile;
+                string iconFile = theme[nameof(IconFile)]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(iconFile)) IconFile = iconFile;
+                string unknownMapPreviewFile = theme[nameof(UnknownMapPreviewFile)]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(unknownMapPreviewFile)) UnknownMapPreviewFile = unknownMapPreviewFile;
+                string title = theme[nameof(Title)]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(title)) Title = title;
+                string msgTitle = theme[nameof(MsgTitle)]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(msgTitle)) MsgTitle = msgTitle;
+            }
+        }
         //public static string 
     }
 }
