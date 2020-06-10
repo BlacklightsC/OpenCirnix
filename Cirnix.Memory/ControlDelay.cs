@@ -1,6 +1,5 @@
 ﻿using System;
 using static Cirnix.Memory.Component;
-using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
 {
@@ -21,11 +20,9 @@ namespace Cirnix.Memory
                 GetOffset();
                 if (Offset != IntPtr.Zero)
                 {
-                    byte[] buffer = new byte[4];
-                    ReadProcessMemory(Warcraft3Info.Handle, Offset, buffer, 4, out uint num);
-                    num = BitConverter.ToUInt32(buffer, 0);
+                    int num = BitConverter.ToInt32(Bring(Offset, 4), 0);
                     if (num >= 0 && num <= 0x230)
-                        CurrentDelay = (int)num;
+                        CurrentDelay = num;
                 }
                 return CurrentDelay;
             }
@@ -35,7 +32,7 @@ namespace Cirnix.Memory
                 byte[] bytes = BitConverter.GetBytes(value);
                 for (int i = 0; i <= 0x440; i += 0x220)
                     for (int j = 0; j <= 4; j += 4)
-                        WriteProcessMemory(Warcraft3Info.Handle, Offset + i + j, bytes, 4, out uint num);
+                        Patch(Offset + i + j, bytes);
             }
         }
     }
