@@ -83,7 +83,7 @@ namespace Cirnix.Worker
             commandList.Register("rs", "ㄱㄴ", SearchRoomListRoom);
             commandList.Register("ms", "ㅡㄴ", SearchRoomListMap);
             commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
-            commandList.Register("rework", "ㄱㄷ재가", Rework);
+            commandList.Register("rework", "리워크", Rework);
         }
     }
 

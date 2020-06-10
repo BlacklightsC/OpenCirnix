@@ -156,7 +156,7 @@
             this.metroLabel1.Size = new System.Drawing.Size(256, 20);
             this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
             this.metroLabel1.TabIndex = 73;
-            this.metroLabel1.Text = "2차 제작: 류아릴 (Drev_H.Kirito)\r\n\r\n";
+            this.metroLabel1.Text = "수정: 류아릴 (Drev_H.Kirito)\r\n\r\n";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroLabel1.UseStyleColors = true;
             // 

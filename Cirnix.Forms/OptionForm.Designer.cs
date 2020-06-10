@@ -257,7 +257,7 @@ namespace Cirnix.Forms
             this.MainTabControl.Controls.Add(this.metroTabPage2);
             this.MainTabControl.Location = new System.Drawing.Point(10, 30);
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 2;
+            this.MainTabControl.SelectedIndex = 3;
             this.MainTabControl.Size = new System.Drawing.Size(640, 275);
             this.MainTabControl.TabIndex = 6;
             this.MainTabControl.UseSelectable = true;
@@ -2318,9 +2318,9 @@ namespace Cirnix.Forms
             this.metroTabPage1.HorizontalScrollbarBarColor = true;
             this.metroTabPage1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.HorizontalScrollbarSize = 10;
-            this.metroTabPage1.Location = new System.Drawing.Point(4, 36);
+            this.metroTabPage1.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage1.Name = "metroTabPage1";
-            this.metroTabPage1.Size = new System.Drawing.Size(632, 235);
+            this.metroTabPage1.Size = new System.Drawing.Size(632, 233);
             this.metroTabPage1.TabIndex = 3;
             this.metroTabPage1.Text = "명령어";
             this.metroTabPage1.VerticalScrollbarBarColor = true;
@@ -2463,9 +2463,9 @@ namespace Cirnix.Forms
             // 
             this.Label_CommandKR.BackColor = System.Drawing.Color.Transparent;
             this.Label_CommandKR.Font = new System.Drawing.Font("맑은 고딕", 10F);
-            this.Label_CommandKR.Location = new System.Drawing.Point(326, 40);
+            this.Label_CommandKR.Location = new System.Drawing.Point(346, 40);
             this.Label_CommandKR.Name = "Label_CommandKR";
-            this.Label_CommandKR.Size = new System.Drawing.Size(60, 20);
+            this.Label_CommandKR.Size = new System.Drawing.Size(75, 20);
             this.Label_CommandKR.TabIndex = 8;
             this.Label_CommandKR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -2486,7 +2486,7 @@ namespace Cirnix.Forms
             this.Label_CommandEN.Font = new System.Drawing.Font("맑은 고딕", 10F);
             this.Label_CommandEN.Location = new System.Drawing.Point(266, 40);
             this.Label_CommandEN.Name = "Label_CommandEN";
-            this.Label_CommandEN.Size = new System.Drawing.Size(50, 20);
+            this.Label_CommandEN.Size = new System.Drawing.Size(63, 20);
             this.Label_CommandEN.TabIndex = 6;
             this.Label_CommandEN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -2522,6 +2522,7 @@ namespace Cirnix.Forms
             "rg",
             "set",
             "lc",
+            "tlc",
             "cmd",
             "cam",
             "camx",
@@ -2530,10 +2531,11 @@ namespace Cirnix.Forms
             "dice",
             "mo",
             "chk",
+            "rework",
             "exit"});
             this.CommandListBox.Location = new System.Drawing.Point(6, 18);
             this.CommandListBox.Name = "CommandListBox";
-            this.CommandListBox.Size = new System.Drawing.Size(50, 214);
+            this.CommandListBox.Size = new System.Drawing.Size(72, 214);
             this.CommandListBox.TabIndex = 2;
             this.CommandListBox.SelectedIndexChanged += new System.EventHandler(this.CommandListBox_SelectedIndexChanged);
             // 
@@ -2730,13 +2732,13 @@ namespace Cirnix.Forms
             this.Toggle_CommandHide.UseSelectable = true;
             this.Toggle_CommandHide.CheckedChanged += new System.EventHandler(this.CommandHideToggle_CheckedChanged);
             // 
-            // Title
+            // Label_Title
             // 
             this.Label_Title.BackColor = System.Drawing.Color.Transparent;
             this.Label_Title.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_Title.Location = new System.Drawing.Point(255, 10);
             this.Label_Title.Margin = new System.Windows.Forms.Padding(260, 0, 260, 0);
-            this.Label_Title.Name = "Title";
+            this.Label_Title.Name = "Label_Title";
             this.Label_Title.Size = new System.Drawing.Size(160, 20);
             this.Label_Title.TabIndex = 6;
             this.Label_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
