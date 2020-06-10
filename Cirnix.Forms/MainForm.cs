@@ -15,6 +15,7 @@ namespace Cirnix.Forms
         internal Action optionForm;
         internal Action infoForm;
         internal Action additonalToolForm;
+        internal Action selectProcess;
         private bool isUpdating;
 
         internal MainForm()
@@ -299,6 +300,11 @@ namespace Cirnix.Forms
                 Close();
                 Dispose();
             }
+        }
+
+        private void BTN_Analyzer_Click(object sender, EventArgs e)
+        {
+            selectProcess();
         }
     }
 }

@@ -53,10 +53,10 @@
             // 
             this.Box_MapType.DisplayFocus = true;
             this.Box_MapType.FormattingEnabled = true;
-            this.Box_MapType.ItemHeight = 24;
+            this.Box_MapType.ItemHeight = 23;
             this.Box_MapType.Location = new System.Drawing.Point(5, 15);
             this.Box_MapType.Name = "Box_MapType";
-            this.Box_MapType.Size = new System.Drawing.Size(155, 30);
+            this.Box_MapType.Size = new System.Drawing.Size(155, 29);
             this.Box_MapType.TabIndex = 1;
             this.Box_MapType.UseSelectable = true;
             this.Box_MapType.TextChanged += new System.EventHandler(this.Box_MapType_TextChanged);
@@ -65,10 +65,10 @@
             // 
             this.Box_HeroType.DisplayFocus = true;
             this.Box_HeroType.FormattingEnabled = true;
-            this.Box_HeroType.ItemHeight = 24;
+            this.Box_HeroType.ItemHeight = 23;
             this.Box_HeroType.Location = new System.Drawing.Point(5, 45);
             this.Box_HeroType.Name = "Box_HeroType";
-            this.Box_HeroType.Size = new System.Drawing.Size(155, 30);
+            this.Box_HeroType.Size = new System.Drawing.Size(155, 29);
             this.Box_HeroType.TabIndex = 3;
             this.Box_HeroType.UseSelectable = true;
             this.Box_HeroType.TextChanged += new System.EventHandler(this.Box_HeroType_TextChanged);
@@ -78,10 +78,10 @@
             this.Box_SaveText.DisplayFocus = true;
             this.Box_SaveText.FontSize = MetroFramework.MetroComboBoxSize.Small;
             this.Box_SaveText.FormattingEnabled = true;
-            this.Box_SaveText.ItemHeight = 21;
+            this.Box_SaveText.ItemHeight = 19;
             this.Box_SaveText.Location = new System.Drawing.Point(5, 75);
             this.Box_SaveText.Name = "Box_SaveText";
-            this.Box_SaveText.Size = new System.Drawing.Size(155, 27);
+            this.Box_SaveText.Size = new System.Drawing.Size(155, 25);
             this.Box_SaveText.TabIndex = 5;
             this.Box_SaveText.UseSelectable = true;
             this.Box_SaveText.TextChanged += new System.EventHandler(this.Box_SaveText_TextChanged);
@@ -252,7 +252,7 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 11F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(320, 210);
