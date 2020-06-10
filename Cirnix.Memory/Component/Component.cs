@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
@@ -123,6 +128,76 @@ namespace Cirnix.Memory
             }
             return IntPtr.Zero;
         }
+
+        private static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
+        {
+            GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            T stuff = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+            return stuff;
+        }
+
+        public static string GetCommandLine(int processId)
+        {
+            IntPtr proc = OpenProcess(0x410, false, (uint)processId);
+            if (proc == IntPtr.Zero) return null;
+            try
+            {
+                PROCESS_BASIC_INFORMATION pbi = new PROCESS_BASIC_INFORMATION();
+                if (NtQueryInformationProcess(proc, 0, ref pbi, pbi.Size, IntPtr.Zero) == 0)
+                {
+                    byte[] rupp = new byte[IntPtr.Size];
+                    if (ReadProcessMemory(proc, (IntPtr)(pbi.PebBaseAddress.ToInt32() + 0x10), rupp, (uint)IntPtr.Size, out _))
+                    {
+                        int ruppPtr = BitConverter.ToInt32(rupp, 0);
+                        byte[] cmdl = new byte[Marshal.SizeOf(typeof(UNICODE_STRING))];
+
+                        if (ReadProcessMemory(proc, (IntPtr)(ruppPtr + 0x40), cmdl, (uint)Marshal.SizeOf(typeof(UNICODE_STRING)), out _))
+                        {
+                            UNICODE_STRING ucsData = ByteArrayToStructure<UNICODE_STRING>(cmdl);
+                            byte[] parms = new byte[ucsData.Length];
+                            if (ReadProcessMemory(proc, ucsData.buffer, parms, ucsData.Length, out _))
+                                return Encoding.Unicode.GetString(parms);
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                CloseHandle(proc);
+            }
+            return null;
+        }
+
+        public static string[] GetArguments(int processId)
+        {
+            string CommandLine = GetCommandLine(processId);
+            if (CommandLine == null) return null;
+            List<string> args = new List<string>(SplitArgs(CommandLine));
+            args.RemoveAt(0);
+            return args.ToArray();
+        }
+
+        private static string[] SplitArgs(string unsplitArgumentLine)
+        {
+            IntPtr ptrToSplitArgs = CommandLineToArgvW(unsplitArgumentLine, out int numberOfArgs);
+
+            if (ptrToSplitArgs == IntPtr.Zero) throw new ArgumentException("Unable to split argument.", new Win32Exception());
+
+            try
+            {
+                string[] splitArgs = new string[numberOfArgs];
+                for (int i = 0; i < numberOfArgs; i++)
+                    splitArgs[i] = Marshal.PtrToStringUni(Marshal.ReadIntPtr(ptrToSplitArgs, i * IntPtr.Size));
+
+                return splitArgs;
+            }
+            finally
+            {
+                LocalFree(ptrToSplitArgs);
+            }
+        }
+
 
         //internal static IntPtr SearchAddress(string array, uint maxAdd, uint offset, uint interval = 0x10000)
         //{
