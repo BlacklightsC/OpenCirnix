@@ -13,8 +13,7 @@ namespace Cirnix.Memory
         /*
                 private static IntPtr getLANAddr()
                 {
-                    if ((
-                    .BaseVersion.Version != 0L) || (Warcraft3Info.BaseVersion.BaseAddress != IntPtr.Zero))
+                    if ((Warcraft3Info.BaseVersion.Version != 0L) || (Warcraft3Info.BaseVersion.BaseAddress != IntPtr.Zero))
                     {
                         if (numStartsWith(Warcraft3Info.BaseVersion.Version, 0x7eL))
                         {

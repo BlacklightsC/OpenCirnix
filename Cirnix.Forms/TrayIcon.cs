@@ -22,12 +22,6 @@ namespace Cirnix.Forms
         private ChannelChatForm channel;
         private AdditionalToolForm tool;
         private HistoryForm history;
-        #region [    Analayzer Forms    ]
-#pragma warning disable CS0169
-        //Eden.AnalyzerForm EdenA;
-        //IS9.AnalyzerForm IS9A;
-#pragma warning restore CS0169
-        #endregion
 
         public TrayIcon()
         {
