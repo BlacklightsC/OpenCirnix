@@ -81,6 +81,7 @@ namespace Cirnix.Worker
             commandList.Register("kr", "키리맵핑", ToggleKeyRemapping);
             commandList.Register("ex", "ㄷㅌ", ExtendForce);
             commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
+            commandList.Register("rework", "ㄱㄷ재가", Rework);
         }
     }
 
@@ -867,12 +868,19 @@ namespace Cirnix.Worker
             {
                 LoadCode();
             }
-            
+        }
 
-            
-            
-
-            
+        internal static void Rework()
+        {
+            Settings.InstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
+            string LastInstallPath = Settings.InstallPath;
+            Warcraft3Info.Process.Kill();
+            Delay(2000);
+            bool isDebug = false;
+            if (File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")))
+                isDebug = true;
+            //MetroDialog.Select("화면 표기 설정", "창 모드", "전체 창", "전체화면")
+            Globals.WarcraftInit(LastInstallPath, 1, true, isDebug);
         }
     }
 }

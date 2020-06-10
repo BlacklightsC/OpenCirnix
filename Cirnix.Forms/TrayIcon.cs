@@ -41,6 +41,7 @@ namespace Cirnix.Forms
                 KeyboardHooker.HookStart();
                 MainWorker.RunWorkers();
                 CLRHook.Injector.InstallHookLib();
+                WarcraftInit = CLRHook.Injector.Init;
                 channel = new ChannelChatForm();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
                 InitMainForm();

@@ -34,6 +34,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cirnix.Worker\Cirnix.Worker.csproj">
+      <Project>{2d803e40-f816-4508-897c-b8e906048782}</Project>
+      <Name>Cirnix.Worker</Name>
+    </ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -64,7 +68,7 @@
     <Content Include="Resources\Plugins\Cirnix.JassNative.Common.dll" />
     <Content Include="Resources\Plugins\Cirnix.JassNative.dll" />
     <Content Include="Resources\Cirnix.JassNative.Runtime.dll" />
-	<None Include="Mixtape\M16.mix" />
+    <None Include="Mixtape\M16.mix" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
