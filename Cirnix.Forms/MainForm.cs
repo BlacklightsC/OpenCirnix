@@ -14,6 +14,7 @@ namespace Cirnix.Forms
         internal Action TrayCheck;
         internal Action optionForm;
         internal Action infoForm;
+        internal Action selectProcess;
         internal Action additonalToolForm;
         private bool isUpdating;
 
@@ -24,7 +25,7 @@ namespace Cirnix.Forms
             Label_Title.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
             Label_Title.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
             Label_Title.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
-            Label_Title.Text = Text = $"OpenCirnix v{version[0]}.{version[1]}";
+            Label_Title.Text = Text = $"치르닉스 v{version[0]}.{version[1]}";
             ImageBox.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
             ImageBox.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
             ImageBox.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
@@ -299,6 +300,11 @@ namespace Cirnix.Forms
                 Close();
                 Dispose();
             }
+        }
+
+        private void BTN_Analyzer_Click(object sender, EventArgs e)
+        {
+            selectProcess();
         }
     }
 }

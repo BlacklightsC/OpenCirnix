@@ -11,7 +11,7 @@ namespace Cirnix.Global
 
         public static string UnknownMapPreviewFile { get; private set; }
 
-        public static string Title { get; private set; } = "「OpenCirnix」";
+        public static string Title { get; private set; } = "「치르닉스」";
 
         //public static string 
     }

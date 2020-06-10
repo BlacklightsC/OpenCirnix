@@ -18,6 +18,7 @@ namespace Cirnix.Forms
         private MainForm main;
         private OptionForm option;
         private InfoForm info;
+        private SelectProcess sepro;
         private ChannelChatForm channel;
         private AdditionalToolForm tool;
         private HistoryForm history;
@@ -66,7 +67,7 @@ namespace Cirnix.Forms
         #region [    Initialize Form    ]
         private void TrayCheck()
         {
-            MainTrayIcon.BalloonTipTitle = "OpenCirnix v" + version[0] + "." + version[1];
+            MainTrayIcon.BalloonTipTitle = "치르닉스 v" + version[0] + "." + version[1];
             MainTrayIcon.BalloonTipText = "여기서 창을 다시 열수있어요!";
             MainTrayIcon.ShowBalloonTip(5000);
         }
@@ -91,12 +92,28 @@ namespace Cirnix.Forms
                 optionForm = InitOptionForm,
                 infoForm = InitInfoForm,
                 additonalToolForm = InitAdditionalToolForm,
-                TrayCheck = TrayCheck
+                TrayCheck = TrayCheck,
+                selectProcess = SelectProcessForm
+
             };
             ListUpdate = main.InvokedListUpdate;
             main.Show();
             main.Activate();
         }
+
+        private void SelectProcessForm()
+        {
+            if (!(sepro == null
+                || sepro.IsDisposed))
+            {
+                sepro.Activate();
+                return;
+            }
+            sepro = new SelectProcess();
+            sepro.Show();
+            sepro.Activate();
+        }
+
         private void InitOptionForm()
         {
             if (!(option == null
@@ -199,6 +216,7 @@ namespace Cirnix.Forms
                     option.Dispose();
                     info.Dispose();
                     channel.Dispose();
+                    sepro.Dispose();
                     MainTrayIcon.Visible = false;
                 }
                 catch { }

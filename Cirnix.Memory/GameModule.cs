@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 using static Cirnix.Global.Globals;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
@@ -12,7 +13,8 @@ namespace Cirnix.Memory
         /*
                 private static IntPtr getLANAddr()
                 {
-                    if ((Warcraft3Info.BaseVersion.Version != 0L) || (Warcraft3Info.BaseVersion.BaseAddress != IntPtr.Zero))
+                    if ((
+                    .BaseVersion.Version != 0L) || (Warcraft3Info.BaseVersion.BaseAddress != IntPtr.Zero))
                     {
                         if (numStartsWith(Warcraft3Info.BaseVersion.Version, 0x7eL))
                         {
@@ -222,5 +224,39 @@ namespace Cirnix.Memory
             ResetWarcraft3Info();
             return WarcraftState.Error;
         }
+
+
+        public static WarcraftState SelectWarcraft(int id)
+        {
+            Process processesByName = Process.GetProcessById(id);
+            Warcraft3Info.Process = processesByName;
+            if (Warcraft3Info.Process.Id != Warcraft3Info.ID)
+            {
+                CloseHandle(Warcraft3Info.Handle);
+                Warcraft3Info.ID = processesByName.Id;
+                Warcraft3Info.Handle = OpenProcess(0x38, false, (uint)Warcraft3Info.ID);
+                if (Warcraft3Info.Handle == IntPtr.Zero)
+                {
+                    ResetWarcraft3Info();
+                    return WarcraftState.Error;
+                }
+                if (!GetBase(Warcraft3Info.BaseVersion))
+                {
+                    Warcraft3Info.BaseVersion.BaseAddress = IntPtr.Zero;
+                    Warcraft3Info.BaseVersion.Version = 0L;
+                    return WarcraftState.Error;
+                }
+            }
+            if (!(Warcraft3Info.BaseVersion.BaseAddress == IntPtr.Zero) && Warcraft3Info.BaseVersion.Version != 0L || GetBase(Warcraft3Info.BaseVersion))
+                return WarcraftState.OK;
+
+            ResetWarcraft3Info();
+            return WarcraftState.Error;
+        }
+
+
+
+    
+
     }
 }

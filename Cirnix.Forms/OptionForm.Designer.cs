@@ -2522,6 +2522,7 @@ namespace Cirnix.Forms
             "rg",
             "set",
             "lc",
+            "tlc",
             "cmd",
             "cam",
             "camx",
@@ -2739,7 +2740,7 @@ namespace Cirnix.Forms
             this.Title.Name = "Title";
             this.Title.Size = new System.Drawing.Size(160, 20);
             this.Title.TabIndex = 6;
-            this.Title.Text = "OpenCirnix 설정 및 도움말";
+            this.Title.Text = "치르닉스 설정 및 도움말";
             this.Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CommandHideText
@@ -2768,7 +2769,7 @@ namespace Cirnix.Forms
             this.Padding = new System.Windows.Forms.Padding(10, 30, 10, 10);
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
-            this.Text = "OpenCirnix 설정 및 도움말";
+            this.Text = "치르닉스 설정 및 도움말";
             this.Activated += new System.EventHandler(this.OptionForm_Activated);
             this.MainTabControl.ResumeLayout(false);
             this.War3SettingTab.ResumeLayout(false);

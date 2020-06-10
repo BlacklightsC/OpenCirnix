@@ -1624,6 +1624,12 @@ namespace Cirnix.Forms
                     Label_ParameterValue.Text = "(선택) 분류 이름";
                     TB_CommandDescription.Text = "현재 지정된 세이브를 즉시 로드합니다.\r\nGrabiti's RPG Creator로 제작된 맵만 지원하며, 로드 직후 설정된 명령어 프리셋을 입력합니다.\r\n분류 이름을 입력할 경우, 해당 분류의 최신 세이브를 로드하며, 현재 로드 지정 대상도 즉시 변경합니다.";
                     break;
+                case "tlc":
+                    Label_CommandTitle.Text = "TWR세이브 코드 로드";
+                    Label_CommandKR.Text = "ㅅㅣㅊ";
+                    Label_ParameterValue.Text = "(선택) 분류 이름";
+                    TB_CommandDescription.Text = "현재 지정된 세이브를 즉시 로드합니다.\r\nTWRPG 형식의 맵만 지원하며, 로드 직후 설정된 명령어 프리셋을 입력합니다.\r\n분류 이름을 입력할 경우, 해당 분류의 최신 세이브를 로드하며, 현재 로드 지정 대상도 즉시 변경합니다.";
+                    break;
                 case "cmd":
                     Label_CommandTitle.Text = "명령어 프리셋 로드";
                     Label_CommandKR.Text = "층";

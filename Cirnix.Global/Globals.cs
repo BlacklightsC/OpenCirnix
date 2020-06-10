@@ -9,6 +9,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
+
+
+
 namespace Cirnix.Global
 {
     public static class Globals
@@ -212,6 +215,55 @@ namespace Cirnix.Global
                 if (isBreak) return;
             }
         }
+
+        public static void GetCodes2()
+        {
+            if (string.IsNullOrEmpty(Category[0])
+             || string.IsNullOrEmpty(Category[1])
+             || string.IsNullOrEmpty(Category[2]))
+            {
+                for (int i = 0; i < 24; i++)
+                    Code[i] = string.Empty;
+
+                return;
+            }
+            List<string> buffer = new List<string>();
+            string[] lines = File.ReadAllLines(GetCurrentPath(2));
+            bool isFound = false;
+            for (int i = 0; true; i++)
+            {
+                int index;
+                if ((index = lines[i].IndexOf("\"로드 코드")) == -1)
+                    if (isFound) break;
+                    else continue;
+                isFound = true;
+                index += 10;
+                buffer.Add(lines[i].Substring(index, lines[i].LastIndexOf("\" )") - index).Trim());
+            }
+            for (int i = 0; i < 24; i++)
+                Code[i] = i < buffer.Count ? buffer[i] : string.Empty;
+            while (true)
+            {
+                bool isBreak = true;
+                for (int i = 0; i < 24; i++)
+                {
+                    if (string.IsNullOrEmpty(Code[i])) break;
+                    if (Code[i][0] == '/')
+                    {
+                        isBreak = false;
+                        for (int j = i; j < 24; j++)
+                        {
+                            int k = j - 1;
+                            if (string.IsNullOrEmpty(Code[j])) break;
+                            Code[j] = Code[k][Code[k].Length - 1] + Code[j];
+                            Code[k] = Code[k].Substring(0, Code[k].Length - 1);
+                        }
+                    }
+                }
+                if (isBreak) return;
+            }
+        }
+
         public static bool IsGrabitiSaveText(string path)
         {
             try
@@ -247,6 +299,42 @@ namespace Cirnix.Global
                 return false;
             }
         }
+
+        public static bool IsTwrSaveText(string path)
+        {
+            try
+            {
+                if (Path.GetExtension(path).ToLower() != ".txt") return false;
+                bool isFound = false;
+                string[] lines;
+                try
+                {
+                    lines = File.ReadAllLines(path);
+                }
+                catch
+                {
+                    Delay(1000);
+                    lines = File.ReadAllLines(path);
+                }
+                for (int i = 0; true; i++)
+                {
+                    //Regex CodePattern = new Regex("^Code[0-9]+: (.+?) $");
+                    int index;
+                    if ((index = lines[i].IndexOf("\"로드 코드")) == -1)
+                        if (isFound) break;
+                        else continue;
+                    isFound = true;
+                    index += 10;
+                    lines[i].Substring(index, lines[i].LastIndexOf("\" )") - index).Trim();
+                }
+                return isFound;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static string GetDataFromServer(string URL)
         {
             using (WebClient client = new WebClient())

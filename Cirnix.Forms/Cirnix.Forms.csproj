@@ -90,6 +90,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Component\Component.cs" />
+    <Compile Include="SelectProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectProcess.Designer.cs">
+      <DependentUpon>SelectProcess.cs</DependentUpon>
+    </Compile>
     <Compile Include="TrayIcon.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectProcess.resx">
+      <DependentUpon>SelectProcess.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrayIcon.resx">
       <DependentUpon>TrayIcon.cs</DependentUpon>
