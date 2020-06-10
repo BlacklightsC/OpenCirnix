@@ -284,11 +284,11 @@ namespace Cirnix.Worker
             if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
             {
                 string saveName = GetFullArgs();
-                string path = string.Format("{0}\\{1}", GetCurrentPath(0), saveName);
+                string path = $"{GetCurrentPath(0)}\\{saveName}";
                 SendMsg(false, new string[] { path });
                 if (!Directory.Exists(path))
                 {
-                    SendMsg(true, new string[] { string.Format("{0} 존재하지 않습니다.", IsKoreanBlock(saveName, "은", "는")) });
+                    SendMsg(true, $"{IsKoreanBlock(saveName, "은", "는")} 존재하지 않습니다.");
                     return;
                 }
                 Settings.HeroType = Category[1] = saveName;
@@ -304,7 +304,7 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (string.IsNullOrEmpty(Code[0])) goto Error;
-            SendMsg(true, new string[] { string.Format("{0}\\{1} 파일을 로드합니다.", Category[1], Category[2]) });
+            SendMsg(true, $"{Category[1]}\\{Category[2]} 파일을 로드합니다.");
             for (int i = 0; i < 24; i++)
             {
                 if (string.IsNullOrEmpty(Code[i])) break;
@@ -314,7 +314,7 @@ namespace Cirnix.Worker
             TypeCommands();
             return;
         Error:
-            SendMsg(true, new string[] { "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다." });
+            SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
 
         internal static void LoadCommands()
@@ -851,7 +851,7 @@ namespace Cirnix.Worker
                 SendMsg(true, "Error - 검색할 방 제목을 입력해주세요.");
                 return;
             }
-            SendMsg(true, string.Format("방 제목에 {0} 포함된 대기실을 검색하는 중...", IsKoreanBlock(SearchText, "이", "가")));
+            SendMsg(true, $"방 제목에 {IsKoreanBlock(SearchText, "이", "가")} 포함된 대기실을 검색하는 중...");
             bool Disconnect = RoomWebDataBase.InitEvent();
             if (Disconnect)
             {
@@ -876,7 +876,7 @@ namespace Cirnix.Worker
                 SendMsg(true, "Error - 검색할 맵 파일명을 입력해주세요.");
                 return;
             }
-            SendMsg(true, string.Format("맵 파일명에 {0} 포함된 대기실을 검색하는 중...", IsKoreanBlock(SearchText, "이", "가")));
+            SendMsg(true, $"맵 파일명에 {IsKoreanBlock(SearchText, "이", "가")} 포함된 대기실을 검색하는 중...");
             bool Disconnect = RoomWebDataBase.InitEvent();
             if (Disconnect)
             {
@@ -904,14 +904,14 @@ namespace Cirnix.Worker
                 SendMsg(true, "조건에 맞는 대기실을 찾을 수 없었습니다.");
             else if (fields.Count <= 2)
                 foreach (var item in fields)
-                    SendMsg(false, string.Format("{0} [{1}명] - {3}", item.gname, item.now_players, item.max_players, item.player0));
+                    SendMsg(false, $"{item.gname} [{item.now_players}명] - {item.player0}");
             else
             {
                 StringBuilder builder = new StringBuilder();
-                SendMsg(true, string.Format("{0} 개의 대기실을 찾았습니다.", fields.Count));
+                SendMsg(true, $"{fields.Count} 개의 대기실을 찾았습니다.");
                 fields.Sort((a, b) => (int)(a.now_players - b.now_players));
                 foreach (var item in fields)
-                    builder.AppendFormat("[{0}명] ", item.now_players, item.max_players);
+                    builder.AppendFormat("[{0}명] ", item.now_players);
                 SendMsg(false, builder.ToString());
             }
         }
@@ -921,7 +921,7 @@ namespace Cirnix.Worker
             string MapPath;
             if (!LoadedFiles.IsLoadedMap(out MapPath))
             {
-                SendMsg(true, new string[] { "로드된 맵이 없습니다." });
+                SendMsg(true, "로드된 맵이 없습니다.");
                 return;
             }
             MapPath = MapPath.Substring(MapPath.IndexOf(@"\Warcraft III\Maps\") + 14);

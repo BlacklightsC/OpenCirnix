@@ -159,7 +159,7 @@ namespace Cirnix.Forms
                     PreValue = item.count;
                     Rank = RealRank;
                 }
-                DP.LegendText = string.Format("{0}. {1} ({2:0.##}%)",Rank, Path.GetFileNameWithoutExtension(item.name), ((double)item.count / (IsMapStandard ? infoList.Count : CB_DisplayAll.Checked ? statusInfo.users : TotalPlayer)) * 100);
+                DP.LegendText = $"{Rank}. {Path.GetFileNameWithoutExtension(item.name)} ({(double)item.count / (IsMapStandard ? infoList.Count : CB_DisplayAll.Checked ? statusInfo.users : TotalPlayer) * 100:0.##}%)";
                 DP.Font = defFont;
                 DP.IsValueShownAsLabel = true;
                 DPC.Add(DP);
