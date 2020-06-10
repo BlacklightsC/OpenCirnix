@@ -38,6 +38,7 @@
             this.CurrentVersion = new MetroFramework.Controls.MetroLabel();
             this.Toggle_BetaUser = new MetroFramework.Controls.MetroToggle();
             this.Label_BetaUser = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,7 +55,7 @@
             // 
             this.CopyRight.BackColor = System.Drawing.Color.Transparent;
             this.CopyRight.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.CopyRight.Location = new System.Drawing.Point(10, 330);
+            this.CopyRight.Location = new System.Drawing.Point(10, 327);
             this.CopyRight.Name = "CopyRight";
             this.CopyRight.Size = new System.Drawing.Size(256, 20);
             this.CopyRight.Style = MetroFramework.MetroColorStyle.Blue;
@@ -62,11 +63,12 @@
             this.CopyRight.Text = "제작: 평타천국 (BlacklightsC)\r\n\r\n";
             this.CopyRight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.CopyRight.UseStyleColors = true;
+            this.CopyRight.Click += new System.EventHandler(this.CopyRight_Click);
             // 
             // Label_CurrentVersion
             // 
             this.Label_CurrentVersion.BackColor = System.Drawing.Color.Transparent;
-            this.Label_CurrentVersion.Location = new System.Drawing.Point(39, 385);
+            this.Label_CurrentVersion.Location = new System.Drawing.Point(39, 394);
             this.Label_CurrentVersion.Name = "Label_CurrentVersion";
             this.Label_CurrentVersion.Size = new System.Drawing.Size(72, 20);
             this.Label_CurrentVersion.TabIndex = 2;
@@ -108,7 +110,7 @@
             // CurrentVersion
             // 
             this.CurrentVersion.BackColor = System.Drawing.Color.Transparent;
-            this.CurrentVersion.Location = new System.Drawing.Point(117, 385);
+            this.CurrentVersion.Location = new System.Drawing.Point(117, 394);
             this.CurrentVersion.Name = "CurrentVersion";
             this.CurrentVersion.Size = new System.Drawing.Size(120, 20);
             this.CurrentVersion.TabIndex = 5;
@@ -122,7 +124,7 @@
             this.Toggle_BetaUser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_BetaUser.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Toggle_BetaUser.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.Toggle_BetaUser.Location = new System.Drawing.Point(140, 359);
+            this.Toggle_BetaUser.Location = new System.Drawing.Point(135, 377);
             this.Toggle_BetaUser.Name = "Toggle_BetaUser";
             this.Toggle_BetaUser.Size = new System.Drawing.Size(70, 15);
             this.Toggle_BetaUser.Style = MetroFramework.MetroColorStyle.Green;
@@ -136,7 +138,7 @@
             // 
             this.Label_BetaUser.BackColor = System.Drawing.Color.Transparent;
             this.Label_BetaUser.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.Label_BetaUser.Location = new System.Drawing.Point(56, 356);
+            this.Label_BetaUser.Location = new System.Drawing.Point(51, 374);
             this.Label_BetaUser.Name = "Label_BetaUser";
             this.Label_BetaUser.Size = new System.Drawing.Size(80, 20);
             this.Label_BetaUser.Style = MetroFramework.MetroColorStyle.Green;
@@ -145,11 +147,25 @@
             this.Label_BetaUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Label_BetaUser.UseStyleColors = true;
             // 
+            // metroLabel1
+            // 
+            this.metroLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.metroLabel1.Location = new System.Drawing.Point(10, 350);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(256, 20);
+            this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLabel1.TabIndex = 73;
+            this.metroLabel1.Text = "2차 제작: 류아릴 (Drev_H.Kirito)\r\n\r\n";
+            this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.metroLabel1.UseStyleColors = true;
+            // 
             // InfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(276, 490);
+            this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.Label_BetaUser);
             this.Controls.Add(this.Toggle_BetaUser);
             this.Controls.Add(this.LatestVersion);
@@ -166,6 +182,7 @@
             this.Resizable = false;
             this.Text = "프로그램 정보";
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
+            this.Load += new System.EventHandler(this.InfoForm_Load);
             this.Shown += new System.EventHandler(this.InfoForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
             this.ResumeLayout(false);
@@ -183,5 +200,6 @@
         public MetroFramework.Controls.MetroLabel CurrentVersion;
         private MetroFramework.Controls.MetroToggle Toggle_BetaUser;
         private MetroFramework.Controls.MetroLabel Label_BetaUser;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
     }
 }

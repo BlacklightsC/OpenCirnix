@@ -107,5 +107,15 @@ namespace Cirnix.Forms
             Settings.BetaUser = Toggle_BetaUser.Checked;
             VersionUpdate();
         }
+
+        private void CopyRight_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InfoForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -61,6 +61,7 @@ namespace Cirnix.Worker
         public static void InitCommand()
         {
             commandList.Register("lc", "ㅣㅊ", LoadCode);
+            commandList.Register("tlc", "ㅅㅣㅊ", LoadCode2);
             commandList.Register("dr", "ㅇㄱ", SetGameDelay);
             commandList.Register("ss", "ㄴㄴ", SetStartSpeed);
             commandList.Register("hp", "ㅗㅔ", SetHPView);
@@ -79,6 +80,7 @@ namespace Cirnix.Worker
             commandList.Register("mset", "ㅡㄴㄷㅅ", SetMap);
             commandList.Register("kr", "키리맵핑", ToggleKeyRemapping);
             commandList.Register("ex", "ㄷㅌ", ExtendForce);
+            commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
         }
     }
 
@@ -161,7 +163,7 @@ namespace Cirnix.Worker
                 Category[0] = oldName;
                 goto AutoChange;
             }
-            else if (IsGrabitiSaveText(e.FullPath))
+            else if (IsGrabitiSaveText(e.FullPath)|| IsTwrSaveText(e.FullPath))
             {
                 SendMsg(true, "새로운 맵 세이브가 감지되어 자동으로 추가되었습니다.");
                 string path = $"\\{Path.GetDirectoryName(e.FullPath).Substring(DocumentPath.Length)}";
@@ -274,6 +276,45 @@ namespace Cirnix.Worker
             Error:
             SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
+
+        internal static void LoadCode2()
+        {
+            if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
+            {
+                string saveName = GetFullArgs();
+                string path = string.Format("{0}\\{1}", GetCurrentPath(0), saveName);
+                SendMsg(false, new string[] { path });
+                if (!Directory.Exists(path))
+                {
+                    SendMsg(true, new string[] { string.Format("{0} 존재하지 않습니다.", IsKoreanBlock(saveName, "은", "는")) });
+                    return;
+                }
+                Settings.HeroType = Category[1] = saveName;
+                Category[2] = Path.GetFileName(GetLastest(GetCurrentPath(1)));
+                ListUpdate(2);
+            }
+            try
+            {
+                GetCodes2();
+            }
+            catch
+            {
+                goto Error;
+            }
+            if (string.IsNullOrEmpty(Code[0])) goto Error;
+            SendMsg(true, new string[] { string.Format("{0}\\{1} 파일을 로드합니다.", Category[1], Category[2]) });
+            for (int i = 0; i < 24; i++)
+            {
+                if (string.IsNullOrEmpty(Code[i])) break;
+                SendMsg(false, new string[] { Code[i].Substring(0, Code[i].Length >= 130 ? 130 : Code[i].Length) }, Settings.GlobalDelay);
+            }
+            Delay(200);
+            TypeCommands();
+            return;
+        Error:
+            SendMsg(true, new string[] { "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다." });
+        }
+
         internal static void LoadCommands()
         {
             if (string.IsNullOrEmpty(args[1]))
@@ -283,6 +324,7 @@ namespace Cirnix.Worker
             }
             TypeCommands(int.Parse(args[1]));
         }
+
         private static void TypeCommands(int index = -1)
         {
             string Command;
@@ -641,10 +683,18 @@ namespace Cirnix.Worker
             }
 
             if (Settings.IsMemoryOptimize
-             && MemoryOptimizeElapsed++ >= Settings.MemoryOptimizeCoolDown * 300)
+             && MemoryOptimizeElapsed++ >= Settings.MemoryOptimizeCoolDown * 6000)
             {
-                if(CProcess.TrimProcessMemory(TargetProcess)) MemoryOptimizeElapsed = 0;
-                else MemoryOptimizeElapsed = Settings.MemoryOptimizeCoolDown / 2;
+                SendMsg(true, "워크래프트 3 자동 메모리 최적화를 시도합니다.");
+                if (CProcess.TrimProcessMemory(TargetProcess,true))
+                {
+                    MemoryOptimizeElapsed = 0;
+                    SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(CProcess.MemoryValue[2])} = {ConvertSize(CProcess.MemoryValue[1])}");
+                }
+                else
+                {
+                    MemoryOptimizeElapsed = Settings.MemoryOptimizeCoolDown / 2;
+                }
             }
             StatusCheck();
             return false;
@@ -678,7 +728,10 @@ namespace Cirnix.Worker
                 GameDelay = Settings.GameDelay;
                 if (!Settings.IsAutoLoad) return;
                 Delay(3000);
-                LoadCode();
+                LoadCodeSelect();
+                
+                
+                
             }
             else
             {
@@ -792,6 +845,34 @@ namespace Cirnix.Worker
         internal static void ExtendForce()
         {
             SendMsg(true, "강제 모드 " + ((Globals.ExtendForce = !Globals.ExtendForce) ? "켜짐" : "꺼짐"));
+        }
+
+
+        internal static void LoadCodeSelect()
+        {
+            string MapPath;
+            if (!LoadedFiles.IsLoadedMap(out MapPath))
+            {
+                SendMsg(true, new string[] { "로드된 맵이 없습니다." });
+                return;
+            }
+            MapPath = MapPath.Substring(MapPath.IndexOf(@"\Warcraft III\Maps\") + 14);
+
+            if (MapPath.Contains("twrpg"))
+            {
+                Delay(3000);
+                LoadCode2();
+            }
+            else
+            {
+                LoadCode();
+            }
+            
+
+            
+            
+
+            
         }
     }
 }
