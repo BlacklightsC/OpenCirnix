@@ -87,6 +87,7 @@
             this.BTN_ReserveRoom = new System.Windows.Forms.Button();
             this.ServerStatus = new System.Windows.Forms.Timer(this.components);
             this.BTN_MapLog = new System.Windows.Forms.Button();
+            this.BTN_RoomJoin = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MapImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -779,11 +780,24 @@
             this.BTN_MapLog.Visible = false;
             this.BTN_MapLog.Click += new System.EventHandler(this.BTN_MapLog_Click);
             // 
+            // BTN_RoomJoin
+            // 
+            this.BTN_RoomJoin.Font = new System.Drawing.Font("맑은 고딕", 8F);
+            this.BTN_RoomJoin.Location = new System.Drawing.Point(339, 405);
+            this.BTN_RoomJoin.Margin = new System.Windows.Forms.Padding(1);
+            this.BTN_RoomJoin.Name = "BTN_RoomJoin";
+            this.BTN_RoomJoin.Size = new System.Drawing.Size(37, 20);
+            this.BTN_RoomJoin.TabIndex = 57;
+            this.BTN_RoomJoin.Text = "입장";
+            this.BTN_RoomJoin.UseVisualStyleBackColor = true;
+            this.BTN_RoomJoin.Click += new System.EventHandler(this.BTN_RoomJoin_Click);
+            // 
             // RoomListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(380, 477);
+            this.Controls.Add(this.BTN_RoomJoin);
             this.Controls.Add(this.BTN_MapLog);
             this.Controls.Add(this.BTN_ReserveRoom);
             this.Controls.Add(this.BTN_Statistics);
@@ -916,6 +930,7 @@
         private System.Windows.Forms.Button BTN_ReserveRoom;
         private System.Windows.Forms.Timer ServerStatus;
         private System.Windows.Forms.Button BTN_MapLog;
+        private System.Windows.Forms.Button BTN_RoomJoin;
     }
 }
 

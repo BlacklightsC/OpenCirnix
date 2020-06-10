@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
+using static Cirnix.Memory.Component;
 
 namespace Cirnix.Forms
 {
@@ -276,6 +277,11 @@ namespace Cirnix.Forms
         private void ShutDown_Click(object sender, EventArgs e)
         {
             ProgramShutDown();
+        }
+
+        private void TrayIcon_Load(object sender, EventArgs e)
+        {
+
         }
         #endregion
 
