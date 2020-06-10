@@ -1,5 +1,6 @@
 ﻿using Cirnix.Global;
 using Cirnix.Memory;
+using Cirnix.ServerStatus;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -79,7 +80,8 @@ namespace Cirnix.Worker
             commandList.Register("map", "맵", ShowMapPath);
             commandList.Register("mset", "ㅡㄴㄷㅅ", SetMap);
             commandList.Register("kr", "키리맵핑", ToggleKeyRemapping);
-            commandList.Register("ex", "ㄷㅌ", ExtendForce);
+            commandList.Register("rs", "ㄱㄴ", SearchRoomListRoom);
+            commandList.Register("ms", "ㅡㄴ", SearchRoomListMap);
             commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
             commandList.Register("rework", "ㄱㄷ재가", Rework);
         }
@@ -842,12 +844,78 @@ namespace Cirnix.Worker
                 SendMsg(true, "키 리맵핑을 사용하지 않습니다.");
             }
         }
-
-        internal static void ExtendForce()
+        internal static void SearchRoomListRoom()
         {
-            SendMsg(true, "강제 모드 " + ((Globals.ExtendForce = !Globals.ExtendForce) ? "켜짐" : "꺼짐"));
+            string SearchText = GetFullArgs(true);
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                SendMsg(true, "Error - 검색할 방 제목을 입력해주세요.");
+                return;
+            }
+            SendMsg(true, string.Format("방 제목에 {0} 포함된 대기실을 검색하는 중...", IsKoreanBlock(SearchText, "이", "가")));
+            bool Disconnect = RoomWebDataBase.InitEvent();
+            if (Disconnect)
+            {
+                RoomWebDataBase.EndFirstConnect += () =>
+                EndRoomListSearch(RoomWebDataBase.infoList.FindAll(item =>
+                    item.flag == "public"
+                 && item.status == "open"
+                 && item.gname.ToLower().IndexOf(SearchText) != -1), Disconnect);
+                RoomWebDataBase.Connect();
+            }
+            else
+                EndRoomListSearch(RoomWebDataBase.infoList.FindAll(item =>
+                    item.flag == "public"
+                 && item.status == "open"
+                 && item.gname.ToLower().IndexOf(SearchText) != -1), Disconnect);
         }
-
+        internal static void SearchRoomListMap()
+        {
+            string SearchText = GetFullArgs(true);
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                SendMsg(true, "Error - 검색할 맵 파일명을 입력해주세요.");
+                return;
+            }
+            SendMsg(true, string.Format("맵 파일명에 {0} 포함된 대기실을 검색하는 중...", IsKoreanBlock(SearchText, "이", "가")));
+            bool Disconnect = RoomWebDataBase.InitEvent();
+            if (Disconnect)
+            {
+                RoomWebDataBase.EndFirstConnect += () =>
+                EndRoomListSearch(RoomWebDataBase.infoList.FindAll(item =>
+                    item.flag == "public"
+                 && item.status == "open"
+                 && item.mapname.ToLower().IndexOf(SearchText) != -1), Disconnect);
+                RoomWebDataBase.Connect();
+            }
+            else
+                EndRoomListSearch(RoomWebDataBase.infoList.FindAll(item =>
+                    item.flag == "public"
+                 && item.status == "open"
+                 && item.mapname.ToLower().IndexOf(SearchText) != -1), Disconnect);
+        }
+        private static void EndRoomListSearch(List<RoomInformation.Field> fields, bool Disconnect)
+        {
+            if (Disconnect)
+            {
+                RoomWebDataBase.Disconnect();
+                RoomWebDataBase.RemoveAllEvent();
+            }
+            if (fields.Count == 0)
+                SendMsg(true, "조건에 맞는 대기실을 찾을 수 없었습니다.");
+            else if (fields.Count <= 2)
+                foreach (var item in fields)
+                    SendMsg(false, string.Format("{0} [{1}명] - {3}", item.gname, item.now_players, item.max_players, item.player0));
+            else
+            {
+                StringBuilder builder = new StringBuilder();
+                SendMsg(true, string.Format("{0} 개의 대기실을 찾았습니다.", fields.Count));
+                fields.Sort((a, b) => (int)(a.now_players - b.now_players));
+                foreach (var item in fields)
+                    builder.AppendFormat("[{0}명] ", item.now_players, item.max_players);
+                SendMsg(false, builder.ToString());
+            }
+        }
 
         internal static void LoadCodeSelect()
         {

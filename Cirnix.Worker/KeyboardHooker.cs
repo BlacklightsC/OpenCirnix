@@ -78,7 +78,7 @@ namespace Cirnix.Worker
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
-                _hookID = SetWindowsHookEx(0xD, _proc, GetModuleHandle(TargetProcess), 0);
+                _hookID = SetWindowsHookEx(0xD, _proc, GetModuleHandle(curModule.ModuleName), 0);
             }
         }
         public static void HookEnd()

@@ -20,6 +20,7 @@ namespace Cirnix.Forms
         private InfoForm info;
         private SelectProcess sepro;
         private ChannelChatForm channel;
+        private RoomListForm room;
         private AdditionalToolForm tool;
         private HistoryForm history;
 
@@ -85,6 +86,7 @@ namespace Cirnix.Forms
             {
                 optionForm = InitOptionForm,
                 infoForm = InitInfoForm,
+                roomListForm = InitRoomListForm,
                 additonalToolForm = InitAdditionalToolForm,
                 TrayCheck = TrayCheck,
                 selectProcess = SelectProcessForm
@@ -146,6 +148,18 @@ namespace Cirnix.Forms
             };
             info.Show();
             info.Activate();
+        }
+        private void InitRoomListForm()
+        {
+            if (!(room == null
+             || room.IsDisposed))
+            {
+                room.Activate();
+                return;
+            }
+            room = new RoomListForm();
+            room.Show();
+            room.Activate();
         }
         private void InitAdditionalToolForm()
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 using static Cirnix.Global.Component;
 using static Cirnix.Memory.Component;
@@ -95,6 +94,50 @@ namespace Cirnix.Memory
         internal static extern bool CloseHandle
         (
             [In]IntPtr hObject
+        );
+
+        [DllImport("ntdll.dll")]
+        internal static extern int NtQueryInformationProcess
+        (
+            IntPtr processHandle,
+            int processInformationClass,
+            ref PROCESS_BASIC_INFORMATION ProcessInformation,
+            uint processInformationLength,
+            IntPtr returnLength
+        );
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        internal struct PROCESS_BASIC_INFORMATION
+        {
+            internal int ExitProcess;
+            internal IntPtr PebBaseAddress;
+            internal UIntPtr AffinityMask;
+            internal int BasePriority;
+            internal UIntPtr UniqueProcessId;
+            internal UIntPtr InheritedFromUniqueProcessId;
+
+            internal uint Size => (uint)Marshal.SizeOf(typeof(PROCESS_BASIC_INFORMATION));
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        internal struct UNICODE_STRING
+        {
+            internal ushort Length;
+            internal ushort MaximumLength;
+            internal IntPtr buffer;
+        }
+
+        [DllImport("shell32.dll", SetLastError = true)]
+        internal static extern IntPtr CommandLineToArgvW
+        (
+            [MarshalAs(UnmanagedType.LPWStr)]string lpCmdLine,
+            out int pNumArgs
+        );
+
+        [DllImport("kernel32.dll")]
+        internal static extern IntPtr LocalFree
+        (
+            IntPtr hMem
         );
     }
 }

@@ -87,7 +87,6 @@
             this.OpenRoomList.Name = "OpenRoomList";
             this.OpenRoomList.Size = new System.Drawing.Size(180, 22);
             this.OpenRoomList.Text = "M16 방 리스트";
-            this.OpenRoomList.Visible = false;
             this.OpenRoomList.Click += new System.EventHandler(this.OpenRoomList_Click);
             // 
             // OpenAnalyzer
