@@ -66,10 +66,6 @@ namespace Cirnix.Global
             get => Reg.GetSingle(nameof(CameraAngleY), 304);
             set => Reg.SetValue(nameof(CameraAngleY), value);
         }
-        public static bool EEStatus {
-            get => Reg.GetBoolean(nameof(EEStatus));
-            set => Reg.SetValue(nameof(EEStatus), value);
-        }
         public static int KeyMap7 {
             get => Reg.GetInt32(nameof(KeyMap7));
             set => Reg.SetValue(nameof(KeyMap7), value);

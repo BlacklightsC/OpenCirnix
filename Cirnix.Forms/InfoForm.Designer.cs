@@ -36,7 +36,6 @@
             this.UpdateButton = new MetroFramework.Controls.MetroButton();
             this.LatestVersion = new MetroFramework.Controls.MetroLabel();
             this.CurrentVersion = new MetroFramework.Controls.MetroLabel();
-            this.HiddenButton = new System.Windows.Forms.Label();
             this.Toggle_BetaUser = new MetroFramework.Controls.MetroToggle();
             this.Label_BetaUser = new MetroFramework.Controls.MetroLabel();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
@@ -119,19 +118,6 @@
             this.CurrentVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.CurrentVersion.Click += new System.EventHandler(this.CurrentVersion_Click);
             // 
-            // HiddenButton
-            // 
-            this.HiddenButton.BackColor = System.Drawing.Color.Transparent;
-            this.HiddenButton.ForeColor = System.Drawing.Color.Transparent;
-            this.HiddenButton.Image = ((System.Drawing.Image)(resources.GetObject("HiddenButton.Image")));
-            this.HiddenButton.Location = new System.Drawing.Point(119, 157);
-            this.HiddenButton.Name = "HiddenButton";
-            this.HiddenButton.Size = new System.Drawing.Size(10, 10);
-            this.HiddenButton.TabIndex = 7;
-            this.HiddenButton.Click += new System.EventHandler(this.HiddenBTN_Click);
-            this.HiddenButton.MouseEnter += new System.EventHandler(this.HiddenBTN_MouseEnter);
-            this.HiddenButton.MouseLeave += new System.EventHandler(this.HiddenBTN_MouseLeave);
-            // 
             // Toggle_BetaUser
             // 
             this.Toggle_BetaUser.BackColor = System.Drawing.SystemColors.ControlText;
@@ -182,7 +168,6 @@
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.Label_BetaUser);
             this.Controls.Add(this.Toggle_BetaUser);
-            this.Controls.Add(this.HiddenButton);
             this.Controls.Add(this.LatestVersion);
             this.Controls.Add(this.CurrentVersion);
             this.Controls.Add(this.UpdateButton);
@@ -213,7 +198,6 @@
         public MetroFramework.Controls.MetroButton UpdateButton;
         public MetroFramework.Controls.MetroLabel LatestVersion;
         public MetroFramework.Controls.MetroLabel CurrentVersion;
-        private System.Windows.Forms.Label HiddenButton;
         private MetroFramework.Controls.MetroToggle Toggle_BetaUser;
         private MetroFramework.Controls.MetroLabel Label_BetaUser;
         private MetroFramework.Controls.MetroLabel metroLabel1;
