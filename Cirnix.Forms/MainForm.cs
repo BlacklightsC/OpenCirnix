@@ -24,7 +24,7 @@ namespace Cirnix.Forms
             Label_Title.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
             Label_Title.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
             Label_Title.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
-            Label_Title.Text = Text = $"OpenCirnix v{version[0]}.{version[1]}";
+            Label_Title.Text = Text = $"{Global.Theme.Title} v{version[0]}.{version[1]}";
             ImageBox.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
             ImageBox.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
             ImageBox.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
@@ -127,22 +127,22 @@ namespace Cirnix.Forms
             }
             if (GetCurrentPath(0) != null)
             {
-                string path = string.Format(@"{0}\미지정", GetCurrentPath(0));
+                string path = $"{GetCurrentPath(0)}\\미지정";
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                 foreach (FileInfo item in new DirectoryInfo(GetCurrentPath(0)).GetFiles())
                     if (item.Extension.ToLower() == ".txt")
                     {
-                        string innerPath = string.Format(@"{0}\{1}", path, Path.GetFileNameWithoutExtension(item.Name));
+                        string innerPath = $"{path}\\{Path.GetFileNameWithoutExtension(item.Name)}";
                         try
                         {
-                            item.MoveTo(string.Format("{0}.txt", innerPath));
+                            item.MoveTo($"{innerPath}.txt");
                         }
                         catch
                         {
                             for (int i = 1; true; i++)
                             {
-                                if (Directory.Exists(string.Format("{0}~{1}.txt", innerPath, i))) continue;
-                                item.MoveTo(string.Format("{0}~{1}.txt", innerPath, i));
+                                if (Directory.Exists($"{innerPath}~{i}.txt")) continue;
+                                item.MoveTo($"{innerPath}~{i}.txt");
                                 break;
                             }
                         }
@@ -252,7 +252,7 @@ namespace Cirnix.Forms
                 };
                 if (FDialog.ShowDialog() != DialogResult.OK) return;
                 Settings.InstallPath = LastInstallPath = Path.GetDirectoryName(FDialog.FileName);
-                string MixPath = string.Format("{0}\\Cirnix", LastInstallPath);
+                string MixPath = $"{LastInstallPath}\\Cirnix";
                 if (!File.Exists(MixPath + ".mix"))
                 {
                     File.WriteAllBytes(MixPath + ".mix", Global.Properties.Resources.Cirnix);

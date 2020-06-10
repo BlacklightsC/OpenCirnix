@@ -77,7 +77,6 @@ namespace Cirnix.Worker
             commandList.Register("chk", "체크", CheatCheck);
             commandList.Register("map", "맵", ShowMapPath);
             commandList.Register("mset", "ㅡㄴㄷㅅ", SetMap);
-            commandList.Register("dbg", "키", KeyDebug);
             commandList.Register("kr", "키리맵핑", ToggleKeyRemapping);
             commandList.Register("ex", "ㄷㅌ", ExtendForce);
         }
@@ -121,7 +120,7 @@ namespace Cirnix.Worker
                 IsTime = true;
                 name = GetFileTime(path);
             }
-            FileName = string.Format("{0}\\{1}.txt", GetCurrentPath(1), name);
+            FileName = $"{GetCurrentPath(1)}\\{name}.txt";
             if (File.Exists(FileName)) File.Delete(FileName);
             try
             {
@@ -141,7 +140,7 @@ namespace Cirnix.Worker
                 MainWorker.SaveWatcherTimer.Enabled = MainWorker.SaveFileWatcher.EnableRaisingEvents = false;
                 SaveFileMover(e.FullPath);
                 Category[2] = Path.GetFileName(GetLastest(GetCurrentPath(1)));
-                SendMsg(true, new string[] { string.Format("{0}\\{1} 로 저장되었습니다.", Category[1], Category[2]) });
+                SendMsg(true, $"{Category[1]}\\{Category[2]} 로 저장되었습니다.");
                 ListUpdate(2);
                 return;
             }
@@ -158,14 +157,14 @@ namespace Cirnix.Worker
             MainWorker.SaveWatcherTimer.Enabled = MainWorker.SaveFileWatcher.EnableRaisingEvents = false;
             if (isExist)
             {
-                SendMsg(true, new string[] { "기존 맵 세이브가 감지되어 '미지정'으로 저장되었습니다." });
+                SendMsg(true, "기존 맵 세이브가 감지되어 '미지정'으로 저장되었습니다.");
                 Category[0] = oldName;
                 goto AutoChange;
             }
             else if (IsGrabitiSaveText(e.FullPath))
             {
-                SendMsg(true, new string[] { "새로운 맵 세이브가 감지되어 자동으로 추가되었습니다." });
-                string path = string.Format("\\{0}", Path.GetDirectoryName(e.FullPath).Substring(DocumentPath.Length));
+                SendMsg(true, "새로운 맵 세이브가 감지되어 자동으로 추가되었습니다.");
+                string path = $"\\{Path.GetDirectoryName(e.FullPath).Substring(DocumentPath.Length)}";
                 string name = path.Substring(path.LastIndexOf('\\') + 1);
                 saveFilePath.AddPath(path, name);
                 Category[0] = name;
@@ -197,17 +196,17 @@ namespace Cirnix.Worker
             {
                 Delay(1000);
                 MainWorker.ReplayWatcher.EnableRaisingEvents = false;
-                string LastReplay = string.Format(@"{0}\LastReplay.w3g", Path.GetDirectoryName(e.FullPath));
+                string LastReplay = $"{Path.GetDirectoryName(e.FullPath)}\\LastReplay.w3g";
                 if (File.Exists(LastReplay) && new FileInfo(LastReplay).Length >= 1024)
                 {
                     string FileName;
                     if (IsSaved)
                     {
                         IsSaved = false;
-                        string CurrentCategory = string.Format(@"{0}\Replay\{1}\{2}", DocumentPath, Category[0], Category[1]);
+                        string CurrentCategory = $"{DocumentPath}\\Replay\\{Category[0]}\\{Category[1]}";
                         if (!Directory.Exists(CurrentCategory))
                             Directory.CreateDirectory(CurrentCategory);
-                        FileName = string.Format("{0}\\{1}{2}.w3g", CurrentCategory, IsTime ? string.Empty : "_", name);
+                        FileName = $"{CurrentCategory}\\{(IsTime ? string.Empty : "_")}{name}.w3g";
                         name = string.Empty;
                         IsTime = false;
                         if (File.Exists(FileName)) File.Delete(FileName);
@@ -217,7 +216,7 @@ namespace Cirnix.Worker
                     {
                         if (!Directory.Exists(DocumentPath + @"\Replay\NoSavedReplay"))
                             Directory.CreateDirectory(DocumentPath + @"\Replay\NoSavedReplay");
-                        FileName = string.Format(@"{0}\Replay\NoSavedReplay\{1}.w3g", DocumentPath, GetFileTime(LastReplay));
+                        FileName = $"{DocumentPath}\\Replay\\NoSavedReplay\\{GetFileTime(LastReplay)}.w3g";
                         if (File.Exists(FileName)) File.Delete(FileName);
                         File.Move(LastReplay, FileName);
                     }
@@ -229,13 +228,13 @@ namespace Cirnix.Worker
         internal static void ScreenShotWatcher_Created(object sender, FileSystemEventArgs e)
         {
             if (!Path.HasExtension(e.FullPath)) return;
-            SaveTo(ReadFile(e.FullPath), string.Format("{0}\\{1}", Path.GetDirectoryName(e.FullPath), Path.GetFileNameWithoutExtension(e.FullPath)), Settings.ConvertExtention);
+            SaveTo(ReadFile(e.FullPath), $"{Path.GetDirectoryName(e.FullPath)}\\{Path.GetFileNameWithoutExtension(e.FullPath)}", Settings.ConvertExtention);
             if (Settings.IsOriginalRemove) File.Delete(e.FullPath);
         }
         internal static void MapFileWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            SendMsg(true, new string[] { string.Format("{0} 맵이 치트맵인지 확인합니다.", Path.GetFileName(e.FullPath)) });
-            SendMsg(true, new string[] { string.Format("판독 결과: 치트맵{0}니다.", IsCheatMap(e.FullPath) ? " 인것이 확인되었습" : "이 아닙") });
+            SendMsg(true, $"{Path.GetFileName(e.FullPath)} 맵이 치트맵인지 확인합니다.");
+            SendMsg(true, $"판독 결과: 치트맵{(IsCheatMap(e.FullPath) ? " 인것이 확인되었습" : "이 아닙")}니다.");
             MainWorker.MapFileWatcher.EnableRaisingEvents = false;
         }
         internal static void LoadCode()
@@ -243,10 +242,10 @@ namespace Cirnix.Worker
             if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
             {
                 string saveName = GetFullArgs();
-                string path =  string.Format("{0}\\{1}", GetCurrentPath(0), saveName);
+                string path = $"{GetCurrentPath(0)}\\{saveName}";
                 if (!Directory.Exists(path))
                 {
-                    SendMsg(true, new string[] { string.Format("{0} 존재하지 않습니다.", IsKoreanBlock(saveName, "은", "는")) });
+                    SendMsg(true, $"{IsKoreanBlock(saveName, "은", "는")} 존재하지 않습니다.");
                     return;
                 }
                 Settings.HeroType = Category[1] = saveName;
@@ -262,8 +261,8 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (string.IsNullOrEmpty(Code[0])) goto Error;
-            SendMsg(true, new string[] { string.Format("{0}\\{1} 파일을 로드합니다.", Category[1], Category[2]) });
-            SendMsg(false, new string[] { "-load" });
+            SendMsg(true, $"{Category[1]}\\{Category[2]} 파일을 로드합니다.");
+            SendMsg(false, "-load");
             for (int i = 0; i < 24; i++)
             {
                 if (string.IsNullOrEmpty(Code[i])) break;
@@ -273,13 +272,13 @@ namespace Cirnix.Worker
             TypeCommands();
             return;
             Error:
-            SendMsg(true, new string[] { "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다." });
+            SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
         internal static void LoadCommands()
         {
             if (string.IsNullOrEmpty(args[1]))
             {
-                SendMsg(true, new string[] { "Error - 프리셋을 지정해주세요. (1 ~ 3)" });
+                SendMsg(true, "Error - 프리셋을 지정해주세요. (1 ~ 3)");
                 return;
             }
             TypeCommands(int.Parse(args[1]));
@@ -315,10 +314,10 @@ namespace Cirnix.Worker
                     Command = Settings.CommandPreset3;
                     break;
                 default:
-                    SendMsg(true, new string[] { "Error - 해당 프리셋이 존재하지 않습니다." });
+                    SendMsg(true, "Error - 해당 프리셋이 존재하지 않습니다.");
                     return;
             }
-            if (index != -1) SendMsg(true, new string[] { string.Format("명령어 프리셋 {0}을 입력합니다.", index) });
+            if (index != -1) SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
             if (string.IsNullOrEmpty(Command)) return;
             SendMsg(false, Command.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries), Settings.GlobalDelay + 100);
         }
@@ -334,7 +333,7 @@ namespace Cirnix.Worker
                 {
                     if (isFirst)
                     {
-                        builder.Append($"{Theme.Title} 분류: ");
+                        builder.Append($"{Theme.MsgTitle} 분류: ");
                         isFirst = false;
                     }
                     else
@@ -352,12 +351,12 @@ namespace Cirnix.Worker
             }
             else
             {
-                string path = string.Format("{0}\\{1}", GetCurrentPath(0), saveName);
+                string path = "{GetCurrentPath(0)}\\{saveName}";
                 if (Directory.Exists(path))
-                    SendMsg(true, new string[] { string.Format("{0} 사용합니다.", IsKoreanBlock(saveName, "을", "를")) });
+                    SendMsg(true, $"{IsKoreanBlock(saveName, "을", "를")} 사용합니다.");
                 else
                 {
-                    SendMsg(true, new string[] { string.Format("{0} 존재하지 않으므로, 새로 생성합니다.", IsKoreanBlock(saveName, "은", "는")) });
+                    SendMsg(true, $"{IsKoreanBlock(saveName, "은", "는")} 존재하지 않으므로, 새로 생성합니다.");
                     Directory.CreateDirectory(path);
                 }
                 Settings.HeroType = Category[1] = saveName;
@@ -373,13 +372,13 @@ namespace Cirnix.Worker
                  && item.nameKR.ToLower().IndexOf(saveName) == -1)
                     continue;
 
-                SendMsg(true, new string[] { string.Format("{0} 제일 유사한 {1} 사용합니다.", IsKoreanBlock(saveName, "과", "와"), IsKoreanBlock(saveFilePath.ConvertName(item.nameEN),"을","를")) });
+                SendMsg(true, $"{IsKoreanBlock(saveName, "과", "와")} 제일 유사한 {IsKoreanBlock(saveFilePath.ConvertName(item.nameEN), "을", "를")} 사용합니다.");
                 Settings.MapType = Category[0] = item.nameEN;
                 Settings.HeroType = Category[1] = "미지정";
                 ListUpdate(2);
                 return;
             }
-            SendMsg(true, new string[] { string.Format("{0} 유사한 이름을 찾지 못했습니다.", IsKoreanBlock(saveName, "과", "와")) });
+            SendMsg(true, $"{IsKoreanBlock(saveName, "과", "와")} 유사한 이름을 찾지 못했습니다.");
         }
         internal static void SetGameDelay()
         {
@@ -394,14 +393,12 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (delay < 0 || delay > 550) goto Error;
-            SendMsg(true, new string[] { string.Format("Delay 값: {0}{1}ms → {2}ms", IsHostPlayer ? "<Host> " : string.Empty, Settings.GameDelay, args[1]) });
+            SendMsg(true, $"Delay 값: {(IsHostPlayer ? "<Host>" : string.Empty)}{Settings.GameDelay}ms → {args[1]}ms");
             Settings.GameDelay = delay;
-            if (CurrentGameState == GameState.StartedGame
-                || CurrentGameState == GameState.InGame)
-                GameDelay = Settings.GameDelay;
+            if (IsInGame) GameDelay = Settings.GameDelay;
             return;
             Error:
-            SendMsg(true, new string[] { "Error - Delay 값 범위: 0 ~ 550" });
+            SendMsg(true, "Error - Delay 값 범위: 0 ~ 550");
         }
         internal static void SetStartSpeed()
         {
@@ -416,17 +413,18 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (delay < 0 || delay > 6) goto Error;
-            SendMsg(true, new string[] { string.Format("StartSpeed 값: {0}초 → {1}초", Settings.StartSpeed <= 0.01 ? 0 : Settings.StartSpeed, args[1]) });
+            float startSpeed = Settings.StartSpeed;
+            SendMsg(true, $"StartSpeed 값: {(startSpeed <= 0.01 ? 0 : startSpeed)}초 → {args[1]}초");
             if (delay == 0) StartDelay = 0.01f;
             else StartDelay = Convert.ToSingle(delay);
             Settings.StartSpeed = StartDelay;
             return;
             Error:
-            SendMsg(true, new string[] { "Error - StartSpeed 값 범위: 0 ~ 6" });
+            SendMsg(true, "Error - StartSpeed 값 범위: 0 ~ 6");
         }
         internal static void SetHPView()
         {
-            SendMsg(true, new string[] { string.Format("HP 최대값 표기가 {0}니다.", HPView ? "나타납" : "사라집") });
+            SendMsg(true, $"HP 최대값 표기가 {(HPView ? "나타납" : "사라집")}니다.");
             HPView = !HPView;
         }
         internal static void RollDice()
@@ -445,21 +443,21 @@ namespace Cirnix.Worker
                     goto Error;
                 }
             }
-            SendMsg(true, new string[] { string.Format("주사위에서 {0} (이)가 나왔습니다. ({1})", new Random().Next(diceNumber + 1), diceNumber) });
+            SendMsg(true, $"주사위에서 {new Random().Next(diceNumber + 1)} (이)가 나왔습니다. ({diceNumber})");
             return;
             Error:
-            SendMsg(true, new string[] { "Error - 주사위 범위: 0 ~ 2,147,483,646" });
+            SendMsg(true, "Error - 주사위 범위: 0 ~ 2,147,483,646");
         }
         internal static void ExecuteRG()
         {
             //if (CurrentGameState == GameState.StartedGame)
             //{
-            //    SendMsg(true, new string[] { "이미 게임을 플레이 하는 중입니다." });
+            //    SendMsg(true, "이미 게임을 플레이 하는 중입니다.");
             //    return;
             //}
             if (MainWorker.autoRG.isRunning)
             {
-                SendMsg(true, new string[] { "자동 RG 기능이 종료되었습니다." });
+                SendMsg(true, "자동 RG 기능이 종료되었습니다.");
                 MainWorker.autoRG.CancelAsync();
                 return;
             }
@@ -473,18 +471,16 @@ namespace Cirnix.Worker
             {
                 goto Error;
             }
-            SendMsg(true, new string[] { string.Format("자동 RG 기능이 시작되었습니다. ▷반복: {0}회", args[1]) });
+            SendMsg(true, $"자동 RG 기능이 시작되었습니다. ▷반복: {args[1]}회");
             MainWorker.autoRG.RunWorkerAsync(value);
             return;
             Error:
-            SendMsg(true, new string[] { "자동 RG 기능이 시작되었습니다. ▷반복: 무제한" });
+            SendMsg(true, "자동 RG 기능이 시작되었습니다. ▷반복: 무제한");
             MainWorker.autoRG.RunWorkerAsync(-1);
         }
         internal static void RpgSave()
         {
-            if (CurrentGameState != GameState.StartedGame
-             && CurrentGameState != GameState.InGame)
-                return;
+            if (!IsInGame) return;
             IsSaved = true;
             name = GetFullArgs();
             string[] FileName;
@@ -499,7 +495,7 @@ namespace Cirnix.Worker
             if (FileName.Length == 0) goto Error;
             SaveFileMover(FileName[0]);
             Category[2] = Path.GetFileName(GetLastest(GetCurrentPath(1)));
-            SendMsg(true, new string[] { string.Format("{0}\\{1} 로 저장되었습니다.", Category[1], Category[2]) });
+            SendMsg(true, $"{Category[1]}\\{Category[2]} 로 저장되었습니다.");
             ListUpdate(2);
             return;
 
@@ -519,12 +515,12 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (value > 6000 || value < 0) goto Error;
-            SendMsg(true, new string[] { string.Format("설정된 시야 값: {0}", args[1]) });
+            SendMsg(true, $"설정된 시야 값: {args[1]}");
             Settings.CameraDistance = CameraDistance = value;
             CameraInit();
             return;
             Error:
-            SendMsg(true, new string[] { "Error - 시야 범위: 0 ~ 6000" });
+            SendMsg(true, "Error - 시야 범위: 0 ~ 6000");
         }
         internal static void CamAngleX()
         {
@@ -539,12 +535,12 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (value > 360 || value < 0) goto Error;
-            SendMsg(true, new string[] { string.Format("설정된 X축 각도 값: {0}", args[1]) });
+            SendMsg(true, $"설정된 X축 각도 값: {args[1]}");
             Settings.CameraAngleX = CameraAngleX = value;
             CameraInit();
             return;
             Error:
-            SendMsg(true, new string[] { "Error - X축 각도 범위: 0 ~ 360" });
+            SendMsg(true, "Error - X축 각도 범위: 0 ~ 360");
         }
         internal static void CamAngleY()
         {
@@ -559,12 +555,12 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (value > 360 || value < 0) goto Error;
-            SendMsg(true, new string[] { string.Format("설정된 Y축 각도 값: {0}", args[1]) });
+            SendMsg(true, $"설정된 Y축 각도 값: {args[1]}");
             Settings.CameraAngleY = CameraAngleY = value;
             CameraInit();
             return;
             Error:
-            SendMsg(true, new string[] { "Error - Y축 각도 범위: 0 ~ 360" });
+            SendMsg(true, "Error - Y축 각도 범위: 0 ~ 360");
         }
 
         internal static void ProgramExit()
@@ -603,7 +599,7 @@ namespace Cirnix.Worker
                     ignoreDetect = false;
                     ZombieCount = 0;
                 }
-                else if (CurrentGameState == GameState.Unknown)
+                else if (CurrentMusicState == MusicState.None)
                 {
                     if (++ZombieCount > 22)
                     {
@@ -657,16 +653,16 @@ namespace Cirnix.Worker
         {
             MemoryOptimizeElapsed = 0;
             new System.Threading.Thread(() => {
-                SendMsg(true, new string[] { "워크래프트 3 메모리 최적화를 시도합니다." });
+                SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
                 if (CProcess.TrimProcessMemory(TargetProcess, true))
                 {
                     if (CProcess.MemoryValue[2] < 0)
                     {
-                        SendMsg(true, new string[] { "최적화할 메모리를 찾을 수 없었습니다." });
+                        SendMsg(true, "최적화할 메모리를 찾을 수 없었습니다.");
                     }
-                    else SendMsg(true, new string[] { $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(CProcess.MemoryValue[2])} = {ConvertSize(CProcess.MemoryValue[1])}" });
+                    else SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(CProcess.MemoryValue[2])} = {ConvertSize(CProcess.MemoryValue[1])}");
                 }
-                else SendMsg(true, new string[] { "Error - 최적화 중에 예외가 발생했습니다." });
+                else SendMsg(true, "Error - 최적화 중에 예외가 발생했습니다.");
             }).Start();
         }
         internal static void StatusCheck() 
@@ -680,14 +676,13 @@ namespace Cirnix.Worker
                 Delay(500);
                 CameraInit();
                 GameDelay = Settings.GameDelay;
-                KeyDebugFunc();
                 if (!Settings.IsAutoLoad) return;
                 Delay(3000);
                 LoadCode();
             }
             else
             {
-                if (!WaitLobby && CurrentGameState == GameState.BattleNet)
+                if (!WaitLobby && CurrentMusicState == MusicState.BattleNet)
                 {
                     GameDelay = 50;
                     WaitLobby = true;
@@ -718,25 +713,23 @@ namespace Cirnix.Worker
         {
             if (!LoadedFiles.IsLoadedMap(out string MapPath))
             {
-                SendMsg(true, new string[] { "로드된 맵이 없습니다." });
+                SendMsg(true, "로드된 맵이 없습니다.");
                 return;
             }
-            SendMsg(true, new string[] { string.Format("{0} 맵이 치트맵인지 확인합니다.", Path.GetFileName(MapPath)) });
+            SendMsg(true, $"{Path.GetFileName(MapPath)} 맵이 치트맵인지 확인합니다.");
             if (IsCheatMap(MapPath))
-                SendMsg(true, new string[] { "판독 결과: 알려진 치트셋이 사용된 치트맵입니다." });
+                SendMsg(true, "판독 결과: 알려진 치트셋이 사용된 치트맵입니다.");
             else
-                SendMsg(true, new string[] { "판독 결과: 치트맵이 아닌 것 같습니다." });
+                SendMsg(true, "판독 결과: 치트맵이 아닌 것 같습니다.");
         }
         internal static void ShowMapPath()
         {
-            string MapPath;
-            if (!LoadedFiles.IsLoadedMap(out MapPath))
+            if (!LoadedFiles.IsLoadedMap(out string MapPath))
             {
-                SendMsg(true, new string[] { "로드된 맵이 없습니다." });
+                SendMsg(true, "로드된 맵이 없습니다.");
                 return;
             }
-            MapPath = MapPath.Substring(MapPath.IndexOf(@"\Warcraft III\Maps\") + 14);
-            SendMsg(true, new string[] { string.Format("현재 로드된 맵 경로: {0}", MapPath) });
+            SendMsg(true, $"현재 로드된 맵 경로: {MapPath.Substring(MapPath.IndexOf(@"\Warcraft III\Maps\") + 14)}");
         }
         private static void KeyDebugFunc()
         {
@@ -747,7 +740,7 @@ namespace Cirnix.Worker
         internal static void KeyDebug()
         {
             KeyDebugFunc();
-            SendMsg(true, new string[] { "단축키 후킹 상태를 재설정하였습니다." });
+            SendMsg(true, "단축키 후킹 상태를 재설정하였습니다.");
         }
         internal static void ToggleKeyRemapping()
         {

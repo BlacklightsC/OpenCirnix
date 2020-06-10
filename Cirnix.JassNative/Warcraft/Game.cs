@@ -124,7 +124,7 @@ namespace Cirnix.JassNative.WarAPI
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(string.Format("Unhandled Exception in {0}.{1}!", nameof(Game), nameof(Unknown__SetStateHook)));
+                Trace.WriteLine($"Unhandled Exception in {nameof(Game)}.{nameof(Unknown__SetStateHook)}!");
                 Trace.WriteLine(ex.ToString());
             }
             return Unknown__SetState(@this, endMap, endEngine);

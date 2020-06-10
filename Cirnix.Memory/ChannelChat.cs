@@ -60,7 +60,7 @@ namespace Cirnix.Memory
 
         public static string GetChannelChat()
         {
-            if (States.CurrentGameState != GameState.BattleNet) return null;
+            if (States.CurrentMusicState != MusicState.BattleNet) return null;
             string Text = string.Empty;
             int Length;
             if((Length = SearchMessageOffset()) != -1)

@@ -74,7 +74,7 @@ namespace Cirnix.Global
         {
             try
             {
-                return string.Format(@"{0}\CustomMapData{1}", DocumentPath, this[index].path);
+                return $"{DocumentPath}\\CustomMapData{this[index].path}";
             }
             catch
             {
@@ -87,7 +87,7 @@ namespace Cirnix.Global
             for (int i = 0; i < Count; i++)
                 if (this[i].nameEN == name
                  || this[i].nameKR == name)
-                    return string.Format(@"{0}\CustomMapData{1}", DocumentPath, this[i].path);
+                    return $"{DocumentPath}\\CustomMapData{this[i].path}";
             return null;
         }
 

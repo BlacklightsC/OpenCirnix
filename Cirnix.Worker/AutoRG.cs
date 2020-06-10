@@ -63,18 +63,18 @@ namespace Cirnix.Worker.InnerWorker
                 if (AutoRGCount == -1)
                 {
                     //MessageStack(true);
-                    SendMsg(false, new string[] { "/rg" });
+                    SendMsg(false, "/rg");
                     //MessageStack(false);
                 }
                 else if (AutoRGCount > 0)
                 {
                     //MessageStack(true);
-                    SendMsg(false, new string[] { "/rg" });
-                    SendMsg(true, new string[] { string.Format("자동 RG 사용 중: {0}회", ++LoopedCount) });
+                    SendMsg(false, "/rg");
+                    SendMsg(true, $"자동 RG 사용 중: {++LoopedCount}회");
                     if (LoopedCount >= AutoRGCount)
                     {
                         isRunning = false;
-                        SendMsg(true, new string[] { "자동 RG 기능이 자동적으로 종료되었습니다." });
+                        SendMsg(true, "자동 RG 기능이 자동적으로 종료되었습니다.");
                     }
                     //MessageStack(false);
                 }

@@ -100,7 +100,7 @@ namespace Cirnix.Global
             public override int GetHashCode() => ((Rectangle)this).GetHashCode();
 
             public override string ToString()
-                => string.Format(System.Globalization.CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
+                => $"{{Left={Left},Top={Top},Right={Right},Bottom={Bottom}}}";
         }
 
         public enum KeyModifiers

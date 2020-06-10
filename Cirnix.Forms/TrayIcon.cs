@@ -66,7 +66,7 @@ namespace Cirnix.Forms
         #region [    Initialize Form    ]
         private void TrayCheck()
         {
-            MainTrayIcon.BalloonTipTitle = "OpenCirnix v" + version[0] + "." + version[1];
+            MainTrayIcon.BalloonTipTitle = $"{Theme.Title} v{version[0]}.{version[1]}";
             MainTrayIcon.BalloonTipText = "여기서 창을 다시 열수있어요!";
             MainTrayIcon.ShowBalloonTip(5000);
         }
@@ -75,8 +75,7 @@ namespace Cirnix.Forms
         public void DebugWarcraftOutput()
         {
             Delay(200);
-            Memory.Message.SendMsg(true, new string[] { string.Format("Debug Mode On, Version: {0}.{1}.{2}.{3}",
-                version[0], version[1], version[2], version[3]) });
+            Memory.Message.SendMsg(true, $"Debug Mode On, Version: {version[0]}.{version[1]}.{version[2]}.{version[3]}");
         }
         private void InitMainForm()
         {
@@ -190,8 +189,7 @@ namespace Cirnix.Forms
                     if (version[2] > Latest[2]) return;
                     else if (version[2] == Latest[2])
                         if (version[3] >= Latest[3]) return;
-            if (MetroDialog.YesNo("업데이트 필요", string.Format("최신 버전이 확인되었습니다.\n 현재: {0}.{1}.{2}.{3}\n 최신: {4}.{5}.{6}.{7}\n업데이트 하시겠습니까?",
-                version[0], version[1], version[2], version[3], Latest[0], Latest[1], Latest[2], Latest[3])))
+            if (MetroDialog.YesNo("업데이트 필요", $"최신 버전이 확인되었습니다.\n 현재: {version[0]}.{version[1]}.{version[2]}.{version[3]}\n 최신: {Latest[0]}.{Latest[1]}.{Latest[2]}.{Latest[3]}\n업데이트 하시겠습니까?"))
             {
                 try
                 {

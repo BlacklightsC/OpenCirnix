@@ -80,7 +80,7 @@ namespace Cirnix.Memory
                  && CompareArrays(MessageSearchPattern, lpBuffer, 5))
                 {
                     byte[] buffer = new byte[1];
-                    byte[] bytes = Encoding.UTF8.GetBytes($"{Theme.Title} 채팅 주파수 검색 중...");
+                    byte[] bytes = Encoding.UTF8.GetBytes($"{Theme.MsgTitle} 채팅 주파수 검색 중...");
                     for (int i = 0; i < 20; i++)
                         WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), bytes, (uint)(bytes.Length + 1), out _);
                     PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
@@ -222,7 +222,7 @@ namespace Cirnix.Memory
             {
                 Thread.Sleep(delay);
                 if (!string.IsNullOrEmpty(arg))
-                    MessageCut((UseTitle ? $"{Theme.Title} " : string.Empty) + arg);
+                    MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg);
             }
             if (Settings.IsCommandHide && IsHide)
             {

@@ -39,7 +39,7 @@ namespace Cirnix.Forms
             Current = new int[4] { ver.Major, ver.Minor, ver.Build, ver.Revision };
             Recommanded = new int[4];
             Latest = new int[4];
-            CurrentVersion.Text = string.Format("{0}.{1}.{2}.{3}", Current[0], Current[1], Current[2], Current[3]);
+            CurrentVersion.Text = $"{Current[0]}.{Current[1]}.{Current[2]}.{Current[3]}";
         }
 
         private void InfoForm_Shown(object sender, EventArgs e)
@@ -59,7 +59,7 @@ namespace Cirnix.Forms
         private void VersionUpdate()
         {
             int[] version = Settings.BetaUser ? Latest : Recommanded;
-            LatestVersion.Text = string.Format("{0}.{1}.{2}.{3}", version[0], version[1], version[2], version[3]);
+            LatestVersion.Text = $"{version[0]}.{version[1]}.{version[2]}.{version[3]}";
             for (int i = 0; i < 4; i++)
             {
                 if (i != 3 && Current[i] == version[i]) continue;
@@ -93,7 +93,7 @@ namespace Cirnix.Forms
 
         private void Update_Click(object sender, EventArgs e)
         {
-            new UpdateForm("OpenCirnix", Settings.BetaUser ? LatestURL : RecommandedURL).ShowDialog();
+            new UpdateForm(Global.Theme.Title, Settings.BetaUser ? LatestURL : RecommandedURL).ShowDialog();
         }
 
         private void CurrentVersion_Click(object sender, EventArgs e)

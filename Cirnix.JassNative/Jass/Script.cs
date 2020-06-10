@@ -27,9 +27,9 @@ namespace Cirnix.JassNative.JassAPI
         public static unsafe void Initialize()
         {
             if (Kernel32.GetModuleHandle("game.dll") == IntPtr.Zero)
-                throw new Exception("Attempted to initialize " + typeof(Script).Name + " before 'game.dll' has been loaded.");
+                throw new Exception($"Attempted to initialize {nameof(Script)} before 'game.dll' has been loaded.");
             if (!GameAddresses.IsReady)
-                throw new Exception("Attempted to initialize " + typeof(Script).Name + " before " + typeof(GameAddresses).Name + " was ready.");
+                throw new Exception($"Attempted to initialize {nameof(Script)} before {nameof(GameAddresses)} was ready.");
             Jass__Constructor = Memory.InstallHook(GameAddresses.Jass__Constructor, new Jass__ConstructorPrototype(Jass__ConstructorHook), true, false);
             VirtualMachine__RunFunction = Memory.InstallHook(GameAddresses.VirtualMachine__RunFunction, new VirtualMachine__RunFunctionPrototype(VirtualMachine__RunFunctionHook), true, false);
             VirtualMachine__RunCode = Memory.InstallHook(GameAddresses.VirtualMachine__RunCode, new VirtualMachine__RunCodePrototype(VirtualMachine__RunCodeHook), true, false);
@@ -43,11 +43,11 @@ namespace Cirnix.JassNative.JassAPI
             try
             {
                 Jass = jassPtr;
-                Trace.WriteLine(string.Format("Jass constructed: 0x{0}", (object)new IntPtr((void*)jassPtr).ToString("X8")));
+                Trace.WriteLine($"Jass constructed: 0x{new IntPtr((void*)jassPtr):X8}");
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(string.Format("Unhandled Exception in {0}.{1}!", nameof(Script), nameof(Jass__ConstructorHook)));
+                Trace.WriteLine($"Unhandled Exception in {nameof(Script)}.{nameof(Jass__ConstructorHook)}!");
                 Trace.WriteLine(ex.ToString());
             }
             return jassPtr;
@@ -79,7 +79,7 @@ namespace Cirnix.JassNative.JassAPI
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(string.Format("Unhandled Exception in {0}.{1}!", nameof(Script), nameof(VirtualMachine__RunFunctionHook)));
+                Trace.WriteLine($"Unhandled Exception in {nameof(Script)}.{nameof(VirtualMachine__RunFunctionHook)}!");
                 Trace.WriteLine(ex.ToString());
             }
             return num;
@@ -94,7 +94,7 @@ namespace Cirnix.JassNative.JassAPI
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(string.Format("Unhandled Exception in {0}.{1}!", nameof(Script), nameof(VirtualMachine__RunCodeHook)));
+                Trace.WriteLine($"Unhandled Exception in {nameof(Script)}.{nameof(VirtualMachine__RunCodeHook)}!");
                 Trace.WriteLine(ex.ToString());
             }
             return result;

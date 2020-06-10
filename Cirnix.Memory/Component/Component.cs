@@ -51,14 +51,14 @@ namespace Cirnix.Memory
             Spectator = 2,
             All = 3
         }
-        public enum GameState : byte
+        public enum MusicState : byte
         {
             None = 0,
             Offline = 1,
             BattleNet = 2,
-            StartedGame = 3,
-            InGame = 4,
-            Unknown = 5
+            InGameDefault = 3,
+            InGameCustom = 4,
+            Stopped = 5
         }
         public enum HackState : byte
         {

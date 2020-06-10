@@ -41,7 +41,6 @@
             this.Label_Title.Name = "Label_Title";
             this.Label_Title.Size = new System.Drawing.Size(140, 20);
             this.Label_Title.TabIndex = 9;
-            this.Label_Title.Text = "OpenCirnix 패치 노트";
             this.Label_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TB_History
@@ -75,7 +74,6 @@
             this.Padding = new System.Windows.Forms.Padding(10, 30, 10, 10);
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
-            this.Text = "OpenCirnix 패치 노트";
             this.Load += new System.EventHandler(this.HistoryForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
