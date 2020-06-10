@@ -88,7 +88,7 @@ namespace Cirnix.Global
                 if (this[i].nameEN == name
                  || this[i].nameKR == name)
                     return $"{DocumentPath}\\CustomMapData{this[i].path}";
-            return null;
+            return $"{DocumentPath}\\CustomMapData\\Unknown";
         }
 
         public bool RemovePath(string name)

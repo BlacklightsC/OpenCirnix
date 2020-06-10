@@ -40,6 +40,9 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirnix.ServerStatus">
+      <HintPath>..\Cirnix.Global\Resources\Cirnix.ServerStatus.dll</HintPath>
+    </Reference>
     <Reference Include="ModernFolderBrowserDialog">
       <HintPath>Resources\ModernFolderBrowserDialog.dll</HintPath>
     </Reference>
@@ -96,6 +99,30 @@
     <Compile Include="SelectProcess.Designer.cs">
       <DependentUpon>SelectProcess.cs</DependentUpon>
     </Compile>
+    <Compile Include="ServerStatus\RoomListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerStatus\RoomListForm.Designer.cs">
+      <DependentUpon>RoomListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatus\RoomListSearchPlayerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerStatus\RoomListSearchPlayerDialog.Designer.cs">
+      <DependentUpon>RoomListSearchPlayerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatus\RoomListStartLogDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerStatus\RoomListStartLogDialog.Designer.cs">
+      <DependentUpon>RoomListStartLogDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatus\RoomListStatistics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerStatus\RoomListStatistics.Designer.cs">
+      <DependentUpon>RoomListStatistics.cs</DependentUpon>
+    </Compile>
     <Compile Include="TrayIcon.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +170,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SelectProcess.resx">
       <DependentUpon>SelectProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerStatus\RoomListForm.resx">
+      <DependentUpon>RoomListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerStatus\RoomListSearchPlayerDialog.resx">
+      <DependentUpon>RoomListSearchPlayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerStatus\RoomListStartLogDialog.resx">
+      <DependentUpon>RoomListStartLogDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerStatus\RoomListStatistics.resx">
+      <DependentUpon>RoomListStatistics.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrayIcon.resx">
       <DependentUpon>TrayIcon.cs</DependentUpon>

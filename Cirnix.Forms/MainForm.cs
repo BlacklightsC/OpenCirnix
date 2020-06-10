@@ -14,6 +14,7 @@ namespace Cirnix.Forms
         internal Action TrayCheck;
         internal Action optionForm;
         internal Action infoForm;
+        internal Action roomListForm;
         internal Action additonalToolForm;
         internal Action selectProcess;
         private bool isUpdating;
@@ -43,7 +44,7 @@ namespace Cirnix.Forms
 
         private void BTN_RoomList_Click(object sender, EventArgs e)
         {
-            MetroDialog.OK("지원하지 않음", "해당 기능은 해당 버전 프로그램에서는 지원하지 않습니다.");
+            roomListForm();
         }
 
         private void BTN_AdditionalTool_Click(object sender, EventArgs e)

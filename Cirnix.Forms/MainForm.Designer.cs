@@ -111,7 +111,6 @@
             // 
             // BTN_RoomList
             // 
-            this.BTN_RoomList.Enabled = false;
             this.BTN_RoomList.Font = new System.Drawing.Font("맑은 고딕", 8F, System.Drawing.FontStyle.Bold);
             this.BTN_RoomList.Location = new System.Drawing.Point(42, 161);
             this.BTN_RoomList.Margin = new System.Windows.Forms.Padding(0);
