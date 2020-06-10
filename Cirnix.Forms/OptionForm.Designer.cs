@@ -30,7 +30,6 @@ namespace Cirnix.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionForm));
             this.MainTabControl = new MetroFramework.Controls.MetroTabControl();
             this.War3SettingTab = new MetroFramework.Controls.MetroTabPage();
             this.GB_MixFile = new System.Windows.Forms.GroupBox();
@@ -257,7 +256,7 @@ namespace Cirnix.Forms
             this.MainTabControl.Controls.Add(this.metroTabPage2);
             this.MainTabControl.Location = new System.Drawing.Point(10, 30);
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 3;
+            this.MainTabControl.SelectedIndex = 4;
             this.MainTabControl.Size = new System.Drawing.Size(640, 275);
             this.MainTabControl.TabIndex = 6;
             this.MainTabControl.UseSelectable = true;
@@ -1477,9 +1476,9 @@ namespace Cirnix.Forms
             this.MacroTab.HorizontalScrollbarBarColor = true;
             this.MacroTab.HorizontalScrollbarHighlightOnWheel = false;
             this.MacroTab.HorizontalScrollbarSize = 10;
-            this.MacroTab.Location = new System.Drawing.Point(4, 38);
+            this.MacroTab.Location = new System.Drawing.Point(4, 36);
             this.MacroTab.Name = "MacroTab";
-            this.MacroTab.Size = new System.Drawing.Size(632, 233);
+            this.MacroTab.Size = new System.Drawing.Size(632, 235);
             this.MacroTab.TabIndex = 1;
             this.MacroTab.Text = "매크로";
             this.MacroTab.VerticalScrollbarBarColor = true;
@@ -2555,9 +2554,9 @@ namespace Cirnix.Forms
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage2.HorizontalScrollbarSize = 10;
-            this.metroTabPage2.Location = new System.Drawing.Point(4, 36);
+            this.metroTabPage2.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Size = new System.Drawing.Size(632, 235);
+            this.metroTabPage2.Size = new System.Drawing.Size(632, 233);
             this.metroTabPage2.TabIndex = 4;
             this.metroTabPage2.Text = "도움말";
             this.metroTabPage2.VerticalScrollbarBarColor = true;
@@ -2717,7 +2716,8 @@ namespace Cirnix.Forms
             this.TB_Help.ReadOnly = true;
             this.TB_Help.Size = new System.Drawing.Size(530, 232);
             this.TB_Help.TabIndex = 3;
-            this.TB_Help.Text = resources.GetString("TB_Help.Text");
+            this.TB_Help.Text = " - 개발 기간: 2017-07-16 ~ ...\r\n\r\n해당 프로그램은 Cirnix의 오픈소스 프로젝트인 OpenCirnix입니다.\r\nhttps:/" +
+    "/github.com/BlacklightsC/OpenCirnix";
             // 
             // Toggle_CommandHide
             // 
