@@ -31,7 +31,7 @@ namespace Cirnix.Forms
             Shown += UpdateForm_Shown;
             this.name = name;
             this.URL = URL;
-            Text = name + "자동 업데이트 도구";
+            Text = $"{name} 자동 업데이트 도구";
         }
 
         private void UpdateForm_Shown(object sender, EventArgs e)
@@ -67,13 +67,10 @@ namespace Cirnix.Forms
         {
             progressBarUpdateState.Value = e.ProgressPercentage;
             LabelMsg.Text = string.Format("{0,-30}{1,-10}\n{2, -20}{3,-15}",
-                string.Format("내려받는 중...  {0}MB / {1}MB",
-                    Math.Round(e.BytesReceived / 1048576.0, 1),
-                    Math.Round(e.TotalBytesToReceive / 1048576.0, 1)
-                    ),
-                string.Format("진행률: {0}%", e.ProgressPercentage),
-                string.Format("전송 속도: {0}/s", TransmissionSpeed(e.BytesReceived)),
-                string.Format("남은 시간: {0}", RemainingTime(e.BytesReceived, e.TotalBytesToReceive))
+                $"내려받는 중...  {Math.Round(e.BytesReceived / 1048576.0, 1)}MB / {Math.Round(e.TotalBytesToReceive / 1048576.0, 1)}MB",
+                $"진행률: {e.ProgressPercentage}%",
+                $"전송 속도: {TransmissionSpeed(e.BytesReceived)}/s",
+                $"남은 시간: {RemainingTime(e.BytesReceived, e.TotalBytesToReceive)}"
                 );
             isDownload = true;
         }
@@ -87,9 +84,9 @@ namespace Cirnix.Forms
         {
             if (sw.ElapsedMilliseconds <= 0) return string.Empty;
             double speed = received / (sw.ElapsedMilliseconds / 1000);
-            if (speed >= 1000000) return string.Format("{0}MB", Math.Round(speed / 1048576.0, 1));
-            else if (speed >= 1000) return string.Format("{0}KB", Math.Round(speed / 1024.0, 1));
-            else return string.Format("{0}bytes", Math.Round(speed));
+            if (speed >= 1000000) return $"{Math.Round(speed / 1048576.0, 1)}MB";
+            else if (speed >= 1000) return $"{Math.Round(speed / 1024.0, 1)}KB";
+            else return $"{Math.Round(speed)}bytes";
         }
         private string RemainingTime(long received, long totalReceived)
         {

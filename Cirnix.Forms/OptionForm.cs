@@ -39,9 +39,10 @@ namespace Cirnix.Forms
             InitializeComponent();
             IsUpdating = true;
             Icon = Global.Properties.Resources.CirnixIcon;
-            Title.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
-            Title.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
-            Title.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
+            Label_Title.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
+            Label_Title.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
+            Label_Title.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
+            Label_Title.Text = Text = $"{Global.Theme.Title} 설정 및 도움말";
             Toggle_CommandHide.Checked = Settings.IsCommandHide;
             #region [    Warcraft Tab Initialize    ]
             Num_GameDelay.Value = Settings.GameDelay;
@@ -293,7 +294,7 @@ namespace Cirnix.Forms
         private bool IsMixFileInstalled {
             get {
                 if (string.IsNullOrEmpty(Settings.InstallPath)) return false;
-                return File.Exists(string.Format("{0}\\Cirnix.mix", Settings.InstallPath));
+                return File.Exists("{Settings.InstallPath}\\Cirnix.mix");
             }
             set {
                 if (string.IsNullOrEmpty(Settings.InstallPath))
@@ -301,7 +302,7 @@ namespace Cirnix.Forms
                     MetroDialog.OK("경로 오류", "경로가 비어있습니다.\n경로를 입력하세요.");
                     return;
                 }
-                string path = string.Format("{0}\\Cirnix", Settings.InstallPath);
+                string path = $"{Settings.InstallPath}\\Cirnix";
                 if (value)
                 {
                     if (!File.Exists(path + ".mix"))
@@ -493,7 +494,7 @@ namespace Cirnix.Forms
                 return;
             }
             string name = RPGListBox.SelectedItem.ToString();
-            if (!MetroDialog.YesNo("제거 여부 확인", string.Format("리스트에서만 제거됩니다.\n정말 {0} 제거하시겠습니까?", IsKoreanBlock(name, "을", "를")))) return;
+            if (!MetroDialog.YesNo("제거 여부 확인", $"리스트에서만 제거됩니다.\n정말 {IsKoreanBlock(name, "을", "를")} 제거하시겠습니까?")) return;
             saveFilePath.RemovePath(name);
             ListUpdate(0);
             BTN_Refresh_Click(sender, e);

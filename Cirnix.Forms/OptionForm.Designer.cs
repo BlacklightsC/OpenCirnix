@@ -209,7 +209,7 @@ namespace Cirnix.Forms
             this.RB_Help1 = new System.Windows.Forms.RadioButton();
             this.TB_Help = new System.Windows.Forms.TextBox();
             this.Toggle_CommandHide = new MetroFramework.Controls.MetroToggle();
-            this.Title = new System.Windows.Forms.Label();
+            this.Label_Title = new System.Windows.Forms.Label();
             this.CommandHideText = new System.Windows.Forms.Label();
             this.MainTabControl.SuspendLayout();
             this.War3SettingTab.SuspendLayout();
@@ -2522,7 +2522,6 @@ namespace Cirnix.Forms
             "rg",
             "set",
             "lc",
-            "tlc",
             "cmd",
             "cam",
             "camx",
@@ -2733,15 +2732,14 @@ namespace Cirnix.Forms
             // 
             // Title
             // 
-            this.Title.BackColor = System.Drawing.Color.Transparent;
-            this.Title.Font = new System.Drawing.Font("맑은 고딕", 9F);
-            this.Title.Location = new System.Drawing.Point(255, 10);
-            this.Title.Margin = new System.Windows.Forms.Padding(260, 0, 260, 0);
-            this.Title.Name = "Title";
-            this.Title.Size = new System.Drawing.Size(160, 20);
-            this.Title.TabIndex = 6;
-            this.Title.Text = "치르닉스 설정 및 도움말";
-            this.Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_Title.BackColor = System.Drawing.Color.Transparent;
+            this.Label_Title.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.Label_Title.Location = new System.Drawing.Point(255, 10);
+            this.Label_Title.Margin = new System.Windows.Forms.Padding(260, 0, 260, 0);
+            this.Label_Title.Name = "Title";
+            this.Label_Title.Size = new System.Drawing.Size(160, 20);
+            this.Label_Title.TabIndex = 6;
+            this.Label_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CommandHideText
             // 
@@ -2760,7 +2758,7 @@ namespace Cirnix.Forms
             this.ClientSize = new System.Drawing.Size(660, 315);
             this.Controls.Add(this.CommandHideText);
             this.Controls.Add(this.Toggle_CommandHide);
-            this.Controls.Add(this.Title);
+            this.Controls.Add(this.Label_Title);
             this.Controls.Add(this.MainTabControl);
             this.DisplayHeader = false;
             this.KeyPreview = true;
@@ -2769,7 +2767,6 @@ namespace Cirnix.Forms
             this.Padding = new System.Windows.Forms.Padding(10, 30, 10, 10);
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
-            this.Text = "치르닉스 설정 및 도움말";
             this.Activated += new System.EventHandler(this.OptionForm_Activated);
             this.MainTabControl.ResumeLayout(false);
             this.War3SettingTab.ResumeLayout(false);
@@ -2846,7 +2843,7 @@ namespace Cirnix.Forms
         private MetroFramework.Controls.MetroButton Ebutton;
         private GroupBox GB_KeyReMap;
         private MetroFramework.Controls.MetroComboBox Combo_ScreenShotExtension;
-        private Label Title;
+        private Label Label_Title;
         private MetroFramework.Controls.MetroToggle Toggle_War3AutoKil;
         private MetroFramework.Controls.MetroToggle Toggle_HpCommandAuto;
         private MetroFramework.Controls.MetroToggle Toggle_CommandHide;

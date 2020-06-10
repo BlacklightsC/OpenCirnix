@@ -107,7 +107,7 @@ namespace Cirnix.Worker
         }
         private void Save()
         {
-            Settings.AutoMouse = string.Format("{0}∫{1}∫{2}∫{3}∫{4}", _interval, (int)_LeftStartKey, (int)_RightStartKey, (int)_EndKey, _Enabled);            
+            Settings.AutoMouse = $"{_interval}∫{(int)_LeftStartKey}∫{(int)_RightStartKey}∫{(int)_EndKey}∫{_Enabled}";            
         }
         private void Read()
         {

@@ -33,7 +33,7 @@ namespace Cirnix.Memory
             get {
                 if (GameDllOffset != IntPtr.Zero)
                 {
-                    byte[] pattern = new byte[] { 0 };
+                    byte[] pattern = { 0 };
                     byte[] buffer = Bring(GameDllOffset + 0xAAF3C2, 1);
                     if (CompareArrays(buffer, pattern, 1))
                         return true;

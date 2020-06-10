@@ -48,7 +48,6 @@
             this.Label_Title.Name = "Label_Title";
             this.Label_Title.Size = new System.Drawing.Size(140, 20);
             this.Label_Title.TabIndex = 9;
-            this.Label_Title.Text = "OpenCirnix 부가 기능";
             this.Label_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // BTN_CheatMapCheck

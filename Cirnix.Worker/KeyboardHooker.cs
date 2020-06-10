@@ -40,28 +40,20 @@ namespace Cirnix.Worker
                         if (!isChatBoxOpen)
                         {
                             var hotkey = hotkeyList.Find(item => (int)item.vk == vkCode);
-                            if (hotkey != null)
+                            if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
                             {
-                                Component.GameState state = States.CurrentGameState;
-                                if (!(hotkey.onlyInGame
-                                 && state != Component.GameState.StartedGame
-                                 && state != Component.GameState.InGame))
-                                {
-                                    hotkey.function(hotkey.fk);
-                                    if (!hotkey.recall)
-                                        return (IntPtr)1;
-                                }
+                                hotkey.function(hotkey.fk);
+                                if (!hotkey.recall)
+                                    return (IntPtr)1;
                             }
                         }
                         else if (Global.Settings.IsCommandHide)
                         {
                             try
                             {
-                                Component.GameState state = States.CurrentGameState;
-                                if ((state == Component.GameState.StartedGame
-                                  || state == Component.GameState.InGame)
-                                  && vkCode == (int)System.Windows.Forms.Keys.Enter
-                                  && Message.GetMessage()[0] == '!')
+                                if (States.IsInGame
+                                 && vkCode == 0xD
+                                 && Message.GetMessage()[0] == '!')
                                 {
                                     System.Windows.Forms.SendKeys.Send("{ESC}");
                                     return (IntPtr)1;

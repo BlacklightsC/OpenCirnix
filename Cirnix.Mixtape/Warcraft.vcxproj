@@ -54,7 +54,7 @@
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.mix</TargetExt>
     <TargetName>Cirnix</TargetName>
-    <OutDir>..\Universials\Resources\</OutDir>
+    <OutDir>..\Cirnix.Global\Resources\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

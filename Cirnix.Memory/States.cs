@@ -32,38 +32,31 @@ namespace Cirnix.Memory
             }
         }
 
-        public static GameState CurrentGameState {
+        public static MusicState CurrentMusicState {
             get {
                 if (GameDllOffset != IntPtr.Zero)
                 {
                     int A = BitConverter.ToInt32(Bring(GameDllOffset + 0xD32318, 4), 0);
                     int B = BitConverter.ToInt32(Bring(GameDllOffset + 0xD3231C, 4), 0);
-                    if (A == 2 && B == 2) return GameState.Offline;
-                    if (A == 4 && B == 4) return GameState.StartedGame;
-                    if (A == 1 && B == 1) return GameState.InGame;
-                    if (A == 16 && B == 10) return GameState.BattleNet;
-                    if (A == 0 && B == 0)
-                    {
-                        if (Global.Globals.ExtendForce)
-                            return GameState.InGame;
-                        else
-                            return GameState.Unknown;
-                    }
+                    if (A == 2 && B == 2) return MusicState.Offline;
+                    if (A == 16 && B == 10) return MusicState.BattleNet;
+                    if (A == 4 && B == 4) return MusicState.InGameDefault;
+                    if (A == 1 && B == 1) return MusicState.InGameCustom;
+                    if (A == 0 && B == 0) return MusicState.Stopped;
                 }
-                return GameState.None;
+                return MusicState.None;
             }
         }
 
-        public static int PlayerNumber {
+        public static bool IsInGame {
             get {
-                return BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern, 0x7FFFFFFF, 4) + 0x33C, 4), 0);
+                MusicState state = CurrentMusicState;
+                return state == MusicState.InGameDefault || state == MusicState.InGameCustom || state == MusicState.Stopped;
             }
         }
 
-        public static bool IsHostPlayer {
-            get {
-                return BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern, 0x7FFFFFFF, 4) + 0x210, 4), 0) == 2;
-            }
-        }
+        public static int PlayerNumber => BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern, 0x7FFFFFFF, 4) + 0x33C, 4), 0);
+
+        public static bool IsHostPlayer => BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern, 0x7FFFFFFF, 4) + 0x210, 4), 0) == 2;
     }
 }

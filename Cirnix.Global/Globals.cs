@@ -9,9 +9,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
-
-
-
 namespace Cirnix.Global
 {
     public static class Globals
@@ -157,9 +154,9 @@ namespace Cirnix.Global
                 case 0:
                     return saveFilePath.GetFullPath(Category[0]);
                 case 1:
-                    return string.Format("{0}\\{1}", saveFilePath.GetFullPath(Category[0]), Category[1]);
+                    return $"{saveFilePath.GetFullPath(Category[0])}\\{Category[1]}";
                 case 2:
-                    return string.Format("{0}\\{1}\\{2}", saveFilePath.GetFullPath(Category[0]), Category[1], Category[2]);
+                    return $"{saveFilePath.GetFullPath(Category[0])}\\{Category[1]}\\{Category[2]}";
                 default:
                     throw new Exception("Unspecified Value.");
             }
@@ -395,9 +392,9 @@ namespace Cirnix.Global
                 reversed = true;
                 Size *= -1;
             }
-            if (Size >= 1000000) result = string.Format("{0} MB", Math.Round(Size / 1048576.0, 1));
-            else if (Size >= 1000) result = string.Format("{0} KB", Math.Round(Size / 1024.0, 1));
-            else result = string.Format("{0} bytes", Math.Round(Size));
+            if (Size >= 1000000) result = $"{Math.Round(Size / 1048576.0, 1)} MB";
+            else if (Size >= 1000) result = $"{Math.Round(Size / 1024.0, 1)} KB";
+            else result = $"{Math.Round(Size)} bytes";
 
             if (reversed) result = '-' + result;
 
@@ -459,11 +456,11 @@ namespace Cirnix.Global
         /// <returns></returns>
         public static string IsKoreanBlock(string name, string firstValue, string secondValue, bool isNameAdd = true)
         {
-            if (name.Length <= 0) return string.Format("{0}{1}", isNameAdd ? "''" : string.Empty, firstValue);
+            if (name.Length <= 0) return $"{(isNameAdd ? "''" : string.Empty)}{firstValue}";
             char lastName = name[name.Length - 1];
-            if (lastName < 0xAC00 || lastName > 0xD7A3) return string.Format("{0}({1}){2}", isNameAdd ? string.Format("'{0}'", name) : string.Empty, firstValue, secondValue);
+            if (lastName < 0xAC00 || lastName > 0xD7A3) return $"{(isNameAdd ? $"'{name}'" : string.Empty)}({firstValue}){secondValue}";
             string selectedValue = (lastName - 0xAC00) % 28 > 0 ? firstValue : secondValue;
-            return string.Format("{0}{1}", isNameAdd ? string.Format("'{0}'", name) : string.Empty, selectedValue);
+            return $"{(isNameAdd ? $"'{name}'" : string.Empty)}{selectedValue}";
         }
 
         public static bool IsCheatMap(string path)
