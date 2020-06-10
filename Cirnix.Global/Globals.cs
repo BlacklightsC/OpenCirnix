@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
+
+
 namespace Cirnix.Global
 {
     public static class Globals
@@ -40,6 +42,7 @@ namespace Cirnix.Global
         public static bool isUpdated { get; set; }
         public static CommandTag UserState;
         public static Action ProgramShutDown;
+        public static Func<string, int, bool, bool, bool> WarcraftInit; 
         public static Action<int> ListUpdate;
         public static IntPtr GlobalHandle = IntPtr.Zero;
         public static bool ExtendForce = false;

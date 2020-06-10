@@ -83,6 +83,7 @@ namespace Cirnix.Worker
             commandList.Register("rs", "ㄱㄴ", SearchRoomListRoom);
             commandList.Register("ms", "ㅡㄴ", SearchRoomListMap);
             commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
+            commandList.Register("rework", "리워크", Rework);
         }
     }
 
@@ -935,6 +936,26 @@ namespace Cirnix.Worker
             {
                 LoadCode();
             }
+        }
+
+        internal static void Rework()
+        {
+            Settings.InstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
+            string LastInstallPath = Settings.InstallPath;
+            string[] args = GetArguments(Warcraft3Info.ID);
+            Warcraft3Info.Process.Kill();
+            Delay(2000);
+            bool isDebug = false;
+            if (File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")))
+                isDebug = true;
+            int windowState = 1;
+            if (args.Length != 0)
+                switch(args[0].ToLower())
+                {
+                    case "-windows": windowState = 0; break;
+                    case "-nativefullscr": windowState = 2; break;
+                }
+            WarcraftInit(LastInstallPath, windowState, true, isDebug);
         }
     }
 }

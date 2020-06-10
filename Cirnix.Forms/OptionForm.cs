@@ -1679,6 +1679,12 @@ namespace Cirnix.Forms
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "프로그램에 사전에 등록된 구문을 이용하여, 해당 맵에 치트셋이 삽입되어 있는지 확인합니다.\r\n현재 지원하는 치트셋은 '갯힝', '소울상디' 치트셋이며, 제보해주시는대로 추가 지원도 고려하고 있습니다.";
                     break;
+                case "rework":
+                    Label_CommandTitle.Text = "리워크";
+                    Label_CommandKR.Text = "리워크";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "워크래프트의 리워크 기능입니다.";
+                    break;
                 case "exit":
                     Label_CommandTitle.Text = "워크래프트 종료";
                     Label_CommandKR.Text = "종료";
@@ -1690,6 +1696,8 @@ namespace Cirnix.Forms
             }
             Label_CommandEN.Text = value;
         }
+
+        
 
         private void BTN_HotKeyDebug_Click(object sender, EventArgs e)
         {

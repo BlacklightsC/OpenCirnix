@@ -224,6 +224,7 @@
             this.ImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ImageBox.TabIndex = 14;
             this.ImageBox.TabStop = false;
+            this.ImageBox.Click += new System.EventHandler(this.ImageBox_Click);
             // 
             // BTN_AdditionalTool
             // 
