@@ -105,7 +105,8 @@ namespace Cirnix.Forms
         {
             if (IsUpdating) return;
             Settings.BetaUser = Toggle_BetaUser.Checked;
-            VersionUpdate();
+            if (string.IsNullOrWhiteSpace(infoURL)) LatestVersion.Text = "서버 없음";
+            else VersionUpdate();
         }
 
         private void CopyRight_Click(object sender, EventArgs e)
