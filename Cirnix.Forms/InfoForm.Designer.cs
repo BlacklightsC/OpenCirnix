@@ -50,6 +50,7 @@
             this.Picture.Size = new System.Drawing.Size(256, 256);
             this.Picture.TabIndex = 0;
             this.Picture.TabStop = false;
+            this.Picture.Click += new System.EventHandler(this.Picture_Click);
             // 
             // CopyRight
             // 

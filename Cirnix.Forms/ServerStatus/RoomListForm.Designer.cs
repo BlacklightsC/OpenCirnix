@@ -677,6 +677,7 @@
             this.Label_Loading.Text = "방 리스트를 가져오는 중입니다...";
             this.Label_Loading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Label_Loading.Visible = false;
+            this.Label_Loading.Click += new System.EventHandler(this.Label_Loading_Click);
             // 
             // BTN_ChangeType
             // 
@@ -863,6 +864,7 @@
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.Text = "M16 서버 - 방 리스트 뷰어";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RoomListForm_FormClosing);
+            this.Load += new System.EventHandler(this.RoomListForm_Load);
             this.Shown += new System.EventHandler(this.RoomListForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.MapImage)).EndInit();
             this.ResumeLayout(false);

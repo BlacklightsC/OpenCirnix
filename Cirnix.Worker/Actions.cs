@@ -7,9 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.Reflection;
-using System.Reflection.Emit;
-
 
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.Hotkey;
@@ -20,7 +17,6 @@ using static Cirnix.Memory.GameDll;
 using static Cirnix.Memory.Message;
 using static Cirnix.Memory.States;
 using static Cirnix.Worker.Actions;
-using static Cirnix.Global.NativeMethods;
 
 
 namespace Cirnix.Worker
@@ -92,15 +88,14 @@ namespace Cirnix.Worker
             commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
             commandList.Register("rework", "ㄱㄷ재가", Rework);
             commandList.Register("join", "ㅓㅐㅑㅜ", RoomJoin);
+            commandList.Register("create", "create", RoomCreate);
         }
     }
 
     internal static class Actions
     {
         internal static List<string> args = new List<string>();
-        internal static List<string> roomname2 = new List<string>();
         private static string name = string.Empty;
-        private static string roomname = string.Empty;
         private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false, ignoreDetect = false;
         private static int ZombieCount = 0, MemoryOptimizeElapsed = 0;
 
@@ -981,5 +976,18 @@ namespace Cirnix.Worker
             SendMsg(true, $"「{arg}」에 입장합니다.");
             Join.RoomJoin(arg.ToString().Trim());
         }
+
+        internal static void RoomCreate()
+        {
+            StringBuilder arg = new StringBuilder();
+
+            for (int i = 1; i < args.Count - 1; i++)
+            {
+                arg.Append((args[i]));
+                if (i + 1 != args.Count - 1) arg.Append(" ");
+            }
+            Join.RoomCreate(arg.ToString().Trim());
+        }
+
     }
 }

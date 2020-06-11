@@ -118,5 +118,10 @@ namespace Cirnix.Forms
         {
 
         }
+
+        private void Picture_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

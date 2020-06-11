@@ -141,7 +141,7 @@
             this.BTN_Analyzer.Name = "BTN_Analyzer";
             this.BTN_Analyzer.Size = new System.Drawing.Size(85, 23);
             this.BTN_Analyzer.TabIndex = 12;
-            this.BTN_Analyzer.Text = "War선택";
+            this.BTN_Analyzer.Text = "강제설정";
             this.BTN_Analyzer.UseVisualStyleBackColor = true;
             this.BTN_Analyzer.Click += new System.EventHandler(this.BTN_Analyzer_Click);
             // 

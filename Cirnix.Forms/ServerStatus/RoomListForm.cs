@@ -464,6 +464,16 @@ namespace Cirnix.Forms
             Join.RoomJoin(TB_Name.Text);
         }
 
+        private void RoomListForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label_Loading_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void BTN_SearchPlayer_Click(object sender, EventArgs e)
         {
             if (infoList.Count <= 0)

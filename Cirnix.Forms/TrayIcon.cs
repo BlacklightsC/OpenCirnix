@@ -44,6 +44,7 @@ namespace Cirnix.Forms
                 MainWorker.RunWorkers();
                 CLRHook.Injector.InstallHookLib();
                 WarcraftInit = CLRHook.Injector.Init;
+                commandList.Register("rl", "기", () => Invoke(new Action(InitRoomListForm)));
                 channel = new ChannelChatForm();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
                 InitMainForm();
@@ -92,7 +93,8 @@ namespace Cirnix.Forms
                 TrayCheck = TrayCheck,
                 selectProcess = SelectProcessForm
 
-            };
+        };
+            
             ListUpdate = main.InvokedListUpdate;
             main.Show();
             main.Activate();
