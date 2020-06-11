@@ -1,4 +1,5 @@
 ﻿using Cirnix.Global;
+using Cirnix.Memory;
 using Cirnix.ServerStatus;
 
 using CirnoLib.Format.BLPLib;
@@ -457,6 +458,12 @@ namespace Cirnix.Forms
                 BTN_MapLog.Text = "기록";
             }
         }
+
+        private void BTN_RoomJoin_Click(object sender, EventArgs e)
+        {
+            Join.RoomJoin(TB_Name.Text);
+        }
+
         private void BTN_SearchPlayer_Click(object sender, EventArgs e)
         {
             if (infoList.Count <= 0)

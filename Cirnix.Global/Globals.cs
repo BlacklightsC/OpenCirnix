@@ -10,7 +10,6 @@ using System.Threading;
 using System.Windows.Forms;
 
 
-
 namespace Cirnix.Global
 {
     public static class Globals
@@ -49,7 +48,7 @@ namespace Cirnix.Global
         private static readonly string[] CheatSetPhases = Properties.Resources.CheatSetPhrase.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
         public static void InitGlobal(bool IsUpdated)
-        {
+        {            
             Code = new string[24];
             hotkeyList = new HotkeyList();
             commandList = new CommandList();

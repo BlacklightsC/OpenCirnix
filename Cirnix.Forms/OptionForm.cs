@@ -1627,9 +1627,9 @@ namespace Cirnix.Forms
                     break;
                 case "tlc":
                     Label_CommandTitle.Text = "TWR세이브 코드 로드";
-                    Label_CommandKR.Text = "ㅅㅣㅊ";
+                    Label_CommandKR.Text = "싳";
                     Label_ParameterValue.Text = "(선택) 분류 이름";
-                    TB_CommandDescription.Text = "현재 지정된 세이브를 즉시 로드합니다.\r\nTWRPG 형식의 맵만 지원하며, 로드 직후 설정된 명령어 프리셋을 입력합니다.\r\n분류 이름을 입력할 경우, 해당 분류의 최신 세이브를 로드하며, 현재 로드 지정 대상도 즉시 변경합니다.";
+                    TB_CommandDescription.Text = "현재 지정된 세이브를 즉시 로드합니다.\r\nTWRPG맵만 지원하며, 로드 직후 설정된 명령어 프리셋을 입력합니다.\r\n분류 이름을 입력할 경우, 해당 분류의 최신 세이브를 로드하며, 현재 로드 지정 대상도 즉시 변경합니다.";
                     break;
                 case "cmd":
                     Label_CommandTitle.Text = "명령어 프리셋 로드";
@@ -1681,9 +1681,15 @@ namespace Cirnix.Forms
                     break;
                 case "rework":
                     Label_CommandTitle.Text = "리워크";
-                    Label_CommandKR.Text = "리워크";
+                    Label_CommandKR.Text = "ㄱㄷ재가";
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "워크래프트의 리워크 기능입니다.";
+                    break;
+                case "join":
+                    Label_CommandTitle.Text = "방 입장";
+                    Label_CommandKR.Text = "ㅓㅐㅑㅜ";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "워크래프트의 지정된 방으로 입장합니다.";
                     break;
                 case "exit":
                     Label_CommandTitle.Text = "워크래프트 종료";

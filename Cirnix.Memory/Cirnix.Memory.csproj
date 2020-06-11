@@ -50,6 +50,7 @@
     <Compile Include="ControlDelay.cs" />
     <Compile Include="CProcess.cs" />
     <Compile Include="GameDll.cs" />
+    <Compile Include="Join.cs" />
     <Compile Include="LoadedFiles.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Component\NativeMethods.cs" />
