@@ -1,4 +1,5 @@
 ﻿using Cirnix.Global;
+using Cirnix.KeyHook;
 using Cirnix.Worker;
 
 using Newtonsoft.Json.Linq;
@@ -8,7 +9,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
-using static Cirnix.Memory.Component;
 
 namespace Cirnix.Forms
 {
@@ -133,7 +133,7 @@ namespace Cirnix.Forms
                 Environment.Exit(0);
                 return;
             }
-            option.ChannelChatState = delegate (bool b) { channel.ChatTimer.Enabled = b; };
+            option.ChannelChatState = b => channel.ChatTimer.Enabled = b;
             option.Show();
             option.Activate();
         }

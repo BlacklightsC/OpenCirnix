@@ -200,6 +200,10 @@
       <Project>{ddb4a1b6-10b8-4838-b903-25c2a55458b7}</Project>
       <Name>Cirnix.CLRHook</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cirnix.KeyHook\Cirnix.KeyHook.csproj">
+      <Project>{14ea16eb-22ca-43e8-be95-397bc7aa67c7}</Project>
+      <Name>Cirnix.KeyHook</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cirnix.Worker\Cirnix.Worker.csproj">
       <Project>{2d803e40-f816-4508-897c-b8e906048782}</Project>
       <Name>Cirnix.Worker</Name>

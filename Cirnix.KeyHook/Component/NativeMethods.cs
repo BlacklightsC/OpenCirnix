@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Cirnix.Worker
+namespace Cirnix.KeyHook
 {
     internal static class NativeMethods
     {

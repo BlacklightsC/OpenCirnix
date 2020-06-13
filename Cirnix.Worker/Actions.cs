@@ -1,4 +1,5 @@
 ﻿using Cirnix.Global;
+using Cirnix.KeyHook;
 using Cirnix.Memory;
 using Cirnix.ServerStatus;
 using System;
@@ -97,7 +98,7 @@ namespace Cirnix.Worker
         internal static List<string> args = new List<string>();
         private static string name = string.Empty;
         private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false, ignoreDetect = false;
-        private static int ZombieCount = 0, MemoryOptimizeElapsed = 0;
+        private static int ZombieCount = 0;
 
         internal static string GetFullArgs(bool isLower = false)
         {
@@ -195,7 +196,7 @@ namespace Cirnix.Worker
         internal static void ReplayWatcher_Function(object sender, FileSystemEventArgs e)
         {
             if (Settings.IsOptimizeAfterEndGame && CProcess.TrimProcessMemory(TargetProcess))
-                MemoryOptimizeElapsed = 0;
+                MemoryOptimizeTimer.Restart();
             if (!Settings.IsAutoReplay)
             {
                 IsTime = IsSaved = false;
@@ -619,6 +620,8 @@ namespace Cirnix.Worker
             Warcraft3Info.Process.Kill();
             //ProgramShutDown();
         }
+
+        internal static Stopwatch MemoryOptimizeTimer = new Stopwatch();
         internal static bool ProcessCheck()
         {
             if (GameModule.WarcraftDetect() != WarcraftState.OK
@@ -666,7 +669,7 @@ namespace Cirnix.Worker
                                     break;
                                 }
                                 if (i != 4) continue;
-                                if (MessageBox.Show("워크래프트가 정상적으로 종료되지 않은 것 같습니다.\n강제로 종료하시겠습니까?", "강제 종료 알림", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                if (MetroDialog.YesNo("워크래프트가 정상적으로 종료되지 않은 것 같습니다.\n강제로 종료하시겠습니까?", "강제 종료 알림"))
                                 {
                                     try
                                     {
@@ -674,7 +677,7 @@ namespace Cirnix.Worker
                                     }
                                     catch
                                     {
-                                        MessageBox.Show("워크래프트를 강제로 종료할 수 없었습니다.\n이미 종료되었거나, 백신에 의해 차단된 것 같습니다.", "강제 종료 실패", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                                        MetroDialog.OK("워크래프트를 강제로 종료할 수 없었습니다.\n이미 종료되었거나, 백신에 의해 차단된 것 같습니다.", "강제 종료 실패");
                                     }
                                 }
                                 else ignoreDetect = true;
@@ -690,26 +693,27 @@ namespace Cirnix.Worker
                 else ZombieCount = 0;
             }
 
-            if (Settings.IsMemoryOptimize
-             && MemoryOptimizeElapsed++ >= Settings.MemoryOptimizeCoolDown * 6000)
+            if (Settings.IsMemoryOptimize)
             {
-                SendMsg(true, "워크래프트 3 자동 메모리 최적화를 시도합니다.");
-                if (CProcess.TrimProcessMemory(TargetProcess,true))
-                {
-                    MemoryOptimizeElapsed = 0;
-                    SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(CProcess.MemoryValue[2])} = {ConvertSize(CProcess.MemoryValue[1])}");
-                }
-                else
-                {
-                    MemoryOptimizeElapsed = Settings.MemoryOptimizeCoolDown / 2;
-                }
+                if (MemoryOptimizeTimer.IsRunning)
+                    if (MemoryOptimizeTimer.Elapsed >= new TimeSpan(0, Settings.MemoryOptimizeCoolDown, 0))
+                    {
+                        CProcess.TrimProcessMemory(TargetProcess, true);
+                        MemoryOptimizeTimer.Restart();
+                    }
+                else MemoryOptimizeTimer.Restart();
+            }
+            else if (MemoryOptimizeTimer.IsRunning)
+            {
+                MemoryOptimizeTimer.Stop();
             }
             StatusCheck();
             return false;
         }
         internal static void MemoryOptimize()
         {
-            MemoryOptimizeElapsed = 0;
+            if (Settings.IsMemoryOptimize)
+                MemoryOptimizeTimer.Restart();
             new System.Threading.Thread(() => {
                 SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
                 if (CProcess.TrimProcessMemory(TargetProcess, true))
@@ -737,9 +741,6 @@ namespace Cirnix.Worker
                 if (!Settings.IsAutoLoad) return;
                 Delay(3000);
                 LoadCodeSelect();
-                
-                
-                
             }
             else
             {

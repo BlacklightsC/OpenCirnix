@@ -59,7 +59,7 @@ namespace Cirnix.Worker
         public bool Register(int index)
         {
             if (hotkeyList.IsRegistered(this[index].Hotkey)) return false;
-            hotkeyList.Register(this[index].Hotkey, delegate(Keys vk) { SendMsg(false, this[index].ChatMessage); }, this[index].Hotkey, false, false);
+            hotkeyList.Register(this[index].Hotkey, vk => SendMsg(false, this[index].ChatMessage), this[index].Hotkey, false, false);
             this[index].IsRegisted = true;
             return true;
         }

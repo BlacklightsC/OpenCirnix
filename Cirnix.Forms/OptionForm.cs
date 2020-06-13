@@ -1,4 +1,5 @@
 ﻿using Cirnix.Global;
+using Cirnix.KeyHook;
 using Cirnix.Memory;
 
 using ModernFolderBrowserDialog;
@@ -1705,9 +1706,9 @@ namespace Cirnix.Forms
 
         private void BTN_HotKeyDebug_Click(object sender, EventArgs e)
         {
-            Worker.KeyboardHooker.HookEnd();
+            KeyboardHooker.HookEnd();
             Delay(1);
-            Worker.KeyboardHooker.HookStart();
+            KeyboardHooker.HookStart();
             MetroDialog.OK("후킹 재설정 완료", "단축키 후킹 상태를 재설정하였습니다.");
         }
 

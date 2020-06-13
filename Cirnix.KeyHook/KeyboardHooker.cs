@@ -4,9 +4,9 @@ using System.Diagnostics;
 using static Cirnix.Global.Globals;
 using static Cirnix.Memory.CProcess;
 using System.Runtime.InteropServices;
-using static Cirnix.Worker.NativeMethods;
+using static Cirnix.KeyHook.NativeMethods;
 
-namespace Cirnix.Worker
+namespace Cirnix.KeyHook
 {
     public static class KeyboardHooker
     {

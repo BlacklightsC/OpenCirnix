@@ -88,7 +88,7 @@ namespace Cirnix.Forms
                 stat.Add(new MapStat(item.mapname, IsMapStandard ? 1 : players));
             foreachContinue:;
             }
-            stat.Sort(delegate(MapStat A, MapStat B) 
+            stat.Sort((A, B) =>
             {
                 if (A.count > B.count) return -1;
                 else if (A.count < B.count) return 1;
@@ -120,7 +120,7 @@ namespace Cirnix.Forms
                         j++;
                     }
                 }
-                stat.Sort(delegate (MapStat A, MapStat B)
+                stat.Sort((A, B) =>
                 {
                     if (A.count > B.count) return -1;
                     else if (A.count < B.count) return 1;
