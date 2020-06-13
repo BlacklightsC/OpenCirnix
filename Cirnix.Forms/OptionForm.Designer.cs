@@ -256,7 +256,7 @@ namespace Cirnix.Forms
             this.MainTabControl.Controls.Add(this.metroTabPage2);
             this.MainTabControl.Location = new System.Drawing.Point(10, 30);
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 4;
+            this.MainTabControl.SelectedIndex = 0;
             this.MainTabControl.Size = new System.Drawing.Size(640, 275);
             this.MainTabControl.TabIndex = 6;
             this.MainTabControl.UseSelectable = true;
@@ -280,9 +280,9 @@ namespace Cirnix.Forms
             this.War3SettingTab.HorizontalScrollbarBarColor = true;
             this.War3SettingTab.HorizontalScrollbarHighlightOnWheel = false;
             this.War3SettingTab.HorizontalScrollbarSize = 10;
-            this.War3SettingTab.Location = new System.Drawing.Point(4, 36);
+            this.War3SettingTab.Location = new System.Drawing.Point(4, 38);
             this.War3SettingTab.Name = "War3SettingTab";
-            this.War3SettingTab.Size = new System.Drawing.Size(632, 235);
+            this.War3SettingTab.Size = new System.Drawing.Size(632, 233);
             this.War3SettingTab.TabIndex = 2;
             this.War3SettingTab.Text = "워크래프트";
             this.War3SettingTab.VerticalScrollbarBarColor = true;
@@ -502,7 +502,6 @@ namespace Cirnix.Forms
             this.Label_ChannelChatViewer.TabIndex = 69;
             this.Label_ChannelChatViewer.Text = "방 리스트에서 채널 채팅 표시";
             this.Label_ChannelChatViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Label_ChannelChatViewer.Click += new System.EventHandler(this.Label_ChannelChatViewer_Click);
             // 
             // Toggle_ChannelChatViewer
             // 
@@ -2317,9 +2316,9 @@ namespace Cirnix.Forms
             this.metroTabPage1.HorizontalScrollbarBarColor = true;
             this.metroTabPage1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.HorizontalScrollbarSize = 10;
-            this.metroTabPage1.Location = new System.Drawing.Point(4, 38);
+            this.metroTabPage1.Location = new System.Drawing.Point(4, 36);
             this.metroTabPage1.Name = "metroTabPage1";
-            this.metroTabPage1.Size = new System.Drawing.Size(632, 233);
+            this.metroTabPage1.Size = new System.Drawing.Size(632, 235);
             this.metroTabPage1.TabIndex = 3;
             this.metroTabPage1.Text = "명령어";
             this.metroTabPage1.VerticalScrollbarBarColor = true;

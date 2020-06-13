@@ -294,7 +294,7 @@ namespace Cirnix.Forms
         private bool IsMixFileInstalled {
             get {
                 if (string.IsNullOrEmpty(Settings.InstallPath)) return false;
-                return File.Exists("{Settings.InstallPath}\\Cirnix.mix");
+                return File.Exists($"{Settings.InstallPath}\\Cirnix.mix");
             }
             set {
                 if (string.IsNullOrEmpty(Settings.InstallPath))
@@ -1703,19 +1703,12 @@ namespace Cirnix.Forms
             Label_CommandEN.Text = value;
         }
 
-        
-
         private void BTN_HotKeyDebug_Click(object sender, EventArgs e)
         {
             Worker.KeyboardHooker.HookEnd();
             Delay(1);
             Worker.KeyboardHooker.HookStart();
             MetroDialog.OK("후킹 재설정 완료", "단축키 후킹 상태를 재설정하였습니다.");
-        }
-
-        private void Label_ChannelChatViewer_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void Toggle_AutoFrequency_CheckedChanged(object sender, EventArgs e)
