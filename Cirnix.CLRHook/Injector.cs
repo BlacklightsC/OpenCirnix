@@ -2,12 +2,15 @@
 using System.IO;
 using System.Diagnostics;
 using Cirnix.CLRHook.Properties;
+using System.Security.Cryptography;
+using System;
+using System.Linq;
 
 namespace Cirnix.CLRHook
 {
     public static class Injector
     {
-        private static void ForceInstall (string Path, byte[] bytes)
+        private static void ForceInstall(string Path, byte[] bytes)
         {
             try
             {
@@ -17,18 +20,27 @@ namespace Cirnix.CLRHook
             catch { }
         }
 
-        private static void CheckDirectory (string Path)
+        private static void CheckDirectory(string Path)
         {
             if (!Directory.Exists(Path))
                 Directory.CreateDirectory(Path);
         }
 
-        private static bool CheckInstall (string Path, byte[] bytes)
+        private static bool CheckInstall(string Path, byte[] bytes)
         {
             try
             {
                 if (!File.Exists(Path))
                     File.WriteAllBytes(Path, bytes);
+                else
+                    using (var MD5 = new MD5CryptoServiceProvider())
+                    {
+                        byte[] source = MD5.ComputeHash(bytes);
+                        byte[] dest = MD5.ComputeHash(File.ReadAllBytes(Path));
+                        if (!source.SequenceEqual(dest))
+                            File.WriteAllBytes(Path, bytes);
+                        else return false;
+                    }
                 return true;
             }
             catch
@@ -37,7 +49,7 @@ namespace Cirnix.CLRHook
             }
         }
 
-        private static bool CheckDelete (string Path)
+        private static bool CheckDelete(string Path)
         {
             try
             {
@@ -58,23 +70,34 @@ namespace Cirnix.CLRHook
             CheckInstall(Path.Combine(CirnixPath, "EasyLoad32.dll"), Resources.EasyLoad32);
         }
 
-        public static bool Init(string path, int windowState = 0, bool isInstallM16 = false, bool isDebug = false)
+        public static bool Init(string path, int windowState = 0, bool isInstallM16 = true, bool isDebug = false)
         {
             string EXEPath = Path.Combine(path, "Warcraft III.exe");
             if (!(File.Exists(EXEPath) || File.Exists(EXEPath = Path.Combine(path, "war3.exe"))) 
              || FileVersionInfo.GetVersionInfo(EXEPath).FileVersion != "1.28.5.7680")
                 return false;
-            //CheckDelete(Path.Combine(path, "m16l.mix"));
-            //if (isInstallM16) ForceInstall(Path.Combine(path, "M16.mix"), Resources.M16);
+            CheckDelete(Path.Combine(path, "m16l.mix"));
+            if (isInstallM16)
+            {
+                string M16Mix = Path.Combine(path, "M16.mix");
+                string M16Mixnew = $"{M16Mix}_new";
+                if (File.Exists(M16Mixnew))
+                {
+                    CheckDelete(M16Mix);
+                    File.Move(M16Mixnew, M16Mix);
+                }
+                else
+                    CheckInstall(M16Mix, Resources.M16);
+            }
             string JNServicePath = Path.Combine(Global.Globals.ResourcePath, "JNService");
             string RuntimePath = Path.Combine(JNServicePath, "Cirnix.JassNative.Runtime.dll");
             string JNServicePluginPath = Path.Combine(JNServicePath, "Plugins");
             CheckDirectory(JNServicePath);
-            ForceInstall(RuntimePath, Resources.Cirnix_JassNative_Runtime);
-            ForceInstall(Path.Combine(JNServicePath, "Cirnix.JassNative.Plugin.dll"), Resources.Cirnix_JassNative_Plugin);
+            CheckInstall(RuntimePath, Resources.Cirnix_JassNative_Runtime);
+            CheckInstall(Path.Combine(JNServicePath, "Cirnix.JassNative.Plugin.dll"), Resources.Cirnix_JassNative_Plugin);
             CheckDirectory(JNServicePluginPath);
-            ForceInstall(Path.Combine(JNServicePluginPath, "Cirnix.JassNative.dll"), Resources.Cirnix_JassNative);
-            ForceInstall(Path.Combine(JNServicePluginPath, "Cirnix.JassNative.Common.dll"), Resources.Cirnix_JassNative_Common);
+            CheckInstall(Path.Combine(JNServicePluginPath, "Cirnix.JassNative.dll"), Resources.Cirnix_JassNative);
+            CheckInstall(Path.Combine(JNServicePluginPath, "Cirnix.JassNative.Common.dll"), Resources.Cirnix_JassNative_Common);
             //Global.LogManager.Write($"InEXEPath = {EXEPath}\n"
             //                      + $"InCommandLine = {((windowState == 0) ? "-window" : ((windowState == 1) ? "-nativefullscr" : ""))}\n"
             //                      + $"InProcessCreationFlags = 0\n"
