@@ -6,3 +6,5 @@
 **요구사항**
 - .NET Framework 4.6.2 이상의 버전
 - [CirnoLib](https://github.com/BlacklightsC/CirnoLib.git)
+
+[카카오톡 오픈채팅방](https://open.kakao.com/o/g2uauxgc)
