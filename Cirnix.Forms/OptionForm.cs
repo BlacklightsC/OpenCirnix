@@ -1686,15 +1686,15 @@ namespace Cirnix.Forms
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "워크래프트의 리워크 기능입니다.";
                     break;
-                case "join":
+                case "j":
                     Label_CommandTitle.Text = "방 입장";
-                    Label_CommandKR.Text = "ㅓㅐㅑㅜ";
+                    Label_CommandKR.Text = "ㅓ";
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "워크래프트의 지정된 방으로 입장합니다.";
                     break;
-                case "create":
+                case "c":
                     Label_CommandTitle.Text = "방 생성";
-                    Label_CommandKR.Text = "ㅊㄱㄷㅁㅅㄷ";
+                    Label_CommandKR.Text = "ㅊ";
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "워크래프트의 방을 생성합니다.\r\n 생성할때 이전에 만들었던 방의 맵으로 생성됩니다.";
                     break;

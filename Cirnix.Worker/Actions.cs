@@ -88,8 +88,8 @@ namespace Cirnix.Worker
             commandList.Register("ms", "ㅡㄴ", SearchRoomListMap);
             commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
             commandList.Register("rework", "ㄱㄷ재가", Rework);
-            commandList.Register("join", "ㅓㅐㅑㅜ", RoomJoin);
-            commandList.Register("create", "ㅊㄱㄷㅁㅅㄷ", RoomCreate);
+            commandList.Register("j", "ㅓ", RoomJoin);
+            commandList.Register("c", "ㅊ", RoomCreate);
             commandList.Register("dbg", "윻", KeyDebug);
         }
     }

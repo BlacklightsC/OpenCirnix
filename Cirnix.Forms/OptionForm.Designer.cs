@@ -2530,8 +2530,8 @@ namespace Cirnix.Forms
             "mo",
             "chk",
             "rework",
-            "join",
-            "create",
+            "j",
+            "c",
             "exit"});
             this.CommandListBox.Location = new System.Drawing.Point(6, 18);
             this.CommandListBox.Name = "CommandListBox";
