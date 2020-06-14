@@ -1692,6 +1692,12 @@ namespace Cirnix.Forms
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "워크래프트의 지정된 방으로 입장합니다.";
                     break;
+                case "create":
+                    Label_CommandTitle.Text = "방 생성";
+                    Label_CommandKR.Text = "ㅊㄱㄷㅁㅅㄷ";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "워크래프트의 방을 생성합니다.\r\n 생성할때 이전에 만들었던 방의 맵으로 생성됩니다.";
+                    break;
                 case "exit":
                     Label_CommandTitle.Text = "워크래프트 종료";
                     Label_CommandKR.Text = "종료";

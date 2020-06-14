@@ -89,7 +89,7 @@ namespace Cirnix.Worker
             commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
             commandList.Register("rework", "ㄱㄷ재가", Rework);
             commandList.Register("join", "ㅓㅐㅑㅜ", RoomJoin);
-            commandList.Register("create", "create", RoomCreate);
+            commandList.Register("create", "ㅊㄱㄷㅁㅅㄷ", RoomCreate);
             commandList.Register("dbg", "윻", KeyDebug);
         }
     }
@@ -693,7 +693,6 @@ namespace Cirnix.Worker
                 }
                 else ZombieCount = 0;
             }
-
             if (Settings.IsMemoryOptimize)
             {
                 if (MemoryOptimizeTimer.IsRunning)
@@ -702,12 +701,13 @@ namespace Cirnix.Worker
                         CProcess.TrimProcessMemory(TargetProcess, true);
                         MemoryOptimizeTimer.Restart();
                     }
-                else MemoryOptimizeTimer.Restart();
+                    else MemoryOptimizeTimer.Start();
             }
             else if (MemoryOptimizeTimer.IsRunning)
             {
                 MemoryOptimizeTimer.Stop();
             }
+                    
             StatusCheck();
             return false;
         }
@@ -988,6 +988,7 @@ namespace Cirnix.Worker
                 arg.Append((args[i]));
                 if (i + 1 != args.Count - 1) arg.Append(" ");
             }
+            SendMsg(true, $"「{arg}」방을 생성합니다.");
             Join.RoomCreate(arg.ToString().Trim());
         }
 
