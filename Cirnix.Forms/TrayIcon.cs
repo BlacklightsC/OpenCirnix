@@ -149,13 +149,13 @@ namespace Cirnix.Forms
             info = new InfoForm
             {
                 historyForm = InitHistoryForm,
-                licenceForm = MITLicenceForm
+                licenceForm = LicenceForm
             };
             info.Show();
             info.Activate();
         }
 
-        private void MITLicenceForm()
+        private void LicenceForm()
         {
             if (!(licenceForm == null
                 || licenceForm.IsDisposed))
