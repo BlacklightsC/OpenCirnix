@@ -445,7 +445,7 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (delay < 0 || delay > 550) goto Error;
-            SendMsg(true, $"Delay 값: {(IsHostPlayer ? "<Host>" : string.Empty)}{Settings.GameDelay}ms → {args[1]}ms");
+            SendMsg(true, $"Delay 값: {(IsHostPlayer ? "<Host> " : string.Empty)}{Settings.GameDelay}ms → {args[1]}ms");
             Settings.GameDelay = delay;
             if (IsInGame) GameDelay = Settings.GameDelay;
             return;
