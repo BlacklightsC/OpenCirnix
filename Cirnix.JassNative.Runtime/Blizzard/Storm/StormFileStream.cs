@@ -13,9 +13,9 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
         {
             if (handle == IntPtr.Zero)
                 throw new ArgumentNullException(nameof(handle), $"{nameof(handle)} cannot be null/zero.");
-            this.Handle = handle;
+            Handle = handle;
 
-            this.Length = SFile.GetFileSizeLong(this.Handle);
+            Length = SFile.GetFileSizeLong(Handle);
         }
 
         public IntPtr Handle { get; }
@@ -32,7 +32,7 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
         {
             get { throw new NotSupportedException(); }
 
-            set { this.Seek(value, SeekOrigin.Begin); }
+            set { Seek(value, SeekOrigin.Begin); }
         }
 
         public override void Flush() { /* Do nothing? */ }
@@ -40,14 +40,14 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
         public override int Read(byte[] buffer, int offset, int count)
         {
             var pBuffer = Marshal.AllocHGlobal(count);
-            SFile.ReadFile(this.Handle, pBuffer, count, out int read);
+            SFile.ReadFile(Handle, pBuffer, count, out int read);
             Marshal.Copy(pBuffer, buffer, offset, count);
             return read;
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return SFile.SetFilePointerLong(this.Handle, offset, origin);
+            return SFile.SetFilePointerLong(Handle, offset, origin);
         }
 
         public override void SetLength(long value)
@@ -63,7 +63,7 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-                SFile.CloseFile(this.Handle);
+                SFile.CloseFile(Handle);
 
             base.Dispose(disposing);
         }

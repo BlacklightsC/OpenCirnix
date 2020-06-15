@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hdestructable;")]
-  [Serializable]
-  public struct JassDestructable
-  {
-    public readonly IntPtr Handle;
-
-    public JassDestructable(IntPtr handle)
+    [JassType("Hdestructable;")]
+    [Serializable]
+    public struct JassDestructable
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassDestructable(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

@@ -6,19 +6,19 @@ namespace Cirnix.JassNative.Runtime.Windows
     public static class Kernel32
     {
         [UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Auto)]
-        public delegate IntPtr LoadLibraryPrototype(String fileName);
+        public delegate IntPtr LoadLibraryPrototype(string fileName);
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr LoadLibrary(String fileName);
+        public static extern IntPtr LoadLibrary(string fileName);
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Ansi)]
-        public delegate IntPtr LoadLibraryAPrototype(String fileName);
+        public delegate IntPtr LoadLibraryAPrototype(string fileName);
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
-        public static extern IntPtr LoadLibraryA(String fileName);
+        public static extern IntPtr LoadLibraryA(string fileName);
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
-        public delegate IntPtr LoadLibraryWPrototype(String fileName);
+        public delegate IntPtr LoadLibraryWPrototype(string fileName);
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern IntPtr LoadLibraryW(String fileName);
+        public static extern IntPtr LoadLibraryW(string fileName);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
         public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
@@ -27,7 +27,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         public static extern IntPtr GetProcAddress(IntPtr hModule, IntPtr procOrdinal);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr TlsGetValue(UInt32 dwTlsIndex);
+        public static extern IntPtr TlsGetValue(uint dwTlsIndex);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern IntPtr GetCommandLine();
@@ -39,34 +39,34 @@ namespace Cirnix.JassNative.Runtime.Windows
         public static extern IntPtr GetCommandLineW();
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetModuleHandle(String moduleName);
+        public static extern IntPtr GetModuleHandle(string moduleName);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
-        public static extern IntPtr GetModuleHandleA(String moduleName);
+        public static extern IntPtr GetModuleHandleA(string moduleName);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern IntPtr GetModuleHandleW(String moduleName);
+        public static extern IntPtr GetModuleHandleW(string moduleName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr VirtualAlloc(IntPtr address, Int32 size, AllocationType allocationType, MemoryProtection protection);
+        public static extern IntPtr VirtualAlloc(IntPtr address, int size, AllocationType allocationType, MemoryProtection protection);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Boolean VirtualProtect(IntPtr address, Int32 size, UInt32 protect, out UInt32 oldProtect);
+        public static extern bool VirtualProtect(IntPtr address, int size, uint protect, out uint oldProtect);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Boolean VirtualFree(IntPtr address, Int32 size, MemoryFreeType freeType);
+        public static extern bool VirtualFree(IntPtr address, int size, MemoryFreeType freeType);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Boolean AllocConsole();
+        public static extern bool AllocConsole();
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Boolean FreeConsole();
+        public static extern bool FreeConsole();
 
         [DllImport("kernel32", SetLastError = true)]
-        public static extern Boolean AttachConsole(Int32 processId);
+        public static extern bool AttachConsole(int processId);
 
         [DllImport("kernel32.dll")]
-        public static extern void CopyMemory(IntPtr dest, IntPtr src, Int32 count);
+        public static extern void CopyMemory(IntPtr dest, IntPtr src, int count);
 
         /// <summary>
         /// Open a process
@@ -76,7 +76,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="dwProcessId">Process identifier</param>
         /// <returns>Success</returns>
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr OpenProcess(PROCESS dwDesiredAccess, Int32 bInheritHandle, IntPtr dwProcessId);
+        public static extern IntPtr OpenProcess(PROCESS dwDesiredAccess, int bInheritHandle, IntPtr dwProcessId);
 
         /// <summary>
         /// Terminate a (open) process
@@ -85,7 +85,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="dwExitCode">Exit code</param>
         /// <returns>Success</returns>
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Int32 TerminateProcess(IntPtr dwProcessId, UInt32 dwExitCode);
+        public static extern int TerminateProcess(IntPtr dwProcessId, uint dwExitCode);
 
         /// <summary>
         /// Close a handle
@@ -93,7 +93,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="hObject">Handle to object</param>
         /// <returns>Success</returns>
         [DllImport("kernel32.dll")]
-        public static extern Int32 CloseHandle(IntPtr hObject);
+        public static extern int CloseHandle(IntPtr hObject);
 
         /// <summary>
         /// Write to the memory of a process    
@@ -105,9 +105,9 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="lpNumberOfBytesWritten">Number of bytes written</param>
         /// <returns>Success</returns>
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Int32 WriteProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, Int32 size, ref IntPtr lpNumberOfBytesWritten);
+        public static extern int WriteProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, int size, ref IntPtr lpNumberOfBytesWritten);
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern Int32 WriteProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, Int32 size, Int32 AlwaysZero);
+        private static extern int WriteProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, int size, int AlwaysZero);
         /// <summary>
         /// Write to the memory of a process    
         /// </summary>
@@ -118,7 +118,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="lpNumberOfBytesWritten">Number of bytes written</param>
         /// <returns>Success</returns>
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Int32 WriteProcessMemory(IntPtr process, UInt32 baseAddress, IntPtr buffer, Int32 size, ref IntPtr lpNumberOfBytesWritten);
+        public static extern int WriteProcessMemory(IntPtr process, uint baseAddress, IntPtr buffer, int size, ref IntPtr lpNumberOfBytesWritten);
         /// <summary>
         /// Write to the memory of a process    
         /// </summary>
@@ -127,7 +127,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="buffer">Data buffer</param>
         /// <param name="size">Number of bytes to write</param>
         /// <returns>Success</returns>
-        public static Int32 WriteProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, Int32 size)
+        public static int WriteProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, int size)
         {
             return WriteProcessMemory(process, baseAddress, buffer, size, 0);
         }
@@ -139,7 +139,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="buffer">Data buffer</param>
         /// <param name="size">Number of bytes to write</param>
         /// <returns>Success</returns>
-        public static Int32 WriteProcessMemory(IntPtr process, UInt32 baseAddress, IntPtr buffer, Int32 size)
+        public static int WriteProcessMemory(IntPtr process, uint baseAddress, IntPtr buffer, int size)
         {
             return WriteProcessMemory(process, (IntPtr)baseAddress, buffer, size);
         }
@@ -154,9 +154,9 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="lpNumberOfBytesRead">Number of bytes read</param>
         /// <returns>Success</returns>
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Int32 ReadProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, Int32 size, ref IntPtr lpNumberOfBytesRead);
+        public static extern int ReadProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, int size, ref IntPtr lpNumberOfBytesRead);
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern Int32 ReadProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, Int32 size, Int32 AlwaysZero);
+        private static extern int ReadProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, int size, int AlwaysZero);
         /// <summary>
         /// Read from the memory of a process 
         /// </summary>
@@ -167,7 +167,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="lpNumberOfBytesRead">Number of bytes read</param>
         /// <returns>Success</returns>
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Int32 ReadProcessMemory(IntPtr process, UInt32 baseAddress, IntPtr buffer, Int32 size, ref IntPtr lpNumberOfBytesRead);
+        public static extern int ReadProcessMemory(IntPtr process, uint baseAddress, IntPtr buffer, int size, ref IntPtr lpNumberOfBytesRead);
         /// <summary>
         /// Read from the memory of a process 
         /// </summary>
@@ -176,7 +176,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="buffer">Data buffer</param>
         /// <param name="size">Number of bytes to read</param>
         /// <returns>Success</returns>
-        public static Int32 ReadProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, Int32 size)
+        public static int ReadProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, int size)
         {
             return ReadProcessMemory(process, baseAddress, buffer, size, 0);
         }
@@ -188,7 +188,7 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <param name="buffer">Data buffer</param>
         /// <param name="size">Number of bytes to read</param>
         /// <returns>Success</returns>
-        public static Int32 ReadProcessMemory(IntPtr process, UInt32 baseAddress, IntPtr buffer, Int32 size)
+        public static int ReadProcessMemory(IntPtr process, uint baseAddress, IntPtr buffer, int size)
         {
             return ReadProcessMemory(process, (IntPtr)baseAddress, buffer, size);
         }

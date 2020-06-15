@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Heventid;")]
-  [Serializable]
-  public struct JassEventIndex
-  {
-    public readonly IntPtr Handle;
-
-    public JassEventIndex(IntPtr handle)
+    [JassType("Heventid;")]
+    [Serializable]
+    public struct JassEventIndex
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassEventIndex(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

@@ -1,26 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Cirnix.JassNative.Runtime.Windows
 {
     public struct STARTUPINFO
     {
-        public UInt32 cb;
-        public String lpReserved;
-        public String lpDesktop;
-        public String lpTitle;
-        public UInt32 dwX;
-        public UInt32 dwY;
-        public UInt32 dwXSize;
-        public UInt32 dwYSize;
-        public UInt32 dwXCountChars;
-        public UInt32 dwYCountChars;
-        public UInt32 dwFillAttribute;
-        public UInt32 dwFlags;
-        public Int16 wShowWindow;
-        public Int16 cbReserved2;
+        public uint cb;
+        public string lpReserved;
+        public string lpDesktop;
+        public string lpTitle;
+        public uint dwX;
+        public uint dwY;
+        public uint dwXSize;
+        public uint dwYSize;
+        public uint dwXCountChars;
+        public uint dwYCountChars;
+        public uint dwFillAttribute;
+        public uint dwFlags;
+        public short wShowWindow;
+        public short cbReserved2;
         public IntPtr lpReserved2;
         public IntPtr hStdInput;
         public IntPtr hStdOutput;

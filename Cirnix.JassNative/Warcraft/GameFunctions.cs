@@ -1,10 +1,9 @@
-﻿using Cirnix.JassNative.WarAPI.Types;
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Cirnix.JassNative.Runtime.Utilities;
+﻿using Cirnix.JassNative.Runtime.Utilities;
 using Cirnix.JassNative.Runtime.Utilities.UnmanagedCalls;
 using Cirnix.JassNative.Runtime.Windows;
+using Cirnix.JassNative.WarAPI.Types;
+using System;
+using System.Runtime.InteropServices;
 
 namespace Cirnix.JassNative.WarAPI
 {

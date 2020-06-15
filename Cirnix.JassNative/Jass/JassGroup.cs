@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hgroup;")]
-  [Serializable]
-  public struct JassGroup
-  {
-    public readonly IntPtr Handle;
-
-    public JassGroup(IntPtr handle)
+    [JassType("Hgroup;")]
+    [Serializable]
+    public struct JassGroup
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassGroup(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

@@ -8,13 +8,13 @@ namespace Cirnix.JassNative.Runtime.Utilities
         public static T PtrAsFunction<T>(IntPtr address) where T : class
         {
             if (typeof(Delegate).IsAssignableFrom(typeof(T)))
-                return (T)(Object)Marshal.GetDelegateForFunctionPointer(address, typeof(T));
+                return (T)(object)Marshal.GetDelegateForFunctionPointer(address, typeof(T));
             throw new InvalidOperationException("Generic T is not a delegate type");
         }
 
-        public static T PtrAsFunction<T>(IntPtr address, Int32 offset) where T : class
+        public static T PtrAsFunction<T>(IntPtr address, int offset) where T : class
         {
-            return Utility.PtrAsFunction<T>(address + offset);
+            return PtrAsFunction<T>(address + offset);
         }
 
         public static IntPtr FunctionAsPtr(Delegate function)

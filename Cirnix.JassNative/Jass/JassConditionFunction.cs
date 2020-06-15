@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hconditionfunc;")]
-  [Serializable]
-  public struct JassConditionFunction
-  {
-    public readonly IntPtr Handle;
-
-    public JassConditionFunction(IntPtr handle)
+    [JassType("Hconditionfunc;")]
+    [Serializable]
+    public struct JassConditionFunction
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassConditionFunction(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

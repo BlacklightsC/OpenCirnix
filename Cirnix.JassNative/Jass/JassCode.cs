@@ -2,25 +2,25 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("C")]
-  [Serializable]
-  public struct JassCode
-  {
-    public readonly IntPtr Handle;
-
-    public JassCode(IntPtr handle)
+    [JassType("C")]
+    [Serializable]
+    public struct JassCode
     {
-      this.Handle = handle;
-    }
+        public readonly IntPtr Handle;
 
-    public override string ToString()
-    {
-      return this.Handle.ToString();
-    }
+        public JassCode(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
 
-    public string ToString(string format)
-    {
-      return this.Handle.ToString(format);
+        public override string ToString()
+        {
+            return this.Handle.ToString();
+        }
+
+        public string ToString(string format)
+        {
+            return this.Handle.ToString(format);
+        }
     }
-  }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Cirnix.JassNative.Runtime
+﻿namespace Cirnix.JassNative.Runtime
 {
     internal static class Addresses
     {
@@ -47,6 +45,6 @@ namespace Cirnix.JassNative.Runtime
         // 8. sub_6F3A2EC0 is the game_state function.
         // 7. Using the image base, you rebase this address like this:
         //     6F3A2EC0 - 6F000000 = 003A2EC0
-        public const Int32 Unknown__SetStateOffset = 0x212370;
+        public const int Unknown__SetStateOffset = 0x212370;
     }
 }

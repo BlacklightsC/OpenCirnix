@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hbutton;")]
-  [Serializable]
-  public struct JassButton
-  {
-    public readonly IntPtr Handle;
-
-    public JassButton(IntPtr handle)
+    [JassType("Hbutton;")]
+    [Serializable]
+    public struct JassButton
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassButton(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

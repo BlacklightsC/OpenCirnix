@@ -2,40 +2,40 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hgamecache;")]
-  [Serializable]
-  public struct JassGameCache : IEquatable<JassGameCache>
-  {
-    public readonly IntPtr Handle;
-
-    public static bool operator ==(JassGameCache left, JassGameCache right)
+    [JassType("Hgamecache;")]
+    [Serializable]
+    public struct JassGameCache : IEquatable<JassGameCache>
     {
-      return left.Equals(right);
-    }
+        public readonly IntPtr Handle;
 
-    public static bool operator !=(JassGameCache left, JassGameCache right)
-    {
-      return !left.Equals(right);
-    }
+        public static bool operator ==(JassGameCache left, JassGameCache right)
+        {
+            return left.Equals(right);
+        }
 
-    public bool Equals(JassGameCache other)
-    {
-      return this.Handle == other.Handle;
-    }
+        public static bool operator !=(JassGameCache left, JassGameCache right)
+        {
+            return !left.Equals(right);
+        }
 
-    public override bool Equals(object other)
-    {
-      return other is JassGameCache && this.Equals((JassGameCache) other);
-    }
+        public bool Equals(JassGameCache other)
+        {
+            return this.Handle == other.Handle;
+        }
 
-    public override int GetHashCode()
-    {
-      return this.Handle.ToInt32();
-    }
+        public override bool Equals(object other)
+        {
+            return other is JassGameCache cache && this.Equals(cache);
+        }
 
-    public JassGameCache(IntPtr handle)
-    {
-      this.Handle = handle;
+        public override int GetHashCode()
+        {
+            return this.Handle.ToInt32();
+        }
+
+        public JassGameCache(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

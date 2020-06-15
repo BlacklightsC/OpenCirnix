@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hcamerasetup;")]
-  [Serializable]
-  public struct JassCameraSetup
-  {
-    public readonly IntPtr Handle;
-
-    public JassCameraSetup(IntPtr handle)
+    [JassType("Hcamerasetup;")]
+    [Serializable]
+    public struct JassCameraSetup
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassCameraSetup(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

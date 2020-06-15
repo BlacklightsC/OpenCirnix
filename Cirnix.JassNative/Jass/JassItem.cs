@@ -69,11 +69,7 @@ namespace Cirnix.JassNative.JassAPI
             return Natives.IsItemOwned(this);
         }
 
-        public bool Owned {
-            get {
-                return this.IsOwned();
-            }
-        }
+        public bool Owned => IsOwned();
 
         public float GetX()
         {

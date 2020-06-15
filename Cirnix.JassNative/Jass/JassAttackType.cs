@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hattacktype;")]
-  [Serializable]
-  public struct JassAttackType
-  {
-    public readonly IntPtr Handle;
-
-    public JassAttackType(IntPtr handle)
+    [JassType("Hattacktype;")]
+    [Serializable]
+    public struct JassAttackType
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassAttackType(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

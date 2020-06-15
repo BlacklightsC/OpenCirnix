@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Cirnix.JassNative.Runtime.Windows
 {
@@ -63,6 +60,6 @@ namespace Cirnix.JassNative.Runtime.Windows
         /// <summary>
         /// All possible access rights for a process object.
         /// </summary>
-        ALL_ACCESS = (UInt32)(ACCESS_TYPE.STANDARD_RIGHTS_REQUIRED | ACCESS_TYPE.SYNCHRONIZE | 0xFFFF),
+        ALL_ACCESS = (uint)(ACCESS_TYPE.STANDARD_RIGHTS_REQUIRED | ACCESS_TYPE.SYNCHRONIZE | 0xFFFF),
     }
 }

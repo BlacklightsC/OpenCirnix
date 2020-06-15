@@ -63,7 +63,7 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
 
         public static int SetFilePointer(IntPtr handle, int filePosition, uint moveMethod)
         {
-            return SetFilePointer(handle, filePosition, out int filePositionHigh, moveMethod);
+            return SetFilePointer(handle, filePosition, out _, moveMethod);
         }
 
         public static int SetFilePointer(IntPtr handle, int filePosition, SeekOrigin moveMethod)

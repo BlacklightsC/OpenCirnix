@@ -95,8 +95,7 @@ namespace Cirnix.JassNative.Runtime.Utilities
             while (_matrix.Count > 0)
             {
                 // get an independent object
-                T independentObject;
-                if (!this.GetIndependentObject(out independentObject))
+                if (!GetIndependentObject(out T independentObject))
                 {
                     // circular dependency found
                     throw new CircularReferenceException();
@@ -106,7 +105,7 @@ namespace Cirnix.JassNative.Runtime.Utilities
                 result.Add(independentObject);
 
                 // delete processed object
-                this.DeleteObject(independentObject);
+                DeleteObject(independentObject);
             }
 
             // return result
@@ -145,7 +144,7 @@ namespace Cirnix.JassNative.Runtime.Utilities
             }
 
             // not found
-            result = default(T);
+            result = default;
             return false;
         }
 

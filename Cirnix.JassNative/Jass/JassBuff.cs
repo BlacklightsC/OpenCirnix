@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hbuff;")]
-  [Serializable]
-  public struct JassBuff
-  {
-    public readonly IntPtr Handle;
-
-    public JassBuff(IntPtr handle)
+    [JassType("Hbuff;")]
+    [Serializable]
+    public struct JassBuff
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassBuff(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

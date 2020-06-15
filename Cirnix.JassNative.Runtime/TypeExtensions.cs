@@ -8,12 +8,12 @@ namespace Cirnix.JassNative.Runtime
 {
     static class TypeExtensions
     {
-        public static Boolean Implements<T>(this Type type)
+        public static bool Implements<T>(this Type type)
         {
             return type.GetInterfaces().Any(o => o.ToString().Contains(typeof(T).FullName));
         }
 
-        public static IEnumerable<String> GetRequires(this Type type)
+        public static IEnumerable<string> GetRequires(this Type type)
         {
             foreach (var attribute in type.GetCustomAttributesData())
             {

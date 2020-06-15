@@ -14,23 +14,23 @@ namespace Cirnix.JassNative.Runtime
 {
     internal static class PluginSystem
     {
-        private static String folder;
+        private static string folder;
 
         private static List<IPlugin> plugins = new List<IPlugin>();
 
         private static List<IMapPlugin> mapPlugins = new List<IMapPlugin>();
 
-        private static Dictionary<String, String> assemblies = new Dictionary<String, String>();
+        private static Dictionary<string, string> assemblies = new Dictionary<string, string>();
 
         static PluginSystem() { }
 
-        public static void LoadPlugins(String folder)
+        public static void LoadPlugins(string folder)
         {
             try
             {
                 PluginSystem.folder = folder;
                 //Assembly.ReflectionOnlyLoadFrom(Path.Combine(folder, "Cirnix.JassNative.Runtime.dll"));
-                var list = new DependencySorter<String>();
+                var list = new DependencySorter<string>();
                 Trace.WriteLine("Locating plugins . . .");
                 Trace.Indent();
                 var sw = Stopwatch.StartNew();

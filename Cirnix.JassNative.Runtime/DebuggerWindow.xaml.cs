@@ -15,9 +15,9 @@ namespace Cirnix.JassNative.Runtime
 
         public DebuggerWindow(string hackPath)
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            Trace.Listeners.Add(this.listener);
+            Trace.Listeners.Add(listener);
 
             CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
@@ -25,15 +25,15 @@ namespace Cirnix.JassNative.Runtime
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             StringBuilder messages = new StringBuilder();
-            while (this.listener.Messages.TryTake(out string message))
+            while (listener.Messages.TryTake(out string message))
             {
                 messages.Append(message);
             }
             if (messages.Length > 0)
             {
-                this.OutputTextBox.Text += messages.ToString();
-                if (this.AutoScrollCheckBox.IsChecked ?? false)
-                    this.OutputTextBox.ScrollToEnd();
+                OutputTextBox.Text += messages.ToString();
+                if (AutoScrollCheckBox.IsChecked ?? false)
+                    OutputTextBox.ScrollToEnd();
             }
         }
 
@@ -43,8 +43,8 @@ namespace Cirnix.JassNative.Runtime
             {
                 e.Handled = true;
 
-                this.OutputTextBox.ScrollToEnd();
-                this.InputTextBox.Clear();
+                OutputTextBox.ScrollToEnd();
+                InputTextBox.Clear();
             }
         }
     }

@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hgametype;")]
-  [Serializable]
-  public struct JassGameType
-  {
-    public readonly IntPtr Handle;
-
-    public JassGameType(IntPtr handle)
+    [JassType("Hgametype;")]
+    [Serializable]
+    public struct JassGameType
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassGameType(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

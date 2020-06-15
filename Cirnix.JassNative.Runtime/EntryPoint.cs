@@ -17,19 +17,19 @@ namespace Cirnix.JassNative.Runtime
     unsafe public class EntryPoint : IEntryPoint
     {
         [UnmanagedFunctionPointer(CallingConvention.ThisCall)]
-        private delegate IntPtr Unknown__SetStateDelegate(IntPtr @this, Boolean endMap, Boolean endEngine);
+        private delegate IntPtr Unknown__SetStateDelegate(IntPtr @this, bool endMap, bool endEngine);
 
         private Unknown__SetStateDelegate Unknown__SetState;
 
         private Kernel32.LoadLibraryAPrototype LoadLibraryA;
 
-        private String pluginsFolder;
+        private string pluginsFolder;
 
-        public Boolean IsInGame;
+        public bool IsInGame;
 
-        public Boolean IsInMap;
+        public bool IsInMap;
 
-        public EntryPoint(RemoteHooking.IContext hookingContext, Boolean isDebugging, String hackPath, String installPath)
+        public EntryPoint(RemoteHooking.IContext hookingContext, bool isDebugging, string hackPath, string installPath)
         {
             try
             {
@@ -40,12 +40,12 @@ namespace Cirnix.JassNative.Runtime
                     "Fatal exception!" + Environment.NewLine +
                     exception + Environment.NewLine +
                     "Aborting execution!",
-                    this.GetType() + ".ctor(...)", MessageBoxButton.OK, MessageBoxImage.Error);
+                    GetType() + ".ctor(...)", MessageBoxButton.OK, MessageBoxImage.Error);
                 Process.GetCurrentProcess().Kill();
             }
         }
 
-        public void Run(RemoteHooking.IContext hookingContext, Boolean isDebugging, String hackPath, String installPath)
+        public void Run(RemoteHooking.IContext hookingContext, bool isDebugging, string hackPath, string installPath)
         {
             try
             {
@@ -70,11 +70,11 @@ namespace Cirnix.JassNative.Runtime
                 Trace.WriteLine("-------------------");
 
 
-                AppDomain.CurrentDomain.AssemblyResolve += (Object sender, ResolveEventArgs args) =>
+                AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs args) =>
                 {
-                    var path = String.Empty;
+                    var path = string.Empty;
                     // extract the file name
-                    var file = String.Empty;
+                    var file = string.Empty;
                     if (args.Name.IndexOf(',') >= 0)
                         file = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
                     else if (args.Name.IndexOf(".dll") >= 0)
@@ -84,21 +84,21 @@ namespace Cirnix.JassNative.Runtime
 
                     // locate the actual file
                     path = Directory.GetFiles(hackPath, file, SearchOption.AllDirectories).FirstOrDefault();
-                    if (!String.IsNullOrEmpty(path))
+                    if (!string.IsNullOrEmpty(path))
                         return Assembly.LoadFrom(path);
 
                     path = Directory.GetFiles(pluginsFolder, file, SearchOption.AllDirectories).FirstOrDefault();
-                    if (!String.IsNullOrEmpty(path))
+                    if (!string.IsNullOrEmpty(path))
                         return Assembly.LoadFrom(path);
 
                     return null;
                 };
 
-                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += (Object sender, ResolveEventArgs args) =>
+                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += (object sender, ResolveEventArgs args) =>
                 {
-                    var path = String.Empty;
+                    var path = string.Empty;
                     // extract the file name
-                    var file = String.Empty;
+                    var file = string.Empty;
                     if (args.Name.IndexOf(',') >= 0)
                         file = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
                     else if (args.Name.IndexOf(".dll") >= 0)
@@ -108,11 +108,11 @@ namespace Cirnix.JassNative.Runtime
 
                     // locate the actual file
                     path = Directory.GetFiles(hackPath, file, SearchOption.AllDirectories).FirstOrDefault();
-                    if (!String.IsNullOrEmpty(path))
+                    if (!string.IsNullOrEmpty(path))
                         return Assembly.ReflectionOnlyLoadFrom(path);
 
                     path = Directory.GetFiles(pluginsFolder, file, SearchOption.AllDirectories).FirstOrDefault();
-                    if (!String.IsNullOrEmpty(path))
+                    if (!string.IsNullOrEmpty(path))
                         return Assembly.ReflectionOnlyLoadFrom(path);
 
                     return null;
@@ -170,7 +170,7 @@ namespace Cirnix.JassNative.Runtime
             }
         }
 
-        private IntPtr LoadLibraryAHook(String fileName)
+        private IntPtr LoadLibraryAHook(string fileName)
         {
             IntPtr module = LoadLibraryA(fileName);
 
@@ -210,47 +210,47 @@ namespace Cirnix.JassNative.Runtime
             PluginSystem.OnMapEnd();
         }
 
-        private IntPtr Unknown__SetStateHook(IntPtr @this, Boolean endMap, Boolean endEngine)
+        private IntPtr Unknown__SetStateHook(IntPtr @this, bool endMap, bool endEngine)
         {
             try
             {
                 if (endEngine)
                 {
-                    if (this.IsInMap)
+                    if (IsInMap)
                     {
-                        this.IsInMap = false;
-                        this.OnMapEnd();
+                        IsInMap = false;
+                        OnMapEnd();
                     }
-                    if (this.IsInGame)
+                    if (IsInGame)
                     {
-                        this.IsInGame = false;
-                        this.OnEngineEnd();
+                        IsInGame = false;
+                        OnEngineEnd();
                     }
                 }
                 else
                 {
                     if (endMap)
                     {
-                        if (this.IsInMap)
+                        if (IsInMap)
                         {
-                            this.IsInMap = false;
-                            this.OnMapEnd();
+                            IsInMap = false;
+                            OnMapEnd();
                         }
                     }
                     else
                     {
-                        if (!this.IsInGame)
+                        if (!IsInGame)
                         {
-                            this.OnEngineStart();
-                            this.IsInGame = true;
+                            OnEngineStart();
+                            IsInGame = true;
                         }
 
-                        if (this.IsInMap)
+                        if (IsInMap)
                         {
-                            this.OnMapEnd();
+                            OnMapEnd();
                         }
-                        this.OnMapStart();
-                        this.IsInMap = true;
+                        OnMapStart();
+                        IsInMap = true;
                     }
                 }
             }
@@ -260,7 +260,7 @@ namespace Cirnix.JassNative.Runtime
                 Trace.WriteLine(e.ToString());
             }
 
-            return this.Unknown__SetState(@this, endMap, endEngine);
+            return Unknown__SetState(@this, endMap, endEngine);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using Cirnix.JassNative.WarAPI;
+﻿using Cirnix.JassNative.Plugin;
+using Cirnix.JassNative.WarAPI;
 using System.Diagnostics;
-using Cirnix.JassNative.Runtime;
-using Cirnix.JassNative.Plugin;
 
 namespace Cirnix.JassNative.JassAPI
 {

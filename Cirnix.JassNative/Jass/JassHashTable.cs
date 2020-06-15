@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hhashtable;")]
-  [Serializable]
-  public struct JassHashTable
-  {
-    public readonly IntPtr Handle;
-
-    public JassHashTable(IntPtr handle)
+    [JassType("Hhashtable;")]
+    [Serializable]
+    public struct JassHashTable
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassHashTable(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

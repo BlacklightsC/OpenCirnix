@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hforce;")]
-  [Serializable]
-  public struct JassForce
-  {
-    public readonly IntPtr Handle;
-
-    public JassForce(IntPtr handle)
+    [JassType("Hforce;")]
+    [Serializable]
+    public struct JassForce
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassForce(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

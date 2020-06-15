@@ -7,11 +7,11 @@ namespace Cirnix.JassNative.Runtime
 {
     internal class DebuggerApplication : Application
     {
-        public static Boolean IsReady { get; private set; }
+        public static bool IsReady { get; private set; }
 
-        private static String HackPath;
+        private static string HackPath;
 
-        public static void Start(String hackPath)
+        public static void Start(string hackPath)
         {
             HackPath = hackPath;
 
@@ -26,7 +26,7 @@ namespace Cirnix.JassNative.Runtime
             {
                 var application = new DebuggerApplication();
                 var window = new DebuggerWindow(HackPath);
-                DebuggerApplication.IsReady = true;
+                IsReady = true;
                 application.Run(window);
             }
             catch (Exception exception)

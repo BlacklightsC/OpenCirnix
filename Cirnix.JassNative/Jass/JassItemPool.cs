@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hitempool;")]
-  [Serializable]
-  public struct JassItemPool
-  {
-    public readonly IntPtr Handle;
-
-    public JassItemPool(IntPtr handle)
+    [JassType("Hitempool;")]
+    [Serializable]
+    public struct JassItemPool
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassItemPool(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

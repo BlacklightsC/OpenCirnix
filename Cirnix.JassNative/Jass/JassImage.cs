@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Himage;")]
-  [Serializable]
-  public struct JassImage
-  {
-    public readonly IntPtr Handle;
-
-    public JassImage(IntPtr handle)
+    [JassType("Himage;")]
+    [Serializable]
+    public struct JassImage
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassImage(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

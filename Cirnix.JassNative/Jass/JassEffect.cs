@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Heffect;")]
-  [Serializable]
-  public struct JassEffect
-  {
-    public readonly IntPtr Handle;
-
-    public JassEffect(IntPtr handle)
+    [JassType("Heffect;")]
+    [Serializable]
+    public struct JassEffect
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassEffect(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }

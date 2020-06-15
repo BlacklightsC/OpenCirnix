@@ -2,15 +2,15 @@
 
 namespace Cirnix.JassNative.JassAPI
 {
-  [JassType("Hblendmode;")]
-  [Serializable]
-  public struct JassBlendMode
-  {
-    public readonly IntPtr Handle;
-
-    public JassBlendMode(IntPtr handle)
+    [JassType("Hblendmode;")]
+    [Serializable]
+    public struct JassBlendMode
     {
-      this.Handle = handle;
+        public readonly IntPtr Handle;
+
+        public JassBlendMode(IntPtr handle)
+        {
+            this.Handle = handle;
+        }
     }
-  }
 }
