@@ -142,6 +142,12 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LicenceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LicenceForm.Designer.cs">
+      <DependentUpon>LicenceForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AdditionalToolForm.resx">
@@ -185,6 +191,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TrayIcon.resx">
       <DependentUpon>TrayIcon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LicenceForm.resx">
+      <DependentUpon>LicenceForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

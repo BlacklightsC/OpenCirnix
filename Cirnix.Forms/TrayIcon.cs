@@ -24,6 +24,7 @@ namespace Cirnix.Forms
         private RoomListForm room;
         private AdditionalToolForm tool;
         private HistoryForm history;
+        private LicenceForm licenceForm;
 
         public TrayIcon()
         {
@@ -147,10 +148,24 @@ namespace Cirnix.Forms
             }
             info = new InfoForm
             {
-                historyForm = InitHistoryForm
+                historyForm = InitHistoryForm,
+                licenceForm = LicenceForm
             };
             info.Show();
             info.Activate();
+        }
+
+        private void LicenceForm()
+        {
+            if (!(licenceForm == null
+                || licenceForm.IsDisposed))
+            {
+                sepro.Activate();
+                return;
+            }
+            licenceForm = new LicenceForm();
+            licenceForm.Show();
+            licenceForm.Activate();
         }
         private void InitRoomListForm()
         {

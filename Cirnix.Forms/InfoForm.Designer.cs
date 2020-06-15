@@ -39,6 +39,7 @@
             this.Toggle_BetaUser = new MetroFramework.Controls.MetroToggle();
             this.Label_BetaUser = new MetroFramework.Controls.MetroLabel();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.LicenceButton = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,7 +91,7 @@
             // 
             this.UpdateButton.Enabled = false;
             this.UpdateButton.Highlight = true;
-            this.UpdateButton.Location = new System.Drawing.Point(88, 445);
+            this.UpdateButton.Location = new System.Drawing.Point(150, 445);
             this.UpdateButton.Name = "UpdateButton";
             this.UpdateButton.Size = new System.Drawing.Size(100, 35);
             this.UpdateButton.TabIndex = 4;
@@ -161,11 +162,23 @@
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroLabel1.UseStyleColors = true;
             // 
+            // LicenceButton
+            // 
+            this.LicenceButton.Highlight = true;
+            this.LicenceButton.Location = new System.Drawing.Point(24, 445);
+            this.LicenceButton.Name = "LicenceButton";
+            this.LicenceButton.Size = new System.Drawing.Size(100, 35);
+            this.LicenceButton.TabIndex = 74;
+            this.LicenceButton.Text = "라이선스";
+            this.LicenceButton.UseSelectable = true;
+            this.LicenceButton.Click += new System.EventHandler(this.LicenceButton_Click);
+            // 
             // InfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(276, 490);
+            this.Controls.Add(this.LicenceButton);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.Label_BetaUser);
             this.Controls.Add(this.Toggle_BetaUser);
@@ -202,5 +215,6 @@
         private MetroFramework.Controls.MetroToggle Toggle_BetaUser;
         private MetroFramework.Controls.MetroLabel Label_BetaUser;
         private MetroFramework.Controls.MetroLabel metroLabel1;
+        public MetroFramework.Controls.MetroButton LicenceButton;
     }
 }
