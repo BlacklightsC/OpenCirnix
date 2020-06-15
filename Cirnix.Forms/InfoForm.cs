@@ -15,8 +15,10 @@ namespace Cirnix.Forms
 {
     internal sealed partial class InfoForm : MetroForm
     {
+
         BackgroundWorker VersionChecker;
         internal Action historyForm;
+        internal Action licenceForm;
         internal static int[] Current;
         internal static int[] Recommanded;
         internal static int[] Latest;
@@ -99,6 +101,7 @@ namespace Cirnix.Forms
         private void CurrentVersion_Click(object sender, EventArgs e)
         {
             historyForm();
+            
         }
 
         private void Toggle_BetaUser_CheckedChanged(object sender, EventArgs e)
@@ -122,6 +125,11 @@ namespace Cirnix.Forms
         private void Picture_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void LicenceButton_Click(object sender, EventArgs e)
+        {
+            licenceForm();
         }
     }
 }
