@@ -13,4 +13,4 @@ namespace Cirnix.JassNative.JassAPI
             this.Handle = handle;
         }
     }
-}S
+}
