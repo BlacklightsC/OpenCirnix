@@ -24,9 +24,12 @@ namespace Cirnix.Memory
         private static ChatMode chatMode = ChatMode.Team;
         private static byte[] Stack = new byte[0x100];
 
+        
         public static string GetMessage()
         {
+            
             CEditBoxOffset = SearchAddress(MessageSearchPattern, 0x7FFFFFFF, 4);
+            Thread.Sleep(150);
             if (CEditBoxOffset != IntPtr.Zero)
             {
                 byte[] lpBuffer = new byte[5];
@@ -51,9 +54,12 @@ namespace Cirnix.Memory
                     }
                 }
             }
+            
             CEditBoxOffset = IntPtr.Zero;
             return null;
+            
         }
+        
 
         private static string ConvertToString(byte[] buffer)
         {
