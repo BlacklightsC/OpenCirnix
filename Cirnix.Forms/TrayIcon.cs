@@ -93,9 +93,8 @@ namespace Cirnix.Forms
                 additonalToolForm = InitAdditionalToolForm,
                 TrayCheck = TrayCheck,
                 selectProcess = SelectProcessForm
+            };
 
-        };
-            
             ListUpdate = main.InvokedListUpdate;
             main.Show();
             main.Activate();
@@ -294,11 +293,6 @@ namespace Cirnix.Forms
         private void ShutDown_Click(object sender, EventArgs e)
         {
             ProgramShutDown();
-        }
-
-        private void TrayIcon_Load(object sender, EventArgs e)
-        {
-
         }
         #endregion
 

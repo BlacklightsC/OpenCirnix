@@ -140,12 +140,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(100, 100);
+            this.ClientSize = new System.Drawing.Size(0, 0);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "TrayIcon";
             this.Text = "TrayIcon";
-            this.Load += new System.EventHandler(this.TrayIcon_Load);
+            this.TransparencyKey = System.Drawing.SystemColors.Control;
             this.Shown += new System.EventHandler(this.TrayIcon_Shown);
             this.TrayMenu.ResumeLayout(false);
             this.ResumeLayout(false);
