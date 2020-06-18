@@ -72,6 +72,7 @@ namespace Cirnix.CLRHook
 
         public static bool Init(string path, int windowState = 0, bool isInstallM16 = true, bool isDebug = false)
         {
+            Global.Registry.Warcraft.SetFullQualityGraphics();
             string EXEPath = Path.Combine(path, "Warcraft III.exe");
             if (!(File.Exists(EXEPath) || File.Exists(EXEPath = Path.Combine(path, "war3.exe"))) 
              || FileVersionInfo.GetVersionInfo(EXEPath).FileVersion != "1.28.5.7680")
