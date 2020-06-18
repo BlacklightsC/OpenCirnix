@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Diagnostics;
 using System.Threading.Tasks;
+using static Cirnix.Global.Component;
 using static Cirnix.Global.Globals;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
-using static Cirnix.Global.Component;
 
 namespace Cirnix.Memory
 {
@@ -16,7 +15,7 @@ namespace Cirnix.Memory
         public static bool ForegroundWar3()
         {
             if (Warcraft3Info.Process == null) return false;
-            return (GetForegroundWindow() == Warcraft3Info.Process.MainWindowHandle);
+            return Warcraft3Info.Process.MainWindowHandle == GetForegroundWindow();
         }
 
         public static RECT GetWar3Rect()

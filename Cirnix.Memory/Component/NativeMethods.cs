@@ -32,8 +32,8 @@ namespace Cirnix.Memory
             [In]IntPtr hProcess,
             [In]IntPtr lpBaseAddress,
             [Out]byte[] lpBuffer,
-            [In]uint dwSize,
-            [Out]out uint lpNumberOfBytesRead
+            [In]int dwSize,
+            [Out]out int lpNumberOfBytesRead
         );
 
         [DllImport("kernel32", SetLastError = true)]
@@ -42,7 +42,7 @@ namespace Cirnix.Memory
         (
             [In]IntPtr hProcess,
             [In]IntPtr lpAddress,
-            [In]uint dwSize,
+            [In]int dwSize,
             [In]uint flNewProtect, 
             [Out]out uint lpflOldProtect
         );
@@ -54,8 +54,8 @@ namespace Cirnix.Memory
             [In]IntPtr hProcess,
             [In]IntPtr lpBaseAddress,
             [In]byte[] lpBuffer,
-            [In]uint nSize,
-            [Out]out uint lpNumberOfBytesWritten
+            [In]int nSize,
+            [Out]out int lpNumberOfBytesWritten
         );
 
         [DllImport("kernel32", SetLastError = true)]
@@ -106,27 +106,6 @@ namespace Cirnix.Memory
             IntPtr returnLength
         );
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        internal struct PROCESS_BASIC_INFORMATION
-        {
-            internal int ExitProcess;
-            internal IntPtr PebBaseAddress;
-            internal UIntPtr AffinityMask;
-            internal int BasePriority;
-            internal UIntPtr UniqueProcessId;
-            internal UIntPtr InheritedFromUniqueProcessId;
-
-            internal uint Size => (uint)Marshal.SizeOf(typeof(PROCESS_BASIC_INFORMATION));
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        internal struct UNICODE_STRING
-        {
-            internal ushort Length;
-            internal ushort MaximumLength;
-            internal IntPtr buffer;
-        }
-
         [DllImport("shell32.dll", SetLastError = true)]
         internal static extern IntPtr CommandLineToArgvW
         (
@@ -138,6 +117,15 @@ namespace Cirnix.Memory
         internal static extern IntPtr LocalFree
         (
             IntPtr hMem
+        );
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern int VirtualQueryEx
+        (
+            IntPtr hProcess,
+            IntPtr lpAddress,
+            out MEMORY_BASIC_INFORMATION lpBuffer,
+            int dwLength
         );
     }
 }

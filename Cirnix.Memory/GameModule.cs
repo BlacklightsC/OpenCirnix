@@ -178,7 +178,7 @@ namespace Cirnix.Memory
             if (baseAddress == IntPtr.Zero) return false;
             try
             {
-                ReadProcessMemory(Warcraft3Info.Handle, baseAddress, lpBuffer, 1, out uint num);
+                ReadProcessMemory(Warcraft3Info.Handle, baseAddress, lpBuffer, 1, out _);
             }
             catch
             {
@@ -252,10 +252,5 @@ namespace Cirnix.Memory
             ResetWarcraft3Info();
             return WarcraftState.Error;
         }
-
-
-
-    
-
     }
 }

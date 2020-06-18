@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.ComponentModel;
+using System.IO;
 
 namespace Cirnix.Global
 {
@@ -29,6 +30,8 @@ namespace Cirnix.Global
         private static void MailAsyncSender_DoWork(object sender, DoWorkEventArgs e)
         {
             // Global Exception Catcher
+            Exception ex = sender as Exception;
+            File.AppendAllLines($"{Globals.ResourcePath}\\CirnixError.log", new string[] { ex.Message, ex.StackTrace });
         }
 
         internal static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

@@ -15,19 +15,12 @@ namespace Cirnix.Memory
 
         private static bool GetOffset()
         {
-            Offset = SearchAddress(SearchPattern, 0x7FFFFFFF, 4);
+            Offset = SearchMemoryRegion(SearchPattern);
             if (Offset != IntPtr.Zero)
             {
-                byte[] lpBuffer = new byte[5];
-                if (ReadProcessMemory(Warcraft3Info.Handle, Offset, lpBuffer, 5, out _)
-                 && CompareArrays(SearchPattern, lpBuffer, 5))
-                {
-                    byte[] innerBuffer = new byte[4];
-                    if (ReadProcessMemory(Warcraft3Info.Handle, Offset += 0x9C, innerBuffer, 4, out _))
-                    {
-                        return true;
-                    }
-                }
+                byte[] innerBuffer = new byte[4];
+                if (ReadProcessMemory(Warcraft3Info.Handle, Offset += 0x9C, innerBuffer, 4, out _))
+                    return true;
             }
             Offset = IntPtr.Zero;
             return false;

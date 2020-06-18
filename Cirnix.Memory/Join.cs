@@ -1,90 +1,79 @@
 ﻿using System;
 using System.Text;
-using Cirnix.Global;
-using System.Windows.Forms;
-
-using static Cirnix.Memory.Component;
-using static Cirnix.Global.NativeMethods;
+using System.Threading.Tasks;
 using static Cirnix.Global.Globals;
+using static Cirnix.Global.NativeMethods;
+using static Cirnix.Memory.Component;
+using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
 {
     public static class Join
     {
-        private static readonly byte[] RoomJoinPattern = new byte[] { 0x94, 0x28, 0x49, 0x65, 0x94 };
-        internal static IntPtr RoomJoinOffset = IntPtr.Zero;
-        internal static IntPtr RoomCreateOffset = IntPtr.Zero;
-        private static readonly byte[] RoomCreatePattern = new byte[] { 0x94, 0x28, 0x49, 0x65, 0x94 };
+        private static readonly byte[] SearchPattern = new byte[] { 0x94, 0x28, 0x49, 0x65, 0x94 };
+        internal static IntPtr Offset = IntPtr.Zero;
+
+        private static bool GetOffset()
+        {
+            Offset = SearchMemoryRegion(SearchPattern);
+            if (Offset != IntPtr.Zero)
+            {
+                Offset += 0x6E4;
+                return true;
+            }
+            Offset = IntPtr.Zero;
+            return false;
+        }
+
         public static void RoomJoin(string roomname)
         {
-            if (roomname.Length == 0)
-            {
-                return;
-            }
+            if (roomname.Length == 0) return;
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
             Delay(3000);
 
-
-
-            RoomJoinOffset = (IntPtr)SearchAddress(RoomJoinPattern, 0x7FFFFFFF, 4).ToInt32() + 1764;
-
-            uint num = 0U;
-            uint num2 = 0;
-            byte[] array2 = new byte[10];
-            NativeMethods.VirtualProtectEx(Warcraft3Info.Handle, RoomJoinOffset, (uint)(UIntPtr)((ulong)((long)array2.Length)), 64U, out num);
-            NativeMethods.ReadProcessMemory(Warcraft3Info.Handle, RoomJoinOffset, array2, (uint)array2.Length, out num2);
-            Encoding.UTF8.GetString(array2);
-            byte[] bytes = Encoding.UTF8.GetBytes(roomname.Trim());
-            NativeMethods.WriteProcessMemory(Warcraft3Info.Handle, RoomJoinOffset, bytes, (uint)bytes.Length + 1, out num2);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            if (GetOffset())
+            {
+                byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
+                WriteProcessMemory(Warcraft3Info.Handle, Offset, buffer, buffer.Length + 1, out _);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            }
         }
 
 
         public static void RoomCreate(string roomname)
         {
-            if (roomname.Length == 0)
-            {
-                return;
-            }
+            if (roomname.Length == 0) return;
             
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
-            Delay(3000);
+            Task.Delay(3000);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 67, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
-            Delay(1000);
-            
+            Task.Delay(1000);
 
-
-            RoomCreateOffset = (IntPtr)SearchAddress(RoomCreatePattern, 0x7FFFFFFF, 4).ToInt32() + 1764;
-
-
-            uint num = 0U;
-            uint num2 = 0;
-            byte[] array2 = new byte[10];
-            NativeMethods.VirtualProtectEx(Warcraft3Info.Handle, RoomCreateOffset, (uint)(UIntPtr)((ulong)((long)array2.Length)), 64U, out num);
-            NativeMethods.ReadProcessMemory(Warcraft3Info.Handle, RoomCreateOffset, array2, (uint)array2.Length, out num2);
-            Encoding.UTF8.GetString(array2);
-            byte[] bytes = Encoding.UTF8.GetBytes(roomname.Trim());
-            NativeMethods.WriteProcessMemory(Warcraft3Info.Handle, RoomCreateOffset, bytes, (uint)bytes.Length + 1, out num2);
-            Delay(3000);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 67, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
+            if (GetOffset())
+            {
+                byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
+                WriteProcessMemory(Warcraft3Info.Handle, Offset, buffer, buffer.Length + 1, out _);
+                Delay(3000);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 67, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
+            }
         }
 
     }

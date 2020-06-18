@@ -39,10 +39,6 @@ namespace Cirnix.Worker.InnerWorker
                             case '-':
                                 UserState = CommandTag.Chat;
                                 return;
-                            case '@':
-                            case '#':
-                                UserState = CommandTag.Cheat;
-                                return;
                         }
                         if (UserState == CommandTag.None) return;
                         if (prefix[0] == '\0')
@@ -82,9 +78,9 @@ namespace Cirnix.Worker.InnerWorker
             }
         }
 
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private async void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Task.Delay(200);
+            await Task.Delay(200);
             Worker.RunWorkerAsync();
         }
     }

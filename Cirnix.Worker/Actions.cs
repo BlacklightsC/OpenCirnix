@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
@@ -629,6 +630,10 @@ namespace Cirnix.Worker
                 || !GameModule.WarcraftCheck())
             {
                 InitializedWarcraft = ignoreDetect = false;
+
+                // 프로그램을 찾지 못할 경우 검색 간격 증가
+                Thread.Sleep(800);
+
                 return true;
             }
             if (!InitializedWarcraft)
