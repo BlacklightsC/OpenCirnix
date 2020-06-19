@@ -404,7 +404,7 @@ namespace Cirnix.Worker
             }
             else
             {
-                string path = "{GetCurrentPath(0)}\\{saveName}";
+                string path = $"{GetCurrentPath(0)}\\{saveName}";
                 if (Directory.Exists(path))
                     SendMsg(true, $"{IsKoreanBlock(saveName, "을", "를")} 사용합니다.");
                 else
@@ -721,7 +721,7 @@ namespace Cirnix.Worker
         {
             if (Settings.IsMemoryOptimize)
                 MemoryOptimizeTimer.Restart();
-            new System.Threading.Thread(() => {
+            new Thread(() => {
                 SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
                 if (CProcess.TrimProcessMemory(TargetProcess, true))
                 {
