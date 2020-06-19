@@ -11,7 +11,7 @@ namespace Cirnix.Memory
 
         private static void GetOffset()
         {
-            Offset = SearchMemoryRegion(SearchPattern);
+            Offset = SearchAddress(SearchPattern);
             //if (Offset != IntPtr.Zero) Offset += 0x2EC;
         }
 

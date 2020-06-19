@@ -55,8 +55,8 @@ namespace Cirnix.Memory
             }
         }
 
-        public static int PlayerNumber => BitConverter.ToInt32(Bring(SearchMemoryRegion(HostStatePattern) + 0x33C, 4), 0);
+        public static int PlayerNumber => BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern) + 0x33C, 4), 0);
 
-        public static bool IsHostPlayer => BitConverter.ToInt32(Bring(SearchMemoryRegion(HostStatePattern) + 0x210, 4), 0) == 2;
+        public static bool IsHostPlayer => BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern) + 0x210, 4), 0) == 2;
     }
 }

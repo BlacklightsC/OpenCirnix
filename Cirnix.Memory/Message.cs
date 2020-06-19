@@ -26,7 +26,7 @@ namespace Cirnix.Memory
 
         public static string GetMessage()
         {
-            CEditBoxOffset = SearchMemoryRegion(MessageSearchPattern);
+            CEditBoxOffset = SearchAddress(MessageSearchPattern);
             if (CEditBoxOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[0x100];
@@ -62,7 +62,7 @@ namespace Cirnix.Memory
 
         public static void DetectChatFrequency()
         {
-            CEditBoxOffset = SearchMemoryRegion(MessageSearchPattern);
+            CEditBoxOffset = SearchAddress(MessageSearchPattern);
             if (CEditBoxOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[1];
@@ -91,7 +91,7 @@ namespace Cirnix.Memory
 
         public static bool GetReceiveStatus()
         {
-            ReceiverOffset = SearchMemoryRegion(ReceiverSearchPattern);
+            ReceiverOffset = SearchAddress(ReceiverSearchPattern);
             if (ReceiverOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[4];
@@ -138,7 +138,7 @@ namespace Cirnix.Memory
         {
             if (CEditBoxOffset == IntPtr.Zero)
             {
-                CEditBoxOffset = SearchMemoryRegion(MessageAdditionalPattern);
+                CEditBoxOffset = SearchAddress(MessageAdditionalPattern);
                 MessageOffset = CEditBoxOffset + 0x84;
             }
             if (CEditBoxOffset == IntPtr.Zero) return;
@@ -160,7 +160,7 @@ namespace Cirnix.Memory
             if (string.IsNullOrEmpty(pMessage)) return;
             if (CEditBoxOffset == IntPtr.Zero)
             {
-                CEditBoxOffset = SearchMemoryRegion(MessageAdditionalPattern);
+                CEditBoxOffset = SearchAddress(MessageAdditionalPattern);
                 MessageOffset = CEditBoxOffset + 0x84;
             }
             if (CEditBoxOffset == IntPtr.Zero) return;

@@ -184,7 +184,7 @@ namespace Cirnix.Memory
                 }
             return true;
         }
-        internal static IntPtr SearchAddress(byte[] search, uint maxAdd, uint offset, uint interval = 0x10000)
+        internal static IntPtr SearchAddress(byte[] search, uint maxAdd, int offset, uint interval = 0x10000)
         {
             byte[] lpBuffer = new byte[search.Length];
             for (uint num = 0x10000; num <= maxAdd; num += interval)
@@ -194,6 +194,36 @@ namespace Cirnix.Memory
                     return lpBaseAddress;
             }
             return IntPtr.Zero;
+        }
+
+        internal static IntPtr SearchMemoryRegion(byte[] signature, int offset = 4, uint maxAdd = 0x70000000)
+        {
+            IntPtr lpBaseAddress = IntPtr.Zero;
+            byte[] buffer = new byte[signature.Length];
+            while (lpBaseAddress.ToInt32() < maxAdd)
+            {
+                VirtualQueryEx(Warcraft3Info.Handle, lpBaseAddress, out MEMORY_BASIC_INFORMATION info, Marshal.SizeOf(typeof(MEMORY_BASIC_INFORMATION)));
+                if (info.State == StateEnum.MEM_FREE)
+                    lpBaseAddress += info.RegionSize.ToInt32();
+                else
+                {
+                    IntPtr lpAddress = lpBaseAddress + offset;
+                    if (ReadProcessMemory(Warcraft3Info.Handle, lpAddress, buffer, signature.Length, out _) && buffer.SequenceEqual(signature))
+                        return lpAddress;
+                    else
+                        lpBaseAddress += info.RegionSize.ToInt32();
+                }
+            }
+            return IntPtr.Zero;
+        }
+
+        private static bool IsNewWindows = Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 2;
+        internal static IntPtr SearchAddress(byte[] search, int offset = 4)
+        {
+            if (IsNewWindows)
+                return SearchMemoryRegion(search, offset);
+            else
+                return SearchAddress(search, 0x7FFFFFFF, offset);
         }
 
         private static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
@@ -263,27 +293,6 @@ namespace Cirnix.Memory
             {
                 LocalFree(ptrToSplitArgs);
             }
-        }
-
-        internal static IntPtr SearchMemoryRegion(byte[] signature, int offset = 4, uint maxAdd = 0x70000000)
-        {
-            IntPtr lpBaseAddress = IntPtr.Zero;
-            byte[] buffer = new byte[signature.Length];
-            while (lpBaseAddress.ToInt32() < maxAdd)
-            {
-                VirtualQueryEx(Warcraft3Info.Handle, lpBaseAddress, out MEMORY_BASIC_INFORMATION info, Marshal.SizeOf(typeof(MEMORY_BASIC_INFORMATION)));
-                if (info.State == StateEnum.MEM_FREE)
-                    lpBaseAddress += info.RegionSize.ToInt32();
-                else
-                {
-                    IntPtr lpAddress = lpBaseAddress + offset;
-                    if (ReadProcessMemory(Warcraft3Info.Handle, lpAddress, buffer, signature.Length, out _) && buffer.SequenceEqual(signature))
-                        return lpAddress;
-                    else
-                        lpBaseAddress += info.RegionSize.ToInt32();
-                }
-            }
-            return IntPtr.Zero;
         }
     }
 }

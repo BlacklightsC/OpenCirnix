@@ -16,7 +16,7 @@ namespace Cirnix.Memory
 
         private static string SearchChannelOffset()
         {
-            ChannelOffset = SearchMemoryRegion(ChannelSearchPattern);
+            ChannelOffset = SearchAddress(ChannelSearchPattern);
             if (ChannelOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[0x20];
@@ -29,7 +29,7 @@ namespace Cirnix.Memory
 
         private static int SearchMessageOffset()
         {
-            MessageOffset = SearchMemoryRegion(MessageSearchPattern);
+            MessageOffset = SearchAddress(MessageSearchPattern);
             if (MessageOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[4];
