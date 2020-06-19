@@ -18,7 +18,7 @@ namespace Cirnix.Memory
             if (Warcraft3Info.Process == null) return;
             MODULEENTRY32 structure = new MODULEENTRY32();
             //GetWindowThreadProcessId((IntPtr)FindWindow(TargetProcess, null), out processId);
-            IntPtr hSnapshot = CreateToolhelp32Snapshot(SnapshotFlags.TH32CS_SNAPMODULE, (uint)Warcraft3Info.ID);
+            IntPtr hSnapshot = CreateToolhelp32Snapshot(SnapshotFlags.TH32CS_SNAPMODULE, Warcraft3Info.ID);
             structure.dwSize = (uint)Marshal.SizeOf(structure);
             Module32First(hSnapshot, ref structure);
             do

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -141,16 +142,16 @@ namespace Cirnix.Memory
         [StructLayout(LayoutKind.Sequential)]
         public struct BaseVersion
         {
-            public IntPtr BaseAddress { get; set; }
-            public long Version { get; set; }
+            public IntPtr BaseAddress;
+            public long Version;
         }
         [StructLayout(LayoutKind.Sequential)]
         public struct WarcraftInfo
         {
-            public int ID;
+            public uint ID => (uint)(Process?.Id ?? 0);
             public BaseVersion BaseVersion;
             public IntPtr Handle;
-            public System.Diagnostics.Process Process;
+            public Process Process;
         }
 
         internal static void Patch(IntPtr Offset, params byte[] buffer) => Patch(Offset, buffer.Length, buffer);
@@ -203,9 +204,9 @@ namespace Cirnix.Memory
             return stuff;
         }
 
-        public static string GetCommandLine(int processId)
+        public static string GetCommandLine(uint processId)
         {
-            IntPtr proc = OpenProcess(0x410, false, (uint)processId);
+            IntPtr proc = OpenProcess(0x410, false, processId);
             if (proc == IntPtr.Zero) return null;
             try
             {
@@ -235,7 +236,7 @@ namespace Cirnix.Memory
             return null;
         }
 
-        public static string[] GetArguments(int processId)
+        public static string[] GetArguments(uint processId)
         {
             string CommandLine = GetCommandLine(processId);
             if (CommandLine == null) return null;

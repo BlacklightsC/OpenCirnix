@@ -626,7 +626,7 @@ namespace Cirnix.Worker
         internal static Stopwatch MemoryOptimizeTimer = new Stopwatch();
         internal static bool ProcessCheck()
         {
-            if (GameModule.WarcraftDetect() != WarcraftState.OK
+            if (GameModule.InitWarcraft3Info() != WarcraftState.OK
                 || !GameModule.WarcraftCheck())
             {
                 InitializedWarcraft = ignoreDetect = false;
@@ -640,6 +640,7 @@ namespace Cirnix.Worker
             {
                 InitializedWarcraft = true;
                 Delay(2000);
+                Warcraft3Info.Process.EnableRaisingEvents = true;
                 GameDll.GetOffset();
                 GameDelay = 50;
                 RefreshCooldown = 0.01f;

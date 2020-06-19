@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cirnix.Global.Registry;
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 using static Cirnix.Global.Globals;
@@ -134,7 +135,7 @@ namespace Cirnix.Memory
             {
                 foreach (ProcessModule item in Warcraft3Info.Process.Modules)
                 {
-                    if (string.Compare(item.ModuleName, TargetProcess + ".exe", true) == 0)
+                    if (string.Compare(item.ModuleName, $"{TargetProcess}.exe", true) == 0)
                     {
                         Warcraft3Info.BaseVersion.BaseAddress = item.BaseAddress;
                         Warcraft3Info.BaseVersion.Version = 
@@ -155,9 +156,14 @@ namespace Cirnix.Memory
 
         private static void ResetWarcraft3Info()
         {
+            if (Warcraft3Info.Handle != IntPtr.Zero)
+                CloseHandle(Warcraft3Info.Handle);
             Warcraft3Info.BaseVersion.Version = 0L;
-            Warcraft3Info.ID = 0;
-            Warcraft3Info.Process = null;
+            if (Warcraft3Info.Process != null)
+            {
+                Warcraft3Info.Process.Dispose();
+                Warcraft3Info.Process = null;
+            }
 
             Warcraft3Info.BaseVersion.BaseAddress =
             Warcraft3Info.Handle =
@@ -187,69 +193,49 @@ namespace Cirnix.Memory
             return lpBuffer[0] > 0;
         }
 
-        public static WarcraftState WarcraftDetect()
+        public static WarcraftState InitWarcraft3Info()
         {
             if (Warcraft3Info.Process != null && !Warcraft3Info.Process.HasExited) return WarcraftState.OK;
-            Process[] processesByName = Process.GetProcessesByName(TargetProcess = "Warcraft III");
-            if (processesByName.Length == 0)
+            Process[] procs = Process.GetProcessesByName(TargetProcess = "Warcraft III");
+            if (procs.Length == 0)
             {
-                processesByName = Process.GetProcessesByName(TargetProcess = "war3");
-                if (processesByName.Length == 0)
+                procs = Process.GetProcessesByName(TargetProcess = "war3");
+                if (procs.Length == 0)
                 {
                     ResetWarcraft3Info();
                     return WarcraftState.Closed;
                 }
             }
-            Warcraft3Info.Process = processesByName[0];
-            if (Warcraft3Info.Process.Id != Warcraft3Info.ID)
-            {
-                CloseHandle(Warcraft3Info.Handle);
-                Warcraft3Info.ID = processesByName[0].Id;
-                Warcraft3Info.Handle = OpenProcess(0x38, false, (uint)Warcraft3Info.ID);
-                if (Warcraft3Info.Handle == IntPtr.Zero)
-                {
-                    ResetWarcraft3Info();
-                    return WarcraftState.Error;
-                }
-                if (!GetBase(Warcraft3Info.BaseVersion))
-                {
-                    Warcraft3Info.BaseVersion.BaseAddress = IntPtr.Zero;
-                    Warcraft3Info.BaseVersion.Version = 0L;
-                    return WarcraftState.Error;
-                }
-            }
-            if (!(Warcraft3Info.BaseVersion.BaseAddress == IntPtr.Zero) && Warcraft3Info.BaseVersion.Version != 0L || GetBase(Warcraft3Info.BaseVersion))
-                return WarcraftState.OK;
-            ResetWarcraft3Info();
-            return WarcraftState.Error;
+            return InitWarcraft3Info(procs[0]);
         }
 
-
-        public static WarcraftState SelectWarcraft(int id)
+        public static WarcraftState InitWarcraft3Info(string name)
         {
-            Process processesByName = Process.GetProcessById(id);
-            Warcraft3Info.Process = processesByName;
-            if (Warcraft3Info.Process.Id != Warcraft3Info.ID)
+            Process[] procs = Process.GetProcessesByName(name);
+            if (procs.Length == 0)
             {
-                CloseHandle(Warcraft3Info.Handle);
-                Warcraft3Info.ID = processesByName.Id;
-                Warcraft3Info.Handle = OpenProcess(0x38, false, (uint)Warcraft3Info.ID);
-                if (Warcraft3Info.Handle == IntPtr.Zero)
-                {
-                    ResetWarcraft3Info();
-                    return WarcraftState.Error;
-                }
-                if (!GetBase(Warcraft3Info.BaseVersion))
-                {
-                    Warcraft3Info.BaseVersion.BaseAddress = IntPtr.Zero;
-                    Warcraft3Info.BaseVersion.Version = 0L;
-                    return WarcraftState.Error;
-                }
+                ResetWarcraft3Info();
+                return WarcraftState.Closed;
             }
-            if (!(Warcraft3Info.BaseVersion.BaseAddress == IntPtr.Zero) && Warcraft3Info.BaseVersion.Version != 0L || GetBase(Warcraft3Info.BaseVersion))
+            return InitWarcraft3Info(procs[0]);
+        }
+
+        public static WarcraftState InitWarcraft3Info(int id) => InitWarcraft3Info(Process.GetProcessById(id));
+
+        public static WarcraftState InitWarcraft3Info(Process proc)
+        {
+            if ((Warcraft3Info.Process?.Id ?? 0) != proc.Id)
+            {
+                ResetWarcraft3Info();
+                Warcraft3Info.Process = proc;
+                Warcraft3Info.Process.EnableRaisingEvents = true;
+                Warcraft3Info.Handle = OpenProcess(0x38, false, Warcraft3Info.ID);
+                if (Warcraft3Info.Handle == IntPtr.Zero) goto Error;
+            }
+            if (Warcraft3Info.BaseVersion.BaseAddress != IntPtr.Zero && Warcraft3Info.BaseVersion.Version != 0L || GetBase(Warcraft3Info.BaseVersion))
                 return WarcraftState.OK;
 
-            ResetWarcraft3Info();
+            Error: ResetWarcraft3Info();
             return WarcraftState.Error;
         }
     }

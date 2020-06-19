@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectProcess));
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.SelectButton = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.ProcessList = new System.Windows.Forms.ListView();
+            this.PID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.War3Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
             // 
@@ -72,19 +75,32 @@
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroLabel1.UseStyleColors = true;
             // 
-            // listView2
+            // ProcessList
             // 
-            this.listView2.GridLines = true;
-            this.listView2.HideSelection = false;
-            this.listView2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.listView2.Location = new System.Drawing.Point(11, 135);
-            this.listView2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(254, 191);
-            this.listView2.TabIndex = 76;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
-            this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
+            this.ProcessList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.PID,
+            this.War3Name});
+            this.ProcessList.GridLines = true;
+            this.ProcessList.HideSelection = false;
+            this.ProcessList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ProcessList.Location = new System.Drawing.Point(11, 135);
+            this.ProcessList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ProcessList.Name = "ProcessList";
+            this.ProcessList.Size = new System.Drawing.Size(254, 191);
+            this.ProcessList.TabIndex = 76;
+            this.ProcessList.UseCompatibleStateImageBehavior = false;
+            this.ProcessList.View = System.Windows.Forms.View.Details;
+            this.ProcessList.FullRowSelect = true;
+            // 
+            // PID
+            // 
+            this.PID.Text = "PID";
+            this.PID.Width = -2;
+            // 
+            // War3Name
+            // 
+            this.War3Name.Text = "War3Name";
+            this.War3Name.Width = -2;
             // 
             // metroLabel3
             // 
@@ -105,10 +121,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(276, 387);
             this.Controls.Add(this.metroLabel3);
-            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.ProcessList);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.SelectButton);
             this.Controls.Add(this.metroLabel2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SelectProcess";
@@ -116,7 +133,7 @@
             this.Resizable = false;
             this.Text = "War3 선택";
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
-            this.Load += new System.EventHandler(this.SelectProcess_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelectProcess_FormClosing);
             this.ResumeLayout(false);
 
         }
@@ -125,7 +142,9 @@
         private MetroFramework.Controls.MetroLabel metroLabel2;
         public MetroFramework.Controls.MetroButton SelectButton;
         private MetroFramework.Controls.MetroLabel metroLabel1;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView ProcessList;
         private MetroFramework.Controls.MetroLabel metroLabel3;
+        private System.Windows.Forms.ColumnHeader PID;
+        private System.Windows.Forms.ColumnHeader War3Name;
     }
 }
