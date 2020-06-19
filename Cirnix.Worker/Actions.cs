@@ -971,14 +971,14 @@ namespace Cirnix.Worker
         internal static void RoomJoin()
         {
             string arg = GetFullArgs();
-            SendMsg(true, $"「{arg}」에 입장합니다.");
+            SendMsg(true, $"'{arg}'에 입장합니다.");
             Join.RoomJoin(arg);
         }
 
         internal static void RoomCreate()
         {
             string arg = GetFullArgs();
-            SendMsg(true, $"「{arg}」방을 생성합니다.");
+            SendMsg(true, $"'{arg}'방을 생성합니다.");
             Join.RoomCreate(arg);
         }
     }
