@@ -43,10 +43,14 @@ namespace Cirnix.Global
             [Out]out POINT point
         );
 
-        [DllImport("user32.dll")]
+        [DllImport("user32")]
         internal static extern bool RegisterHotKey(IntPtr hWnd, int id, KeyModifiers fsModifiers, Keys vk);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32")]
         internal static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        [DllImport("kernel32", CharSet = CharSet.Auto)]
+        public static extern int GetLastError();
+        [DllImport("kernel32", CharSet = CharSet.Auto)]
+        public static extern int FormatMessage(int dwFlags, IntPtr lpSource, int dwMessageId, int dwLanguageId, out string lpBuffer, int dwSize, IntPtr lpArguments);
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using static Cirnix.Global.NativeMethods;
 
 namespace Cirnix.Global
 {
@@ -117,6 +119,12 @@ namespace Cirnix.Global
             Chat,
             Command,
             None
+        }
+
+        public static string GetLastErrorMessage()
+        {
+            FormatMessage(0x1300, IntPtr.Zero, GetLastError(), 0x400, out string errmsg, 260, IntPtr.Zero);
+            return errmsg;
         }
     }
 }
