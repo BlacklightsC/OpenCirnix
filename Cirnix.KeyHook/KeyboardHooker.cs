@@ -1,17 +1,17 @@
-﻿using System;
-using Cirnix.Memory;
+﻿using Cirnix.Memory;
+using System;
 using System.Diagnostics;
-using static Cirnix.Global.Globals;
-using static Cirnix.Memory.CProcess;
 using System.Runtime.InteropServices;
+using static Cirnix.Global.Globals;
 using static Cirnix.KeyHook.NativeMethods;
+using static Cirnix.Memory.CProcess;
 
 namespace Cirnix.KeyHook
 {
     public static class KeyboardHooker
     {
-        private static LowLevelKeyboardProc _proc = HookCallback;
-        private static IntPtr _hookID = IntPtr.Zero;
+        private static HookProc _proc = HookCallback;
+        private static IntPtr _HookID = IntPtr.Zero;
         private static bool WaitKeyInput = true;
         private static Stopwatch Timer = new Stopwatch();
         private static int Counter = 0;
@@ -31,7 +31,7 @@ namespace Cirnix.KeyHook
                     Counter = 0;
                     Timer.Reset();
                 }
-                if (wParam == (IntPtr)WM_KEYDOWN && Counter < 4)
+               if (wParam == (IntPtr)WM_KEYDOWN && Counter < 4)
                 {
                     if (WaitKeyInput)
                     {
@@ -70,7 +70,7 @@ namespace Cirnix.KeyHook
                     Timer.Restart();
                 }
             }
-            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+            return CallNextHookEx(_HookID, nCode, wParam, lParam);
         }
 
         public static void HookStart()
@@ -78,12 +78,12 @@ namespace Cirnix.KeyHook
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
-                _hookID = SetWindowsHookEx(0xD, _proc, GetModuleHandle(curModule.ModuleName), 0);
+                _HookID = SetWindowsHookEx(0xD, _proc, GetModuleHandle(curModule.ModuleName), 0);
             }
         }
         public static void HookEnd()
         {
-            UnhookWindowsHookEx(_hookID);
+            UnhookWindowsHookEx(_HookID);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Cirnix.KeyHook
         internal static extern IntPtr SetWindowsHookEx
         (
             [In]int idHook, 
-            [In]LowLevelKeyboardProc lpfn,
+            [In]HookProc lpfn,
             [In]IntPtr hMod,
             [In]uint dwThreadId
         );
@@ -38,7 +38,7 @@ namespace Cirnix.KeyHook
             [MarshalAs(UnmanagedType.LPStr)]string lpFileName
         );
 
-        internal delegate IntPtr LowLevelKeyboardProc
+        internal delegate IntPtr HookProc
         (
             int nCode, 
             IntPtr wParam, 
