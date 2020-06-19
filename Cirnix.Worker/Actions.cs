@@ -952,14 +952,11 @@ namespace Cirnix.Worker
 
         internal static void Rework()
         {
-            Settings.InstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
-            string LastInstallPath = Settings.InstallPath;
+            string LastInstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
+            Settings.InstallPath = LastInstallPath;
             string[] args = GetArguments(Warcraft3Info.ID);
             Warcraft3Info.Process.Kill();
             Delay(2000);
-            bool isDebug = false;
-            if (File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")))
-                isDebug = true;
             int windowState = 1;
             if (args.Length != 0)
                 switch(args[0].ToLower())
@@ -967,35 +964,21 @@ namespace Cirnix.Worker
                     case "-windows": windowState = 0; break;
                     case "-nativefullscr": windowState = 2; break;
                 }
-            WarcraftInit(LastInstallPath, windowState, true, isDebug);
+            WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
         }
 
         internal static void RoomJoin()
         {
-            StringBuilder arg = new StringBuilder();
-
-            for (int i = 1; i < args.Count - 1; i++)
-            {
-                arg.Append((args[i]));
-                if (i + 1 != args.Count - 1) arg.Append(" ");
-            }
-
+            string arg = GetFullArgs();
             SendMsg(true, $"「{arg}」에 입장합니다.");
-            Join.RoomJoin(arg.ToString().Trim());
+            Join.RoomJoin(arg);
         }
 
         internal static void RoomCreate()
         {
-            StringBuilder arg = new StringBuilder();
-
-            for (int i = 1; i < args.Count - 1; i++)
-            {
-                arg.Append((args[i]));
-                if (i + 1 != args.Count - 1) arg.Append(" ");
-            }
+            string arg = GetFullArgs();
             SendMsg(true, $"「{arg}」방을 생성합니다.");
-            Join.RoomCreate(arg.ToString().Trim());
+            Join.RoomCreate(arg);
         }
-
     }
 }

@@ -46,7 +46,7 @@ namespace Cirnix.Worker.InnerWorker
                             string[] args;
                             try
                             {
-                                args = prefix.Substring(1, prefix.Length - 1).Split(' ');
+                                args = prefix.Substring(1, prefix.Length - 1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             }
                             catch
                             {
