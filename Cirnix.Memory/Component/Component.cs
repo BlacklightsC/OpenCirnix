@@ -264,7 +264,7 @@ namespace Cirnix.Memory
             }
         }
 
-        internal static IntPtr SearchMemoryRegion(byte[] signature, int offset = 4, uint maxAdd = 0x40000000)
+        internal static IntPtr SearchMemoryRegion(byte[] signature, int offset = 4, uint maxAdd = 0x70000000)
         {
             IntPtr lpBaseAddress = IntPtr.Zero;
             byte[] buffer = new byte[signature.Length];
