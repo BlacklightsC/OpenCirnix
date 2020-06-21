@@ -20,6 +20,12 @@ namespace Cirnix.Worker
         public static AutoMouse autoMouse { get; private set; }
         private static bool isInitialaized = false; 
 
+        private static void CheckPath(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
         public static void RunWorkers()
         {
             if (isInitialaized) return;
@@ -28,35 +34,38 @@ namespace Cirnix.Worker
             commands = new Commands();
             autoRG = new AutoRG();
             autoMouse = new AutoMouse();
-            if (!Directory.Exists(Globals.DocumentPath + @"\CustomMapData"))
-                Directory.CreateDirectory(Globals.DocumentPath + @"\CustomMapData");
-            SaveFileWatcher = new FileSystemWatcher(Globals.DocumentPath + @"\CustomMapData", "*.txt");
+
+            string path = $"{Globals.DocumentPath}\\CustomMapData";
+            CheckPath(path);
+            SaveFileWatcher = new FileSystemWatcher(path, "*.txt");
             SaveFileWatcher.Created += Actions.SaveFileWatcher_Created;
             SaveFileWatcher.IncludeSubdirectories = true;
             SaveFileWatcher.EnableRaisingEvents = false;
             SaveFileWatcher.NotifyFilter = NotifyFilters.FileName;
+
             SaveWatcherTimer = new System.Windows.Forms.Timer();
             SaveWatcherTimer.Interval = 10000;
             SaveWatcherTimer.Tick += Actions.WatcherTimer_Tick;
-            if (!Directory.Exists(Globals.DocumentPath + @"\Replay"))
-                Directory.CreateDirectory(Globals.DocumentPath + @"\Replay");
-            ReplayWatcher = new FileSystemWatcher(Globals.DocumentPath + @"\Replay", "*.w3g");
+
+            CheckPath(path = $"{Globals.DocumentPath}\\Replay");
+            ReplayWatcher = new FileSystemWatcher(path, "*.w3g");
             ReplayWatcher.Created += Actions.ReplayWatcher_Function;
             ReplayWatcher.Changed += Actions.ReplayWatcher_Function;
             ReplayWatcher.IncludeSubdirectories = false;
             ReplayWatcher.EnableRaisingEvents = Settings.IsAutoReplay;
-            if (!Directory.Exists(Globals.DocumentPath + @"\ScreenShots"))
-                Directory.CreateDirectory(Globals.DocumentPath + @"\ScreenShots");
-            ScreenShotWatcher = new FileSystemWatcher(Globals.DocumentPath + @"\ScreenShots", "*.tga");
+
+            CheckPath(path = $"{Globals.DocumentPath}\\ScreenShots");
+            ScreenShotWatcher = new FileSystemWatcher(path, "*.tga");
             ScreenShotWatcher.Created += Actions.ScreenShotWatcher_Created;
             ScreenShotWatcher.IncludeSubdirectories = false;
             ScreenShotWatcher.EnableRaisingEvents = Settings.IsConvertScreenShot;
-            if (!Directory.Exists(Globals.DocumentPath + @"\Maps"))
-                Directory.CreateDirectory(Globals.DocumentPath + @"\Maps");
-            MapFileWatcher = new FileSystemWatcher(Globals.DocumentPath + @"\Maps", "*.w3x");
+
+            CheckPath(path = $"{Globals.DocumentPath}\\Maps");
+            MapFileWatcher = new FileSystemWatcher(path, "*.w3x");
             MapFileWatcher.Created += Actions.MapFileWatcher_Created;
             MapFileWatcher.IncludeSubdirectories = true;
             MapFileWatcher.EnableRaisingEvents = Settings.IsCheatMapCheck;
+
             chatHotkeyList = new ChatHotkeyList();
             for (int i = 0; i < 10; i++)
                 if (chatHotkeyList[i].IsRegisted)

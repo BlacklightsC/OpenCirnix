@@ -714,12 +714,12 @@ namespace Cirnix.Worker
                 GameDelay = 550;
                 if (Settings.IsCheatMapCheck && !LoadedFiles.IsLoadedMap(out _))
                     MainWorker.MapFileWatcher.EnableRaisingEvents = true;
-                if (File.Exists(DocumentPath + @"\Replay\LastReplay.w3g"))
+                if (File.Exists($"{DocumentPath}\\Replay\\LastReplay.w3g"))
                 {
                     try
                     {
-                        File.Delete(DocumentPath + @"\Replay\CirnixReplay.w3g");
-                        File.Move(DocumentPath + @"\Replay\LastReplay.w3g", DocumentPath + @"\Replay\CirnixReplay.w3g");
+                        File.Delete($"{DocumentPath}\\Replay\\CirnixReplay.w3g");
+                        File.Move($"{DocumentPath}\\Replay\\LastReplay.w3g", $"{DocumentPath}\\Replay\\CirnixReplay.w3g");
                     }
                     catch
                     {
