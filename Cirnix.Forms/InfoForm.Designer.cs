@@ -40,6 +40,7 @@
             this.Label_BetaUser = new MetroFramework.Controls.MetroLabel();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.LicenceButton = new MetroFramework.Controls.MetroButton();
+            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,7 +71,7 @@
             // Label_CurrentVersion
             // 
             this.Label_CurrentVersion.BackColor = System.Drawing.Color.Transparent;
-            this.Label_CurrentVersion.Location = new System.Drawing.Point(39, 394);
+            this.Label_CurrentVersion.Location = new System.Drawing.Point(39, 419);
             this.Label_CurrentVersion.Name = "Label_CurrentVersion";
             this.Label_CurrentVersion.Size = new System.Drawing.Size(72, 20);
             this.Label_CurrentVersion.TabIndex = 2;
@@ -80,7 +81,7 @@
             // Label_LatestVersion
             // 
             this.Label_LatestVersion.BackColor = System.Drawing.Color.Transparent;
-            this.Label_LatestVersion.Location = new System.Drawing.Point(39, 415);
+            this.Label_LatestVersion.Location = new System.Drawing.Point(39, 440);
             this.Label_LatestVersion.Name = "Label_LatestVersion";
             this.Label_LatestVersion.Size = new System.Drawing.Size(72, 20);
             this.Label_LatestVersion.TabIndex = 3;
@@ -91,7 +92,7 @@
             // 
             this.UpdateButton.Enabled = false;
             this.UpdateButton.Highlight = true;
-            this.UpdateButton.Location = new System.Drawing.Point(150, 445);
+            this.UpdateButton.Location = new System.Drawing.Point(150, 470);
             this.UpdateButton.Name = "UpdateButton";
             this.UpdateButton.Size = new System.Drawing.Size(100, 35);
             this.UpdateButton.TabIndex = 4;
@@ -102,7 +103,7 @@
             // LatestVersion
             // 
             this.LatestVersion.BackColor = System.Drawing.Color.Transparent;
-            this.LatestVersion.Location = new System.Drawing.Point(117, 415);
+            this.LatestVersion.Location = new System.Drawing.Point(117, 440);
             this.LatestVersion.Name = "LatestVersion";
             this.LatestVersion.Size = new System.Drawing.Size(120, 20);
             this.LatestVersion.TabIndex = 6;
@@ -112,7 +113,7 @@
             // CurrentVersion
             // 
             this.CurrentVersion.BackColor = System.Drawing.Color.Transparent;
-            this.CurrentVersion.Location = new System.Drawing.Point(117, 394);
+            this.CurrentVersion.Location = new System.Drawing.Point(117, 419);
             this.CurrentVersion.Name = "CurrentVersion";
             this.CurrentVersion.Size = new System.Drawing.Size(120, 20);
             this.CurrentVersion.TabIndex = 5;
@@ -126,7 +127,7 @@
             this.Toggle_BetaUser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_BetaUser.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Toggle_BetaUser.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.Toggle_BetaUser.Location = new System.Drawing.Point(135, 377);
+            this.Toggle_BetaUser.Location = new System.Drawing.Point(135, 402);
             this.Toggle_BetaUser.Name = "Toggle_BetaUser";
             this.Toggle_BetaUser.Size = new System.Drawing.Size(70, 15);
             this.Toggle_BetaUser.Style = MetroFramework.MetroColorStyle.Green;
@@ -140,7 +141,7 @@
             // 
             this.Label_BetaUser.BackColor = System.Drawing.Color.Transparent;
             this.Label_BetaUser.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.Label_BetaUser.Location = new System.Drawing.Point(51, 374);
+            this.Label_BetaUser.Location = new System.Drawing.Point(51, 399);
             this.Label_BetaUser.Name = "Label_BetaUser";
             this.Label_BetaUser.Size = new System.Drawing.Size(80, 20);
             this.Label_BetaUser.Style = MetroFramework.MetroColorStyle.Green;
@@ -165,7 +166,7 @@
             // LicenceButton
             // 
             this.LicenceButton.Highlight = true;
-            this.LicenceButton.Location = new System.Drawing.Point(24, 445);
+            this.LicenceButton.Location = new System.Drawing.Point(24, 470);
             this.LicenceButton.Name = "LicenceButton";
             this.LicenceButton.Size = new System.Drawing.Size(100, 35);
             this.LicenceButton.TabIndex = 74;
@@ -173,11 +174,24 @@
             this.LicenceButton.UseSelectable = true;
             this.LicenceButton.Click += new System.EventHandler(this.LicenceButton_Click);
             // 
+            // metroLabel2
+            // 
+            this.metroLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.metroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.metroLabel2.Location = new System.Drawing.Point(10, 373);
+            this.metroLabel2.Name = "metroLabel2";
+            this.metroLabel2.Size = new System.Drawing.Size(256, 20);
+            this.metroLabel2.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLabel2.TabIndex = 75;
+            this.metroLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.metroLabel2.UseStyleColors = true;
+            // 
             // InfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(276, 490);
+            this.ClientSize = new System.Drawing.Size(276, 515);
+            this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.LicenceButton);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.Label_BetaUser);
@@ -216,5 +230,6 @@
         private MetroFramework.Controls.MetroLabel Label_BetaUser;
         private MetroFramework.Controls.MetroLabel metroLabel1;
         public MetroFramework.Controls.MetroButton LicenceButton;
+        private MetroFramework.Controls.MetroLabel metroLabel2;
     }
 }
