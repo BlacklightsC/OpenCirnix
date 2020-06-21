@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using static Cirnix.Global.Component;
-using static Cirnix.Global.Globals;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
 
@@ -41,16 +40,16 @@ namespace Cirnix.Memory
             Process currentProcess = Process.GetCurrentProcess();
 
             Parallel.ForEach(Process.GetProcesses(),
-                             process =>
+                             async process =>
                              {
-                                 if (excludeThisProcess && (process.ProcessName == currentProcess.ProcessName))
+                                 if (excludeThisProcess && process.ProcessName == currentProcess.ProcessName)
                                      return;
 
                                  if (excludeProcessNames != null &&
                                     excludeProcessNames.Any(procName => procName == process.ProcessName))
                                      return;
 
-                                 TrimProcessMemory(process, false);
+                                 await TrimProcessMemory(process, false);
                              });
         }
 
@@ -59,7 +58,7 @@ namespace Cirnix.Memory
         /// </summary>
         /// <param name="process">메모리 해제를 할 프로세스</param>
         /// <returns>메모리 해제 여부</returns>
-        public static bool TrimProcessMemory(Process process, bool isSingle)
+        public static async Task<bool> TrimProcessMemory(Process process, bool NeedResult = false)
         {
             if (process == null) return false;
             bool _result;
@@ -67,15 +66,14 @@ namespace Cirnix.Memory
             {
                 long oldWorkingSet64 = process.WorkingSet64;
                 _result = EmptyWorkingSet(process.Handle);
-                Process targetProcess = Process.GetProcessById(process.Id);
-
-                if (_result && isSingle)
-                {
-                    MemoryValue[0] = oldWorkingSet64;
-                    Delay(5000);
-                    MemoryValue[1] = targetProcess.WorkingSet64;
-                    MemoryValue[2] = oldWorkingSet64 - targetProcess.WorkingSet64;
-                }
+                using (Process targetProcess = Process.GetProcessById(process.Id))
+                    if (_result && NeedResult)
+                    {
+                        MemoryValue[0] = oldWorkingSet64;
+                        await Task.Delay(5000);
+                        MemoryValue[1] = targetProcess.WorkingSet64;
+                        MemoryValue[2] = process.WorkingSet64 - targetProcess.WorkingSet64;
+                    }
             }
             catch
             {
@@ -90,14 +88,17 @@ namespace Cirnix.Memory
         /// </summary>
         /// <param name="ProcessName">메모리 해제를 할 프로세스의 이름</param>
         /// <returns>메모리 해제 여부</returns>
-        public static bool TrimProcessMemory(string ProcessName, bool NeedResult = false)
+        public static async Task<bool> TrimProcessMemory(string ProcessName, bool NeedResult = false)
         {
             Process[] ProcessbyName = Process.GetProcessesByName(ProcessName);
             
-            if(ProcessbyName.Length > 0)
-                return TrimProcessMemory(ProcessbyName[0], NeedResult);
+            if (ProcessbyName.Length > 0)
+                return await TrimProcessMemory(ProcessbyName[0], NeedResult);
 
             return false;
         }
+
+        public static async Task<bool> TrimProcessMemory(bool NeedResult = false)
+            => await TrimProcessMemory(Warcraft3Info.Process, NeedResult);
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
@@ -35,7 +36,7 @@ namespace Cirnix.Worker
 
             MemoryOptimizeChecker = new HangWatchdog(() => new TimeSpan(0, Settings.MemoryOptimizeCoolDown, 0));
             MemoryOptimizeChecker.Condition = () => Settings.IsMemoryOptimize;
-            MemoryOptimizeChecker.Actions += () => CProcess.TrimProcessMemory(TargetProcess, true);
+            MemoryOptimizeChecker.Actions += async() => await CProcess.TrimProcessMemory(true);
         }
 
         internal static void InitHotkey()
@@ -133,7 +134,7 @@ namespace Cirnix.Worker
             }
             return isLower ? arg.ToString().ToLower() : arg.ToString();
         }
-        private static void SaveFileMover(string path)
+        private static async Task SaveFileMover(string path)
         {
             string FileName;
             if (!Directory.Exists(GetCurrentPath(1)))
@@ -151,17 +152,17 @@ namespace Cirnix.Worker
             }
             catch
             {
-                Delay(1000);
+                await Task.Delay(1000);
                 File.Move(path, FileName);
             }
         }
-        internal static void SaveFileWatcher_Created(object sender, FileSystemEventArgs e)
+        internal static async void SaveFileWatcher_Created(object sender, FileSystemEventArgs e)
         {
             if (!IsSaved) return;
             if (e.FullPath.IndexOf(GetCurrentPath(0)) != -1)
             {
                 MainWorker.SaveWatcherTimer.Enabled = MainWorker.SaveFileWatcher.EnableRaisingEvents = false;
-                SaveFileMover(e.FullPath);
+                await SaveFileMover(e.FullPath);
                 Category[2] = Path.GetFileName(GetLastest(GetCurrentPath(1)));
                 SendMsg(true, $"{Category[1]}\\{Category[2]} 로 저장되었습니다.");
                 ListUpdate(2);
@@ -184,30 +185,34 @@ namespace Cirnix.Worker
                 Category[0] = oldName;
                 goto AutoChange;
             }
-            else if (IsGrabitiSaveText(e.FullPath)|| IsTwrSaveText(e.FullPath))
+            else
             {
-                SendMsg(true, "새로운 맵 세이브가 감지되어 자동으로 추가되었습니다.");
-                string path = $"\\{Path.GetDirectoryName(e.FullPath).Substring(DocumentPath.Length)}";
-                string name = path.Substring(path.LastIndexOf('\\') + 1);
-                saveFilePath.AddPath(path, name);
-                Category[0] = name;
-                goto AutoChange;
+                string[] lines = await GetLines(e.FullPath);
+                if (IsGrabitiSaveText(lines) || IsTwrSaveText(lines))
+                {
+                    SendMsg(true, "새로운 맵 세이브가 감지되어 자동으로 추가되었습니다.");
+                    string path = $"\\{Path.GetDirectoryName(e.FullPath).Substring(DocumentPath.Length)}";
+                    string name = path.Substring(path.LastIndexOf('\\') + 1);
+                    saveFilePath.AddPath(path, name);
+                    Category[0] = name;
+                    goto AutoChange;
+                }
             }
             ListUpdate(0);
             return;
 
             AutoChange:
             Category[1] = "미지정";
-            SaveFileMover(e.FullPath);
+            await SaveFileMover(e.FullPath);
             ListUpdate(2);
         }
         internal static void WatcherTimer_Tick(object sender, EventArgs e)
         {
             MainWorker.SaveWatcherTimer.Enabled = MainWorker.SaveFileWatcher.EnableRaisingEvents = false;
         }
-        internal static void ReplayWatcher_Function(object sender, FileSystemEventArgs e)
+        internal static async void ReplayWatcher_Function(object sender, FileSystemEventArgs e)
         {
-            if (Settings.IsOptimizeAfterEndGame && CProcess.TrimProcessMemory(TargetProcess))
+            if (Settings.IsOptimizeAfterEndGame && await CProcess.TrimProcessMemory())
                 MemoryOptimizeChecker.Restart();
             if (!Settings.IsAutoReplay)
             {
@@ -217,7 +222,7 @@ namespace Cirnix.Worker
             }
             try
             {
-                Delay(1000);
+                await Task.Delay(1000);
                 MainWorker.ReplayWatcher.EnableRaisingEvents = false;
                 string LastReplay = $"{Path.GetDirectoryName(e.FullPath)}\\LastReplay.w3g";
                 if (File.Exists(LastReplay) && new FileInfo(LastReplay).Length >= 1024)
@@ -248,10 +253,10 @@ namespace Cirnix.Worker
             catch { }
             MainWorker.ReplayWatcher.EnableRaisingEvents = true;
         }
-        internal static void ScreenShotWatcher_Created(object sender, FileSystemEventArgs e)
+        internal static async void ScreenShotWatcher_Created(object sender, FileSystemEventArgs e)
         {
             if (!Path.HasExtension(e.FullPath)) return;
-            SaveTo(ReadFile(e.FullPath), $"{Path.GetDirectoryName(e.FullPath)}\\{Path.GetFileNameWithoutExtension(e.FullPath)}", Settings.ConvertExtention);
+            SaveTo(await ReadFile(e.FullPath), $"{Path.GetDirectoryName(e.FullPath)}\\{Path.GetFileNameWithoutExtension(e.FullPath)}", Settings.ConvertExtention);
             if (Settings.IsOriginalRemove) File.Delete(e.FullPath);
         }
         internal static void MapFileWatcher_Created(object sender, FileSystemEventArgs e)
@@ -260,7 +265,7 @@ namespace Cirnix.Worker
             SendMsg(true, $"판독 결과: 치트맵{(IsCheatMap(e.FullPath) ? " 인것이 확인되었습" : "이 아닙")}니다.");
             MainWorker.MapFileWatcher.EnableRaisingEvents = false;
         }
-        internal static void LoadCode()
+        internal static async void LoadCode()
         {
             if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
             {
@@ -291,14 +296,14 @@ namespace Cirnix.Worker
                 if (string.IsNullOrEmpty(Code[i])) break;
                 SendMsg(false, new string[] { Code[i].Substring(0, Code[i].Length >= 127 ? 127 : Code[i].Length) }, Settings.GlobalDelay);
             }
-            Delay(200);
+            await Task.Delay(200);
             TypeCommands();
             return;
             Error:
             SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
 
-        internal static void LoadCode2()
+        internal static async void LoadCode2()
         {
             if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
             {
@@ -329,7 +334,7 @@ namespace Cirnix.Worker
                 if (string.IsNullOrEmpty(Code[i])) break;
                 SendMsg(false, new string[] { Code[i].Substring(0, Code[i].Length >= 130 ? 130 : Code[i].Length) }, Settings.GlobalDelay);
             }
-            Delay(200);
+            await Task.Delay(200);
             TypeCommands();
             return;
         Error:
@@ -541,7 +546,7 @@ namespace Cirnix.Worker
             SendMsg(true, "자동 RG 기능이 시작되었습니다. ▷반복: 무제한");
             MainWorker.autoRG.RunWorkerAsync(-1);
         }
-        internal static void RpgSave()
+        internal static async void RpgSave()
         {
             if (!IsInGame) return;
             IsSaved = true;
@@ -556,7 +561,7 @@ namespace Cirnix.Worker
                 goto Error;
             }
             if (FileName.Length == 0) goto Error;
-            SaveFileMover(FileName[0]);
+            await SaveFileMover(FileName[0]);
             Category[2] = Path.GetFileName(GetLastest(GetCurrentPath(1)));
             SendMsg(true, $"{Category[1]}\\{Category[2]} 로 저장되었습니다.");
             ListUpdate(2);
@@ -635,7 +640,7 @@ namespace Cirnix.Worker
 
         internal static HangWatchdog MemoryOptimizeChecker;
         internal static HangWatchdog AntiZombieProcessChecker;
-        internal static bool ProcessCheck()
+        internal static async Task<bool> ProcessCheck()
         {
             if (GameModule.InitWarcraft3Info() != WarcraftState.OK
                 || !GameModule.WarcraftCheck())
@@ -650,7 +655,7 @@ namespace Cirnix.Worker
             if (!InitializedWarcraft)
             {
                 InitializedWarcraft = true;
-                Delay(2000);
+                await Task.Delay(2000);
                 GameDll.GetOffset();
                 GameDelay = 50;
                 RefreshCooldown = 0.01f;
@@ -668,24 +673,22 @@ namespace Cirnix.Worker
             StatusCheck();
             return false;
         }
-        internal static void MemoryOptimize()
+        internal static async void MemoryOptimize()
         {
             if (Settings.IsMemoryOptimize)
                 MemoryOptimizeChecker.Restart();
-            new Thread(() => {
-                SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
-                if (CProcess.TrimProcessMemory(TargetProcess, true))
+            SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
+            if (await CProcess.TrimProcessMemory(true))
+            {
+                if (CProcess.MemoryValue[2] < 0)
                 {
-                    if (CProcess.MemoryValue[2] < 0)
-                    {
-                        SendMsg(true, "최적화할 메모리를 찾을 수 없었습니다.");
-                    }
-                    else SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(CProcess.MemoryValue[2])} = {ConvertSize(CProcess.MemoryValue[1])}");
+                    SendMsg(true, "최적화할 메모리를 찾을 수 없었습니다.");
                 }
-                else SendMsg(true, "Error - 최적화 중에 예외가 발생했습니다.");
-            }).Start();
+                else SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(CProcess.MemoryValue[2])} = {ConvertSize(CProcess.MemoryValue[1])}");
+            }
+            else SendMsg(true, "Error - 최적화 중에 예외가 발생했습니다.");
         }
-        internal static void StatusCheck() 
+        internal static async void StatusCheck() 
         {
             if (WaitGameStart)
             {
@@ -693,11 +696,11 @@ namespace Cirnix.Worker
                 WaitGameStart = false;
                 MainWorker.autoRG.CancelAsync();
                 MainWorker.MapFileWatcher.EnableRaisingEvents = false;
-                Delay(500);
+                await Task.Delay(500);
                 CameraInit();
                 GameDelay = Settings.GameDelay;
                 if (!Settings.IsAutoLoad) return;
-                Delay(3000);
+                await Task.Delay(3000);
                 LoadCodeSelect();
             }
             else
@@ -706,7 +709,6 @@ namespace Cirnix.Worker
                 {
                     GameDelay = 50;
                     WaitLobby = true;
-                    Globals.ExtendForce = false;
                 }
                 if (!WaitLobby || GameDelay != 100) return;
                 GameDelay = 550;
@@ -751,10 +753,10 @@ namespace Cirnix.Worker
             }
             SendMsg(true, $"현재 로드된 맵 경로: {MapPath.Substring(MapPath.IndexOf(@"\Warcraft III\Maps\") + 14)}");
         }
-        private static void KeyDebugFunc()
+        private static async void KeyDebugFunc()
         {
             KeyboardHooker.HookEnd();
-            Delay(1);
+            await Task.Delay(1);
             KeyboardHooker.HookStart();
         }
         internal static void KeyDebug()
@@ -881,7 +883,7 @@ namespace Cirnix.Worker
             }
         }
 
-        internal static void LoadCodeSelect()
+        internal static async void LoadCodeSelect()
         {
             string MapPath;
             if (!LoadedFiles.IsLoadedMap(out MapPath))
@@ -893,7 +895,7 @@ namespace Cirnix.Worker
 
             if (MapPath.Contains("twrpg"))
             {
-                Delay(3000);
+                await Task.Delay(3000);
                 LoadCode2();
             }
             else
@@ -902,14 +904,14 @@ namespace Cirnix.Worker
             }
         }
 
-        internal static void Rework()
+        internal static async void Rework()
         {
             string LastInstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
             Settings.InstallPath = LastInstallPath;
             string[] args = GetArguments(Warcraft3Info.ID);
             Warcraft3Info.Close();
             
-            Delay(2000);
+            await Task.Delay(2000);
             int windowState = 1;
             if (args.Length != 0)
                 switch(args[0].ToLower())

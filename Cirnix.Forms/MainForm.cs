@@ -3,6 +3,7 @@ using Cirnix.Memory;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
@@ -57,16 +58,16 @@ namespace Cirnix.Forms
             ProgramShutDown();
         }
 
-        public void InvokedListUpdate(int depth = 0)
+        public async void InvokedListUpdate(int depth = 0)
         {
-            Delay(100);
+            await Task.Delay(100);
             try
             {
                 Invoke(new Action<int>(ListUpdate), depth);
             }
             catch
             {
-                Delay(1000);
+                await Task.Delay(1000);
                 Invoke(new Action<int>(ListUpdate), depth);
             }
         }

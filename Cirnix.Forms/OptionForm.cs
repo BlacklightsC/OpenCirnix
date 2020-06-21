@@ -7,6 +7,7 @@ using ModernFolderBrowserDialog;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static Cirnix.Forms.NativeMethods;
@@ -1710,10 +1711,10 @@ namespace Cirnix.Forms
             Label_CommandEN.Text = value;
         }
 
-        private void BTN_HotKeyDebug_Click(object sender, EventArgs e)
+        private async void BTN_HotKeyDebug_Click(object sender, EventArgs e)
         {
             KeyboardHooker.HookEnd();
-            Delay(1);
+            await Task.Delay(1);
             KeyboardHooker.HookStart();
             MetroDialog.OK("후킹 재설정 완료", "단축키 후킹 상태를 재설정하였습니다.");
         }
@@ -1730,9 +1731,9 @@ namespace Cirnix.Forms
             if (IsUpdating) return;
             Settings.ChatFrequency = Convert.ToInt32(Number_ChatFrequency.Value) - 1;
         }
-        private void BTN_DetectFrequency_Click(object sender, EventArgs e)
+        private async void BTN_DetectFrequency_Click(object sender, EventArgs e)
         {
-            Memory.Message.DetectChatFrequency();
+            await Memory.Message.DetectChatFrequency();
             IsUpdating = true;
             Number_ChatFrequency.Value = Settings.ChatFrequency + 1;
             IsUpdating = false;

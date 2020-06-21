@@ -45,7 +45,6 @@ namespace Cirnix.Global
         public static Func<string, int, bool, bool, int> WarcraftInit;
         public static Action<int> ListUpdate;
         public static IntPtr GlobalHandle = IntPtr.Zero;
-        public static bool ExtendForce = false;
         private static readonly string[] CheatSetPhases = Properties.Resources.CheatSetPhrase.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
         public static void InitGlobal(bool IsUpdated)
@@ -68,17 +67,16 @@ namespace Cirnix.Global
             Application.ThreadException += new ThreadExceptionEventHandler(ExceptionSender.Application_ThreadException);
             Thread.GetDomain().UnhandledException += new UnhandledExceptionEventHandler(ExceptionSender.Application_UnhandledException);
         }
-        public async static void Delay(int MS)
-        {
-            await Task.Delay(MS);
-            //DateTime ThisMoment = DateTime.Now;
-            //DateTime AfterWards = ThisMoment.Add(new TimeSpan(0, 0, 0, 0, MS));
-            //while (AfterWards >= ThisMoment)
-            //{
-            //    Application.DoEvents();
-            //    ThisMoment = DateTime.Now;
-            //}
-        }
+        //public static void Delay(int MS)
+        //{
+        //    DateTime ThisMoment = DateTime.Now;
+        //    DateTime AfterWards = ThisMoment.Add(new TimeSpan(0, 0, 0, 0, MS));
+        //    while (AfterWards >= ThisMoment)
+        //    {
+        //        Application.DoEvents();
+        //        ThisMoment = DateTime.Now;
+        //    }
+        //}
         public static string GetLastest(string directory)
         {
             try
@@ -266,22 +264,25 @@ namespace Cirnix.Global
             }
         }
 
-        public static bool IsGrabitiSaveText(string path)
+        public static async Task<string[]> GetLines(string path)
+        {
+            if (Path.GetExtension(path).ToLower() != ".txt") return null;
+            try
+            {
+                return File.ReadAllLines(path);
+            }
+            catch
+            {
+                await Task.Delay(1000);
+                return File.ReadAllLines(path);
+            }
+        }
+
+        public static bool IsGrabitiSaveText(string[] lines)
         {
             try
             {
-                if (Path.GetExtension(path).ToLower() != ".txt") return false;
                 bool isFound = false;
-                string[] lines;
-                try
-                {
-                    lines = File.ReadAllLines(path);
-                }
-                catch
-                {
-                    Delay(1000);
-                    lines = File.ReadAllLines(path);
-                }
                 for (int i = 0; true; i++)
                 {
                     Regex CodePattern = new Regex("^Code[0-9]+: (.+?) $");
@@ -302,22 +303,11 @@ namespace Cirnix.Global
             }
         }
 
-        public static bool IsTwrSaveText(string path)
+        public static bool IsTwrSaveText(string[] lines)
         {
             try
             {
-                if (Path.GetExtension(path).ToLower() != ".txt") return false;
                 bool isFound = false;
-                string[] lines;
-                try
-                {
-                    lines = File.ReadAllLines(path);
-                }
-                catch
-                {
-                    Delay(1000);
-                    lines = File.ReadAllLines(path);
-                }
                 for (int i = 0; true; i++)
                 {
                     //Regex CodePattern = new Regex("^Code[0-9]+: (.+?) $");
@@ -347,7 +337,7 @@ namespace Cirnix.Global
                     return sReader.ReadToEnd();
             }
         }
-        public static byte[] ReadFile(string path)
+        public static async Task<byte[]> ReadFile(string path)
         {
             byte[] data;
             try
@@ -368,7 +358,7 @@ namespace Cirnix.Global
             {
                 try
                 {
-                    Delay(1000);
+                    await Task.Delay(1000);
                     using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         // Read bytes from stream and interpret them as ints

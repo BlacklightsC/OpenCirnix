@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
@@ -71,9 +72,9 @@ namespace Cirnix.Forms
         }
 
         [System.Diagnostics.Conditional("DEBUG")]
-        public void DebugWarcraftOutput()
+        public async void DebugWarcraftOutput()
         {
-            Delay(200);
+            await Task.Delay(200);
             Memory.Message.SendMsg(true, $"Debug Mode On, Version: {version[0]}.{version[1]}.{version[2]}.{version[3]}");
         }
         private void InitMainForm()

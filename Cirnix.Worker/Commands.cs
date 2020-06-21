@@ -21,14 +21,14 @@ namespace Cirnix.Worker.InnerWorker
             Worker.RunWorkerAsync();
         }
 
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        private async void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 string prefix = string.Empty;
                 try
                 {
-                    if (Actions.ProcessCheck() || string.IsNullOrEmpty(prefix = GetMessage())) return;
+                    if (await Actions.ProcessCheck() || string.IsNullOrEmpty(prefix = GetMessage())) return;
                     switch (prefix[0])
                     {
                         case '!':

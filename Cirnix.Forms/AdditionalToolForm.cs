@@ -100,7 +100,7 @@ namespace Cirnix.Forms
             IsFormEnabled = true;
         }
 
-        private void BTN_ConvertScreenShot_Click(object sender, EventArgs e)
+        private async void BTN_ConvertScreenShot_Click(object sender, EventArgs e)
         {
             OpenFileDialog OFD = new OpenFileDialog();
             OFD.Title = "변환할 스크린샷 파일을 선택해주세요.";
@@ -123,7 +123,7 @@ namespace Cirnix.Forms
                 List_Data.Rows[i].Cells[1].Value = "변환 중...";
                 List_Data.Rows[i].Cells[1].Style.BackColor = Color.Yellow;
                 Application.DoEvents();
-                if (TgaReader.SaveTo(Globals.ReadFile(FileNames[i]), Path.GetDirectoryName(FileNames[i]) + @"\" + Path.GetFileNameWithoutExtension(FileNames[i]), Combo_ScreenShotExtension.Text))
+                if (TgaReader.SaveTo(await Globals.ReadFile(FileNames[i]), Path.GetDirectoryName(FileNames[i]) + @"\" + Path.GetFileNameWithoutExtension(FileNames[i]), Combo_ScreenShotExtension.Text))
                 {
                     List_Data.Rows[i].Cells[1].Value = "변환 완료";
                     List_Data.Rows[i].Cells[1].Style.BackColor = Color.LightGreen;

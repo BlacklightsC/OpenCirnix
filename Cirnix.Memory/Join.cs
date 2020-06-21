@@ -25,14 +25,14 @@ namespace Cirnix.Memory
             return false;
         }
 
-        public static void RoomJoin(string roomname)
+        public static async void RoomJoin(string roomname)
         {
             if (roomname.Length == 0) return;
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
-            Delay(3000);
+            await Task.Delay(3000);
 
             if (GetOffset())
             {
@@ -49,7 +49,7 @@ namespace Cirnix.Memory
         }
 
 
-        public static void RoomCreate(string roomname)
+        public static async void RoomCreate(string roomname)
         {
             if (roomname.Length == 0) return;
             
@@ -57,18 +57,18 @@ namespace Cirnix.Memory
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 71, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
-            Task.Delay(3000);
+            await Task.Delay(3000);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 67, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
-            Task.Delay(1000);
+            await Task.Delay(1000);
 
             if (GetOffset())
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
                 WriteProcessMemory(Warcraft3Info.Handle, Offset, buffer, buffer.Length + 1, out _);
-                Delay(3000);
+                await Task.Delay(3000);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 67, 0);

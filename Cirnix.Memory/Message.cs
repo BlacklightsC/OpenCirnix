@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 using System.Threading;
-
+using System.Threading.Tasks;
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.NativeMethods;
 using static Cirnix.Memory.Component;
@@ -60,7 +60,9 @@ namespace Cirnix.Memory
             return Encoding.UTF8.GetString(iBuffer);
         }
 
-        public static void DetectChatFrequency()
+        public static async 
+        Task
+DetectChatFrequency()
         {
             CEditBoxOffset = SearchAddress(MessageSearchPattern);
             if (CEditBoxOffset != IntPtr.Zero)
@@ -76,7 +78,7 @@ namespace Cirnix.Memory
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-                Delay(200);
+                await Task.Delay(200);
                 for (int i = 0; i < 20; i++)
                     if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), buffer, 1, out _)
                      && buffer[0] == 0)
