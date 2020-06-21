@@ -1,7 +1,5 @@
-﻿using Cirnix.Global.Registry;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Windows.Forms;
 using static Cirnix.Global.Globals;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
@@ -129,58 +127,10 @@ namespace Cirnix.Memory
                 */
         #endregion
 
-        private static bool GetBase(BaseVersion bv)
-        {
-            try
-            {
-                foreach (ProcessModule item in Warcraft3Info.Process.Modules)
-                {
-                    if (string.Compare(item.ModuleName, $"{TargetProcess}.exe", true) == 0)
-                    {
-                        Warcraft3Info.BaseVersion.BaseAddress = item.BaseAddress;
-                        Warcraft3Info.BaseVersion.Version = 
-                            int.Parse(item.FileVersionInfo.FileVersion.Replace(" ", string.Empty)
-                                                                      .Replace(".", string.Empty)
-                                                                      .Replace(",", string.Empty));
-                        return true;
-                    }
-                }
-            }
-            catch
-            {
-                Warcraft3Info.BaseVersion.Version = 0L;
-                Warcraft3Info.BaseVersion.BaseAddress = IntPtr.Zero;
-            }
-            return false;
-        }
-
-        private static void ResetWarcraft3Info()
-        {
-            if (Warcraft3Info.Handle != IntPtr.Zero)
-                CloseHandle(Warcraft3Info.Handle);
-            Warcraft3Info.BaseVersion.Version = 0L;
-            if (Warcraft3Info.Process != null)
-            {
-                Warcraft3Info.Process.Dispose();
-                Warcraft3Info.Process = null;
-            }
-
-            Warcraft3Info.BaseVersion.BaseAddress =
-            Warcraft3Info.Handle =
-            ChannelChat.ChannelOffset =
-            ChannelChat.MessageOffset =
-            ControlDelay.Offset =
-            GameDll.GameDllOffset =
-            LoadedFiles.Offset =
-            Message.CEditBoxOffset =
-            Message.MessageOffset =
-            Message.ReceiverOffset = IntPtr.Zero;
-        }
-
         public static bool WarcraftCheck()
         {
             byte[] lpBuffer = new byte[1];
-            IntPtr baseAddress = Warcraft3Info.BaseVersion.BaseAddress;
+            IntPtr baseAddress = Warcraft3Info.BaseAddress;
             if (baseAddress == IntPtr.Zero) return false;
             try
             {
@@ -202,7 +152,8 @@ namespace Cirnix.Memory
                 procs = Process.GetProcessesByName(TargetProcess = "war3");
                 if (procs.Length == 0)
                 {
-                    ResetWarcraft3Info();
+                    if (Warcraft3Info.Process != null)
+                        Warcraft3Info.Reset();
                     return WarcraftState.Closed;
                 }
             }
@@ -214,7 +165,8 @@ namespace Cirnix.Memory
             Process[] procs = Process.GetProcessesByName(name);
             if (procs.Length == 0)
             {
-                ResetWarcraft3Info();
+                if (Warcraft3Info.ID != 0)
+                    Warcraft3Info.Reset();
                 return WarcraftState.Closed;
             }
             return InitWarcraft3Info(procs[0]);
@@ -224,19 +176,10 @@ namespace Cirnix.Memory
 
         public static WarcraftState InitWarcraft3Info(Process proc)
         {
-            if ((Warcraft3Info.Process?.Id ?? 0) != proc.Id)
-            {
-                ResetWarcraft3Info();
-                Warcraft3Info.Process = proc;
-                Warcraft3Info.Process.EnableRaisingEvents = true;
-                Warcraft3Info.Handle = OpenProcess(0x38, false, Warcraft3Info.ID);
-                if (Warcraft3Info.Handle == IntPtr.Zero) goto Error;
-            }
-            if (Warcraft3Info.BaseVersion.BaseAddress != IntPtr.Zero && Warcraft3Info.BaseVersion.Version != 0L || GetBase(Warcraft3Info.BaseVersion))
-                return WarcraftState.OK;
-
-            Error: ResetWarcraft3Info();
-            return WarcraftState.Error;
+            Warcraft3Info.Process = proc;
+            if (Warcraft3Info.Process == null)
+                return WarcraftState.Error;
+            return WarcraftState.OK;
         }
     }
 }

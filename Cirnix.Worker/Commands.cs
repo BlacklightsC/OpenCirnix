@@ -28,39 +28,36 @@ namespace Cirnix.Worker.InnerWorker
                 string prefix = string.Empty;
                 try
                 {
-                    if (Actions.ProcessCheck()) return;
-                    if (!string.IsNullOrEmpty(prefix = GetMessage()))
+                    if (Actions.ProcessCheck() || string.IsNullOrEmpty(prefix = GetMessage())) return;
+                    switch (prefix[0])
                     {
-                        switch (prefix[0])
-                        {
-                            case '!':
-                                UserState = CommandTag.Default;
-                                return;
-                            case '-':
-                                UserState = CommandTag.Chat;
-                                return;
-                        }
-                        if (UserState == CommandTag.None) return;
-                        if (prefix[0] == '\0')
-                        {
-                            string[] args;
-                            try
-                            {
-                                args = prefix.Substring(1, prefix.Length - 1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                            }
-                            catch
-                            {
-                                UserState = CommandTag.None;
-                                return;
-                            }
-                            Actions.args.AddRange(args);
-                            Actions.args.Add(null);
-                            string command = Actions.args[0].ToLower();
-                            commandList.Find(item => item.Tag == UserState && item.CompareCommand(command))?.Function();
-                            Actions.args.RemoveRange(0, Actions.args.Count);
-                        }
-                        UserState = CommandTag.None;
+                        case '!':
+                            UserState = CommandTag.Default;
+                            return;
+                        case '-':
+                            UserState = CommandTag.Chat;
+                            return;
                     }
+                    if (UserState == CommandTag.None) return;
+                    if (prefix[0] == '\0')
+                    {
+                        string[] args;
+                        try
+                        {
+                            args = prefix.Substring(1, prefix.Length - 1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        }
+                        catch
+                        {
+                            UserState = CommandTag.None;
+                            return;
+                        }
+                        Actions.args.AddRange(args);
+                        Actions.args.Add(null);
+                        string command = Actions.args[0].ToLower();
+                        commandList.Find(item => item.Tag == UserState && item.CompareCommand(command))?.Function();
+                        Actions.args.RemoveRange(0, Actions.args.Count);
+                    }
+                    UserState = CommandTag.None;
                 }
                 catch (Exception ex)
                 {

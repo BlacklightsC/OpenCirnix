@@ -70,13 +70,13 @@ namespace Cirnix.CLRHook
             CheckInstall(Path.Combine(CirnixPath, "EasyLoad32.dll"), Resources.EasyLoad32);
         }
 
-        public static bool Init(string path, int windowState = 0, bool isInstallM16 = true, bool isDebug = false)
+        public static int Init(string path, int windowState = 0, bool isInstallM16 = true, bool isDebug = false)
         {
             Global.Registry.Warcraft.SetFullQualityGraphics();
             string EXEPath = Path.Combine(path, "Warcraft III.exe");
             if (!(File.Exists(EXEPath) || File.Exists(EXEPath = Path.Combine(path, "war3.exe"))) 
              || FileVersionInfo.GetVersionInfo(EXEPath).FileVersion != "1.28.5.7680")
-                return false;
+                return 0;
             CheckDelete(Path.Combine(path, "m16l.mix"));
             if (isInstallM16)
             {
@@ -115,10 +115,10 @@ namespace Cirnix.CLRHook
                 case 0: WindowsStateString = "-windows"; break;
                 case 1: WindowsStateString = string.Empty; break;
                 case 2: WindowsStateString = "-nativefullscr"; break;
-                default: return false;
+                default: return 0;
             }
-            RemoteHooking.CreateAndInject(EXEPath, WindowsStateString, 0, RuntimePath, RuntimePath, out _, isDebug, JNServicePath, path);
-            return true;
+            RemoteHooking.CreateAndInject(EXEPath, WindowsStateString, 0, RuntimePath, RuntimePath, out int pId, isDebug, JNServicePath, path);
+            return pId;
         }
     }
 }

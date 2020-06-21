@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -41,7 +42,7 @@ namespace Cirnix.Global
         public static bool isUpdated { get; set; }
         public static CommandTag UserState;
         public static Action ProgramShutDown;
-        public static Func<string, int, bool, bool, bool> WarcraftInit;
+        public static Func<string, int, bool, bool, int> WarcraftInit;
         public static Action<int> ListUpdate;
         public static IntPtr GlobalHandle = IntPtr.Zero;
         public static bool ExtendForce = false;
@@ -67,15 +68,16 @@ namespace Cirnix.Global
             Application.ThreadException += new ThreadExceptionEventHandler(ExceptionSender.Application_ThreadException);
             Thread.GetDomain().UnhandledException += new UnhandledExceptionEventHandler(ExceptionSender.Application_UnhandledException);
         }
-        public static void Delay(int MS)
+        public async static void Delay(int MS)
         {
-            DateTime ThisMoment = DateTime.Now;
-            DateTime AfterWards = ThisMoment.Add(new TimeSpan(0, 0, 0, 0, MS));
-            while (AfterWards >= ThisMoment)
-            {
-                Application.DoEvents();
-                ThisMoment = DateTime.Now;
-            }
+            await Task.Delay(MS);
+            //DateTime ThisMoment = DateTime.Now;
+            //DateTime AfterWards = ThisMoment.Add(new TimeSpan(0, 0, 0, 0, MS));
+            //while (AfterWards >= ThisMoment)
+            //{
+            //    Application.DoEvents();
+            //    ThisMoment = DateTime.Now;
+            //}
         }
         public static string GetLastest(string directory)
         {

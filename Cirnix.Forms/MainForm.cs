@@ -1,5 +1,5 @@
 ﻿using Cirnix.Global;
-
+using Cirnix.Memory;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -262,32 +262,17 @@ namespace Cirnix.Forms
                     NativeMethods.WritePrivateProfileString("Cirnix", "Show AS & MS in Number", "1", MixPath + ".ini");
                 }
             }
-            Process[] proc = Process.GetProcessesByName(TargetProcess);
-            if (proc.Length > 0)
-            {
+            if (Memory.Component.Warcraft3Info.Process != null)
                 if (MetroDialog.YesNo("기존 프로세스 감지 됨", "Warcraft III 프로세스가 아직 실행 중입니다.\n종료하고 실행하시겠습니까?"))
-                    foreach (var item in proc)
+                {
+                    if (!Memory.Component.Warcraft3Info.Close())
                     {
-                        try
-                        {
-                            item.Kill();
-                        }
-                        catch
-                        {
-                            proc = Process.GetProcessesByName(TargetProcess);
-                            if (proc.Length > 0)
-                            {
-                                MetroDialog.OK("액세스 오류", "Warcraft III 프로세스를 종료할 수 없었습니다.\n작업 관리자에서 수동으로 프로세스를 종료하세요.");
-                                return;
-                            }
-                        }
+                        MetroDialog.OK("액세스 오류", "Warcraft III 프로세스를 종료할 수 없었습니다.\n작업 관리자에서 수동으로 프로세스를 종료하세요.");
+                        return;
                     }
+                }
                 else return;
-            }
-            bool isDebug = false;
-            if (File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")))
-                isDebug = true;
-            CLRHook.Injector.Init(LastInstallPath, MetroDialog.Select("화면 표기 설정", "창 모드", "전체 창", "전체화면"), true, isDebug);
+            GameModule.InitWarcraft3Info(CLRHook.Injector.Init(LastInstallPath, MetroDialog.Select("화면 표기 설정", "창 모드", "전체 창", "전체화면"), true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt"))));
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

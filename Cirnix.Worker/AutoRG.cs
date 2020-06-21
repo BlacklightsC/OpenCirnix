@@ -1,6 +1,4 @@
-﻿using System;
-using Cirnix.Global;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using static Cirnix.Memory.Message;
 
 namespace Cirnix.Worker.InnerWorker
@@ -37,16 +35,9 @@ namespace Cirnix.Worker.InnerWorker
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            try
-            {
-                Worker.ReportProgress(0);
-                MainWorker.WorkerReset.Reset();
-                MainWorker.WorkerReset.WaitOne(200);
-            }
-            catch (Exception exception)
-            {
-                LogManager.Write(exception.Message);
-            }
+            Worker.ReportProgress(0);
+            MainWorker.WorkerReset.Reset();
+            MainWorker.WorkerReset.WaitOne(200);
         }
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)

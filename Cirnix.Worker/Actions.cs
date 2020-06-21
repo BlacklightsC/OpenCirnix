@@ -4,7 +4,6 @@ using Cirnix.Memory;
 using Cirnix.ServerStatus;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -25,9 +24,21 @@ namespace Cirnix.Worker
 {
     public static class InitFunction
     {
+        public static void Init()
+        {
+            InitHotkey();
+            InitCommand();
 
+            AntiZombieProcessChecker = new HangWatchdog(0, 0, 5);
+            AntiZombieProcessChecker.Condition = () => Settings.IsAntiZombieProcess && Warcraft3Info.Process.MainWindowHandle == IntPtr.Zero;
+            AntiZombieProcessChecker.Actions += () => Warcraft3Info.Close();
 
-        public static void InitHotkey()
+            MemoryOptimizeChecker = new HangWatchdog(() => new TimeSpan(0, Settings.MemoryOptimizeCoolDown, 0));
+            MemoryOptimizeChecker.Condition = () => Settings.IsMemoryOptimize;
+            MemoryOptimizeChecker.Actions += () => CProcess.TrimProcessMemory(TargetProcess, true);
+        }
+
+        internal static void InitHotkey()
         {
             SmartKey SKey = (SmartKey)Settings.SmartKeyFlag;
             Keys[] SmartKeyList = new Keys[] { Keys.Q, Keys.W, Keys.E, Keys.R, Keys.T, Keys.A, Keys.D, Keys.F, Keys.G, Keys.Z, Keys.X, Keys.C, Keys.V };
@@ -64,7 +75,7 @@ namespace Cirnix.Worker
             if (Settings.KeyMap2 != 0 && !SKey.HasFlag(ConvertToSmartKey((Keys)Settings.KeyMap2)))
                 hotkeyList.Register((Keys)Settings.KeyMap2, KeyRemapping, Keys.NumPad2);
         }
-        public static void InitCommand()
+        internal static void InitCommand()
         {
             commandList.Register("lc", "ㅣㅊ", LoadCode);
             commandList.Register("tlc", "싳", LoadCode2);
@@ -99,8 +110,7 @@ namespace Cirnix.Worker
     {
         internal static List<string> args = new List<string>();
         private static string name = string.Empty;
-        private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false, ignoreDetect = false;
-        private static int ZombieCount = 0;
+        private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false;
 
         internal static string GetFullArgs(bool isLower = false)
         {
@@ -198,7 +208,7 @@ namespace Cirnix.Worker
         internal static void ReplayWatcher_Function(object sender, FileSystemEventArgs e)
         {
             if (Settings.IsOptimizeAfterEndGame && CProcess.TrimProcessMemory(TargetProcess))
-                MemoryOptimizeTimer.Restart();
+                MemoryOptimizeChecker.Restart();
             if (!Settings.IsAutoReplay)
             {
                 IsTime = IsSaved = false;
@@ -619,17 +629,18 @@ namespace Cirnix.Worker
         internal static void ProgramExit()
         {
             //SendMsg(true, new string[] { "프로그램을 종료합니다." });
-            Warcraft3Info.Process.Kill();
+            Warcraft3Info.Close();
             //ProgramShutDown();
         }
 
-        internal static Stopwatch MemoryOptimizeTimer = new Stopwatch();
+        internal static HangWatchdog MemoryOptimizeChecker;
+        internal static HangWatchdog AntiZombieProcessChecker;
         internal static bool ProcessCheck()
         {
             if (GameModule.InitWarcraft3Info() != WarcraftState.OK
                 || !GameModule.WarcraftCheck())
             {
-                InitializedWarcraft = ignoreDetect = false;
+                InitializedWarcraft = false;
 
                 // 프로그램을 찾지 못할 경우 검색 간격 증가
                 Thread.Sleep(800);
@@ -640,7 +651,6 @@ namespace Cirnix.Worker
             {
                 InitializedWarcraft = true;
                 Delay(2000);
-                Warcraft3Info.Process.EnableRaisingEvents = true;
                 GameDll.GetOffset();
                 GameDelay = 50;
                 RefreshCooldown = 0.01f;
@@ -651,68 +661,9 @@ namespace Cirnix.Worker
                 CameraAngleY = Settings.CameraAngleY;
             }
             if (Settings.IsAutoHp && !HPView) HPView = true;
-            
-            if (Settings.IsAntiZombieProcess)
-            {
-                if (ignoreDetect && ++ZombieCount > 9000)
-                {
-                    ignoreDetect = false;
-                    ZombieCount = 0;
-                }
-                else if (CurrentMusicState == MusicState.None)
-                {
-                    if (++ZombieCount > 22)
-                    {
-                        try
-                        {
-                            PerformanceCounter CPUCounter = new PerformanceCounter("Process", "% Processor Time", TargetProcess);
-                            CPUCounter.NextValue();
-                            for (int i = 0; i < 5; i++)
-                            {
-                                Delay(1100);
-                                if (CPUCounter.NextValue() >= 0.01f)
-                                {
-                                    ZombieCount = 0;
-                                    break;
-                                }
-                                if (i != 4) continue;
-                                if (MetroDialog.YesNo("워크래프트가 정상적으로 종료되지 않은 것 같습니다.\n강제로 종료하시겠습니까?", "강제 종료 알림"))
-                                {
-                                    try
-                                    {
-                                        Warcraft3Info.Process.Kill();
-                                    }
-                                    catch
-                                    {
-                                        MetroDialog.OK("워크래프트를 강제로 종료할 수 없었습니다.\n이미 종료되었거나, 백신에 의해 차단된 것 같습니다.", "강제 종료 실패");
-                                    }
-                                }
-                                else ignoreDetect = true;
-                            }
-                        }
-                        catch
-                        {
-                            ZombieCount = 0;
-                        }
-                    }
-                    return true;
-                }
-                else ZombieCount = 0;
-            }
-            if (Settings.IsMemoryOptimize)
-            {
-                if (MemoryOptimizeTimer.IsRunning)
-                    if (MemoryOptimizeTimer.Elapsed >= new TimeSpan(0, Settings.MemoryOptimizeCoolDown, 0))
-                    {
-                        CProcess.TrimProcessMemory(TargetProcess, true);
-                        MemoryOptimizeTimer.Restart();
-                    }
-                    else MemoryOptimizeTimer.Start();
-            }
-            else if (MemoryOptimizeTimer.IsRunning)
-            {
-                MemoryOptimizeTimer.Stop();
-            }
+
+            AntiZombieProcessChecker.Check();
+            MemoryOptimizeChecker.Check();
                     
             StatusCheck();
             return false;
@@ -720,7 +671,7 @@ namespace Cirnix.Worker
         internal static void MemoryOptimize()
         {
             if (Settings.IsMemoryOptimize)
-                MemoryOptimizeTimer.Restart();
+                MemoryOptimizeChecker.Restart();
             new Thread(() => {
                 SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
                 if (CProcess.TrimProcessMemory(TargetProcess, true))
@@ -956,7 +907,8 @@ namespace Cirnix.Worker
             string LastInstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
             Settings.InstallPath = LastInstallPath;
             string[] args = GetArguments(Warcraft3Info.ID);
-            Warcraft3Info.Process.Kill();
+            Warcraft3Info.Close();
+            
             Delay(2000);
             int windowState = 1;
             if (args.Length != 0)
@@ -965,7 +917,7 @@ namespace Cirnix.Worker
                     case "-windows": windowState = 0; break;
                     case "-nativefullscr": windowState = 2; break;
                 }
-            WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
+            GameModule.InitWarcraft3Info(WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt"))));
         }
 
         internal static void RoomJoin()

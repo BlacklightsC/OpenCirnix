@@ -39,8 +39,7 @@ namespace Cirnix.Forms
                 Hide();
                 GlobalHandle = Handle;
                 Globals.ProgramShutDown = ProgramShutDown;
-                InitFunction.InitCommand();
-                InitFunction.InitHotkey();
+                InitFunction.Init();
                 KeyboardHooker.HookStart();
                 MainWorker.RunWorkers();
                 CLRHook.Injector.InstallHookLib();
