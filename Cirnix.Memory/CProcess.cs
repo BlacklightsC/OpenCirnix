@@ -66,14 +66,14 @@ namespace Cirnix.Memory
             {
                 long oldWorkingSet64 = process.WorkingSet64;
                 _result = EmptyWorkingSet(process.Handle);
-                using (Process targetProcess = Process.GetProcessById(process.Id))
-                    if (_result && NeedResult)
-                    {
-                        MemoryValue[0] = oldWorkingSet64;
-                        await Task.Delay(5000);
-                        MemoryValue[1] = targetProcess.WorkingSet64;
-                        MemoryValue[2] = process.WorkingSet64 - targetProcess.WorkingSet64;
-                    }
+                if (_result && NeedResult)
+                {
+                    MemoryValue[0] = oldWorkingSet64;
+                    await Task.Delay(5000);
+                    process.Refresh();
+                    MemoryValue[1] = process.WorkingSet64;
+                    MemoryValue[2] = oldWorkingSet64 - process.WorkingSet64;
+                }
             }
             catch
             {

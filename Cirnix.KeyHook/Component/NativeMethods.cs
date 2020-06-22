@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static Cirnix.KeyHook.Component;
 
 namespace Cirnix.KeyHook
 {
@@ -8,41 +9,82 @@ namespace Cirnix.KeyHook
         [DllImport("user32")]
         internal static extern IntPtr CallNextHookEx
         (
-            [In]IntPtr hhk,
-            [In]int nCode,
-            [In]IntPtr wParam,
-            [In]IntPtr lParam
+            IntPtr hhk,
+            int nCode,
+            int wParam,
+            ref KeyData lParam
         );
+
         [DllImport("user32", SetLastError = true)]
         internal static extern IntPtr SetWindowsHookEx
         (
-            [In]int idHook, 
-            [In]HookProc lpfn,
-            [In]IntPtr hMod,
-            [In]uint dwThreadId
+            int idHook, 
+            HookProc lpfn,
+            IntPtr hMod,
+            uint dwThreadId
         );
+
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         internal static extern IntPtr GetModuleHandle
         (
             string lpModuleName
         );
+
         [DllImport("user32", SetLastError = true)]
         internal static extern bool UnhookWindowsHookEx
         (
             IntPtr hhk
         );
 
-        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi)]
-        internal static extern IntPtr LoadLibrary
+        [DllImport("user32", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool IsClipboardFormatAvailable
         (
-            [MarshalAs(UnmanagedType.LPStr)]string lpFileName
+            uint format
         );
 
-        internal delegate IntPtr HookProc
+        [DllImport("user32", SetLastError = true)]
+        internal static extern IntPtr GetClipboardData
         (
-            int nCode, 
-            IntPtr wParam, 
-            IntPtr lParam
+            uint uFormat
         );
+
+        [DllImport("user32", SetLastError = true)]
+        internal static extern IntPtr SetClipboardData
+        (
+            uint uFormat,
+            IntPtr hMem
+        );
+
+        [DllImport("user32", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool OpenClipboard
+        (
+            IntPtr hWndNewOwner
+        );
+
+        [DllImport("user32", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool EmptyClipboard();
+
+        [DllImport("user32", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool CloseClipboard();
+
+        [DllImport("kernel32", SetLastError = true)]
+        internal static extern IntPtr GlobalLock(IntPtr hMem);
+
+        [DllImport("kernel32", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GlobalUnlock(IntPtr hMem);
+
+        [DllImport("kernel32", SetLastError = true)]
+        internal static extern int GlobalSize(IntPtr hMem);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        internal static extern IntPtr SetClipboardViewer(IntPtr hWndNewViewer);
+
+        [DllImport("user32.dll")]
+        internal static extern bool ChangeClipboardChain(IntPtr hWndRemove, IntPtr hWndNewNext);
     }
 }

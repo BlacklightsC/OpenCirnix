@@ -36,6 +36,8 @@ namespace Cirnix.Global
             [In]uint lParam
         );
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32")]
         public static extern int GetCursorPos

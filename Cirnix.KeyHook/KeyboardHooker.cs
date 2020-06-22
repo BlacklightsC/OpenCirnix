@@ -1,8 +1,9 @@
-﻿using Cirnix.Memory;
+﻿using Cirnix.Global;
+using Cirnix.Memory;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using static Cirnix.Global.Globals;
+using static Cirnix.KeyHook.Component;
 using static Cirnix.KeyHook.NativeMethods;
 using static Cirnix.Memory.CProcess;
 
@@ -21,7 +22,7 @@ namespace Cirnix.KeyHook
             WM_SYSKEYDOWN = 0x104,
             WM_SYSKEYUP = 0x105;
 
-        private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        private static IntPtr HookCallback(int nCode, int wParam, ref KeyData lParam)
         {
             if (nCode >= 0 && ForegroundWar3())
             {
@@ -31,59 +32,79 @@ namespace Cirnix.KeyHook
                     Counter = 0;
                     Timer.Reset();
                 }
-               if (wParam == (IntPtr)WM_KEYDOWN && Counter < 4)
+
+                switch (wParam)
                 {
-                    if (WaitKeyInput)
+                    case WM_KEYDOWN:
+                    case WM_SYSKEYDOWN:
+                        goto KEYDOWN;
+
+                    case WM_KEYUP:
+                    case WM_SYSKEYUP:
+                        goto KEYUP;
+                }
+
+            KEYDOWN:
+                if (Counter >= 4) goto KEYUP;
+                if (WaitKeyInput)
+                {
+                    WaitKeyInput = false;
+                    if (!isChatBoxOpen)
                     {
-                        WaitKeyInput = false;
-                        int vkCode = Marshal.ReadInt32(lParam);
-                        if (!isChatBoxOpen)
+                        int vkCode = lParam.vkCode;
+                        var hotkey = hotkeyList.Find(item => (int)item.vk == vkCode);
+                        if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
                         {
-                            var hotkey = hotkeyList.Find(item => (int)item.vk == vkCode);
-                            if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
-                            {
-                                hotkey.function(hotkey.fk);
-                                if (!hotkey.recall)
-                                    return (IntPtr)1;
-                            }
-                        }
-                        else if (Global.Settings.IsCommandHide)
-                        {
-                            try
-                            {
-                                if (States.IsInGame
-                                 && vkCode == 0xD
-                                 && Message.GetMessage()[0] == '!')
-                                {
-                                    System.Windows.Forms.SendKeys.Send("{ESC}");
-                                    return (IntPtr)1;
-                                }
-                            }
-                            catch { }
+                            hotkey.function(hotkey.fk);
+                            if (!hotkey.recall)
+                                return (IntPtr)1;
                         }
                     }
+                    else if (Settings.IsCommandHide)
+                    {
+                        try
+                        {
+                            if (States.IsInGame
+                             && lParam.vkCode == 0xD
+                             && Message.GetMessage()[0] == '!')
+                            {
+                                System.Windows.Forms.SendKeys.Send("{ESC}");
+                                return (IntPtr)1;
+                            }
+                        }
+                        catch { }
+                    }
                 }
-                else if (wParam == (IntPtr)WM_KEYUP)
+                else if (lParam.flags == 0x00)
                 {
-                    WaitKeyInput = true;
-                    Counter++;
-                    Timer.Restart();
+                    switch (lParam.vkCode)
+                    {
+                        case 0x58: // X
+                        case 0x43: // C
+                            ClipboardConverter.IsUTF8 = true;
+                            break;
+                    }
                 }
+                goto RETURN;
+            KEYUP:
+                WaitKeyInput = true;
+                Counter++;
+                Timer.Restart();
             }
-            return CallNextHookEx(_HookID, nCode, wParam, lParam);
+        RETURN: return CallNextHookEx(_HookID, nCode, wParam, ref lParam);
         }
 
         public static void HookStart()
         {
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
-            {
                 _HookID = SetWindowsHookEx(0xD, _proc, GetModuleHandle(curModule.ModuleName), 0);
-            }
+            ClipboardConverter.ChainedWnd = SetClipboardViewer(GlobalHandle);
         }
         public static void HookEnd()
         {
             UnhookWindowsHookEx(_HookID);
+            ChangeClipboardChain(GlobalHandle, ClipboardConverter.ChainedWnd);
         }
     }
 }

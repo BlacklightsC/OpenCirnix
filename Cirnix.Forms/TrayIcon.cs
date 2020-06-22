@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
+using static Cirnix.Global.NativeMethods;
 
 namespace Cirnix.Forms
 {
@@ -296,36 +297,38 @@ namespace Cirnix.Forms
         }
         #endregion
 
-        //protected override void WndProc(ref System.Windows.Forms.Message m)
-        //{
-        //    switch (m.Msg)
-        //    {
-        //        case 0x312:
-        //            Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
-        //            KeyModifiers modifier = (KeyModifiers)((int)m.LParam & 0xFFFF);
-        //            if (ForegroundWar3() && !States.IsChatBoxOpen)
-        //            {
-        //                var hotkey = hotkeyList.Find(item => item.vk == key);
-        //                if (hotkey != null)
-        //                {
-        //                    Memory.Component.GameState state = States.CurrentGameState;
-        //                    if (!(hotkey.onlyInGame
-        //                     && state != Memory.Component.GameState.StartedGame
-        //                     && state != Memory.Component.GameState.InGame))
-        //                    {
-        //                        hotkey.function(hotkey.fk);
-        //                        if (!hotkey.recall)
-        //                            return;
-        //                    }
-        //                }
-        //            }
-        //            hotkeyList.Pause(key);
-        //            SendKeys.Send(Hotkey.GetSendKeyString(key));
-        //            hotkeyList.Resume(key);
-        //            break;
-        //    }
-        //    base.WndProc(ref m);
-        //}
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case 0x0308:    // WM_DRAWCLIPBOARD
+                    if (ClipboardConverter.IsBusy) break;
+                    ClipboardConverter.IsBusy = true;
+                    if (ClipboardConverter.IsUTF8)
+                    {
+                        ClipboardConverter.IsUTF8 = false;
+                        string text = ClipboardConverter.GetUTF8Text();
+                        if (text == null) break;
+                        Clipboard.SetText(text);
+                        ClipboardConverter.SetUTF8Text(text);
+                    }
+                    else
+                    {
+                        ClipboardConverter.SetUTF8Text(Clipboard.GetText());
+                    }
+                    SendMessage(ClipboardConverter.ChainedWnd, m.Msg, m.WParam, m.LParam);
+                    ClipboardConverter.IsBusy = false;
+                    break;
+
+                case 0x030D:    // WM_CHANGECBCHAIN
+                    if (ClipboardConverter.ChainedWnd == m.WParam)
+                        ClipboardConverter.ChainedWnd = m.LParam;
+                    else
+                        SendMessage(ClipboardConverter.ChainedWnd, m.Msg, m.WParam, m.LParam);
+                    break;
+            }
+            base.WndProc(ref m);
+        }
 
         public void ProgramShutDown()
         {

@@ -134,13 +134,12 @@ namespace Cirnix.Memory
             if (baseAddress == IntPtr.Zero) return false;
             try
             {
-                ReadProcessMemory(Warcraft3Info.Handle, baseAddress, lpBuffer, 1, out _);
+                return ReadProcessMemory(Warcraft3Info.Handle, baseAddress, lpBuffer, 1, out _) && lpBuffer[0] > 0;
             }
             catch
             {
                 return false;
             }
-            return lpBuffer[0] > 0;
         }
 
         public static WarcraftState InitWarcraft3Info()
@@ -176,6 +175,11 @@ namespace Cirnix.Memory
 
         public static WarcraftState InitWarcraft3Info(Process proc)
         {
+            if (proc.HasExited)
+            {
+                proc.Kill();
+                return WarcraftState.Closed;
+            }
             Warcraft3Info.Process = proc;
             if (Warcraft3Info.Process == null)
                 return WarcraftState.Error;

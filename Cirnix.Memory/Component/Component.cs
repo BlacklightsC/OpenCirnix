@@ -151,7 +151,9 @@ namespace Cirnix.Memory
                 set {
                     if (value?.Id == _Process?.Id) return;
                     Reset();
-                    if (value != null && value.MainModule.FileVersionInfo.FileVersion == "1.28.5.7680")
+                    if (value != null
+                     && value.MainModule.FileVersionInfo.FileVersion == "1.28.5.7680"
+                     && value.MainWindowHandle != IntPtr.Zero)
                     {
                         Handle = OpenProcess(0x38, false, (uint)value.Id);
                         if (Handle == IntPtr.Zero) return;
@@ -190,7 +192,6 @@ namespace Cirnix.Memory
                         CloseHandle(Handle);
                         Handle = IntPtr.Zero;
                     }
-
                     _Process.Close();
                     _Process = null;
                 }

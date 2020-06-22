@@ -39,6 +39,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardConverter.cs" />
+    <Compile Include="Component\Component.cs" />
     <Compile Include="Component\NativeMethods.cs" />
     <Compile Include="KeyboardHooker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
