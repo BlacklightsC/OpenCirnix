@@ -3,6 +3,8 @@
 
 **개발에 사용된 IDE: Visual Studio 2019**
 
+**테스트 완료된 운영체제: Windows 10 1909**
+
 **요구사항**
 - .NET Framework 4.6.2 이상의 버전
 - [CirnoLib](https://github.com/BlacklightsC/CirnoLib.git)
