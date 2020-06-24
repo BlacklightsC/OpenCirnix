@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -25,7 +26,7 @@ namespace Cirnix.Forms
         private ChannelChatForm channel;
         private RoomListForm room;
         private AdditionalToolForm tool;
-        private HistoryForm history;
+        //private HistoryForm history;
         private LicenceForm licenceForm;
 
         public TrayIcon()
@@ -194,15 +195,17 @@ namespace Cirnix.Forms
         private void InitHistoryForm()
         {
             if (string.IsNullOrEmpty(HistoryURL)) return;
-            if (!(history == null
-             || history.IsDisposed))
-            {
-                history.Activate();
-                return;
-            }
-            history = new HistoryForm(HistoryURL);
-            history.Show();
-            history.Activate();
+            Process.Start(HistoryURL);
+
+            //if (!(history == null
+            // || history.IsDisposed))
+            //{
+            //    history.Activate();
+            //    return;
+            //}
+            //history = new HistoryForm(HistoryURL);
+            //history.Show();
+            //history.Activate();
         }
         #endregion
 

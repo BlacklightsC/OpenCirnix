@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
             this.progressBarUpdateState = new MetroFramework.Controls.MetroProgressBar();
             this.LabelMsg = new MetroFramework.Controls.MetroLabel();
             this.LabelTitle = new MetroFramework.Controls.MetroLabel();
@@ -53,10 +54,10 @@
             // LabelTitle
             // 
             this.LabelTitle.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.LabelTitle.Location = new System.Drawing.Point(12, 12);
+            this.LabelTitle.Location = new System.Drawing.Point(62, 12);
             this.LabelTitle.Margin = new System.Windows.Forms.Padding(3);
             this.LabelTitle.Name = "LabelTitle";
-            this.LabelTitle.Size = new System.Drawing.Size(350, 20);
+            this.LabelTitle.Size = new System.Drawing.Size(250, 20);
             this.LabelTitle.TabIndex = 3;
             this.LabelTitle.Text = "업데이트 중이니 종료하지 마세요!";
             this.LabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -70,9 +71,9 @@
             this.Controls.Add(this.LabelMsg);
             this.Controls.Add(this.progressBarUpdateState);
             this.DisplayHeader = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Icon = Global.Properties.Resources.CirnixIcon;
             this.Name = "UpdateForm";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.Resizable = false;

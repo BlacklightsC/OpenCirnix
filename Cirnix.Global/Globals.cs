@@ -23,15 +23,12 @@ namespace Cirnix.Global
               "Recommanded_URL": "안정적인 버전 다운로드 주소",
               "Latest_Version": "0.11.7338.2214", // 베타 버전
               "Latest_URL": "베타 버전 다운로드 주소",
-              "History": "패치 노트 텍스트 파일 주소"
+              "History": "패치 로그 웹페이지 주소"
             }
          */
-        public static readonly string infoURL = "";
-
-
-        public static string TargetProcess { get; set; } = "Warcraft III";
-        public static readonly string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Warcraft III";
-        public static readonly string ResourcePath = Environment.GetEnvironmentVariable("APPDATA") + @"\Cirnix";
+        public static readonly string infoURL = "https://raw.githubusercontent.com/BlacklightsC/OpenCirnix/master/InfoData.json";
+        public static readonly string DocumentPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\Warcraft III";
+        public static readonly string ResourcePath = $"{Environment.GetEnvironmentVariable("APPDATA")}\\Cirnix";
         public static string[] Code { get; set; }
         public static int[] version { get; set; }
         public static HotkeyList hotkeyList { get; set; }
@@ -331,12 +328,20 @@ namespace Cirnix.Global
         {
             using (WebClient client = new WebClient())
             {
-                client.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
-                using (Stream stream = client.OpenRead(URL))
-                using (StreamReader sReader = new StreamReader(stream))
-                    return sReader.ReadToEnd();
+                client.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36");
+                try
+                {
+                    using (Stream stream = client.OpenRead(URL))
+                    using (StreamReader sReader = new StreamReader(stream))
+                        return sReader.ReadToEnd();
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
+
         public static async Task<byte[]> ReadFile(string path)
         {
             byte[] data;

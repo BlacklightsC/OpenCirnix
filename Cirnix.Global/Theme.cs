@@ -12,9 +12,9 @@ namespace Cirnix.Global
 
         public static string UnknownMapPreviewFile { get; private set; }
 
-        public static string Title { get; private set; } = "OpenCirnix";
+        public static string Title { get; private set; } = "Cirnix";
 
-        public static string MsgTitle { get; private set; } = "「OpenCirnix」";
+        public static string MsgTitle { get; private set; } = "「Cirnix」";
 
 
         public static void LoadTheme()
@@ -34,6 +34,5 @@ namespace Cirnix.Global
                 if (!string.IsNullOrWhiteSpace(msgTitle)) MsgTitle = msgTitle;
             }
         }
-        //public static string 
     }
 }

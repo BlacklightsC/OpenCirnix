@@ -145,10 +145,10 @@ namespace Cirnix.Memory
         public static WarcraftState InitWarcraft3Info()
         {
             if (Warcraft3Info.Process != null && !Warcraft3Info.Process.HasExited) return WarcraftState.OK;
-            Process[] procs = Process.GetProcessesByName(TargetProcess = "Warcraft III");
+            Process[] procs = Process.GetProcessesByName("Warcraft III");
             if (procs.Length == 0)
             {
-                procs = Process.GetProcessesByName(TargetProcess = "war3");
+                procs = Process.GetProcessesByName("war3");
                 if (procs.Length == 0)
                 {
                     if (Warcraft3Info.Process != null)
