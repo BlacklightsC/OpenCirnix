@@ -39,10 +39,12 @@ namespace Cirnix.KeyHook
         public static void SetUTF8Text(string text)
         {
             if (!OpenClipboard(IntPtr.Zero)) return;
+            int length = Encoding.UTF8.GetByteCount(text) + 1;
+            if (length >= 0x100) length = 0xFF;
             byte[] buffer = new byte[Encoding.UTF8.GetByteCount(text) + 1];
             Encoding.UTF8.GetBytes(text, 0, text.Length, buffer, 0);
-            IntPtr hGlob = Marshal.AllocHGlobal(buffer.Length);
-            Marshal.Copy(buffer, 0, hGlob, buffer.Length);
+            IntPtr hGlob = Marshal.AllocHGlobal(length + 1);
+            Marshal.Copy(buffer, 0, hGlob, length);
             if (SetClipboardData(CF_TEXT, hGlob) == IntPtr.Zero)
             {
                 CloseClipboard();
