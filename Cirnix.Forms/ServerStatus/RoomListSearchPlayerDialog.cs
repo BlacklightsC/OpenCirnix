@@ -27,18 +27,18 @@ namespace Cirnix.Forms
             PlayerName = TB_ID.Text;
             for (int i = 0; i < infoList.Count; i++)
             {
-                if (string.Compare(infoList[i].player0, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player1, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player2, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player3, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player4, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player5, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player6, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player7, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player8, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player9, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player10, PlayerName, true) == 0
-                 || string.Compare(infoList[i].player11, PlayerName, true) == 0)
+                if (infoList[i].player0.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player1.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player2.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player3.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player4.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player5.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player6.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player7.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player8.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player9.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player10.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
+                 || infoList[i].player11.Equals(PlayerName, StringComparison.OrdinalIgnoreCase))
                 {
                     ResultIndex = i;
                     break;

@@ -72,7 +72,7 @@ namespace Cirnix.Forms
                 first = first.Substring(0, first.Length >= length ? length : (length = first.Length));
                 string second = Path.GetFileNameWithoutExtension(item.mapname);
                 if (second.Length > 2 && second[second.Length - 2] == '~') second = second.Substring(0, second.Length - 2);
-                if (second.Length >= length && string.Compare(first, second.Substring(0, length), true) == 0)
+                if (second.Length >= length && first.Equals(second.Substring(0, length), StringComparison.OrdinalIgnoreCase))
                 {
                     StringBuilder Builder = new StringBuilder();
                     Builder.AppendFormat("[{0}] {1} - {2}"

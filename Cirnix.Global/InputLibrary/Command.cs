@@ -33,7 +33,7 @@ namespace Cirnix.Global
             this.Function = Function;
         }
         public bool CompareCommand(string Text)
-            => string.Compare(CommandEng, Text, true) == 0 || string.Compare(CommandKor, Text, true) == 0;
+            => CommandEng.Equals(Text, StringComparison.OrdinalIgnoreCase) || CommandKor.Equals(Text, StringComparison.OrdinalIgnoreCase);
     }
 
     public sealed class CommandList : List<CommandComponent>

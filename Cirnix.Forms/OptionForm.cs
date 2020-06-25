@@ -519,7 +519,7 @@ namespace Cirnix.Forms
                 BTN_HeroAddMod.Enabled = false;
                 return;
             }
-            BTN_HeroAddMod.Enabled = string.Compare(GetDirectorySafeName(TB_HeroName.Text), HeroListBox.SelectedItem.ToString(), true) != 0;
+            BTN_HeroAddMod.Enabled = !GetDirectorySafeName(TB_HeroName.Text).Equals(HeroListBox.SelectedItem.ToString(), StringComparison.OrdinalIgnoreCase);
         }
         private void BTN_HeroAddMod_Click(object sender, EventArgs e)
         {

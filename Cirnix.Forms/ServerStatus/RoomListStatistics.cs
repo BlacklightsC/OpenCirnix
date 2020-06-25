@@ -81,7 +81,7 @@ namespace Cirnix.Forms
                 TotalPlayer += players;
                 for (int i = 0; i < stat.Count; i++)
                 {
-                    if (string.Compare(item.mapname, stat[i].name, true) != 0) continue;
+                    if (!item.mapname.Equals(stat[i].name, StringComparison.OrdinalIgnoreCase)) continue;
                     stat[i].count += IsMapStandard ? 1 : players;
                     goto foreachContinue;
                 }
@@ -111,7 +111,7 @@ namespace Cirnix.Forms
                             j++;
                             continue;
                         }
-                        if (string.Compare(first, second.Substring(0, length), true) == 0)
+                        if (first.Equals(second.Substring(0, length), StringComparison.OrdinalIgnoreCase))
                         {
                             stat[i].count += stat[j].count;
                             stat.RemoveAt(j);

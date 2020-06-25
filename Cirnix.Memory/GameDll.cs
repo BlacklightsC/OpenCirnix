@@ -23,7 +23,7 @@ namespace Cirnix.Memory
             Module32First(hSnapshot, ref structure);
             do
             {
-                if (string.Compare(structure.szModule, "game.dll", true) == 0)
+                if (structure.szModule.Equals("game.dll", StringComparison.OrdinalIgnoreCase))
                     GameDllOffset = structure.modBaseAddr;
             }
             while (Module32Next(hSnapshot, ref structure));
