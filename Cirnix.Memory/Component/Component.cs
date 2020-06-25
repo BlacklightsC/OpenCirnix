@@ -155,17 +155,43 @@ namespace Cirnix.Memory
                      && value.MainModule.FileVersionInfo.FileVersion == "1.28.5.7680"
                      && value.MainWindowHandle != IntPtr.Zero)
                     {
-                        Handle = OpenProcess(0x38, false, (uint)value.Id);
-                        if (Handle == IntPtr.Zero) return;
+                        try
+                        {
+                            Handle = OpenProcess(0x38, false, (uint)value.Id);
+                            if (Handle == IntPtr.Zero) return;
 
-                        Action ResetAction = Reset;
-                        _Process = value;
-                        _Process.EnableRaisingEvents = true;
-                        _Process.Exited += (sender, e) => ResetAction();
+                            value.EnableRaisingEvents = true;
+                            Action ResetAction = Reset;
+                            value.Exited += (sender, e) => ResetAction();
+                            _Process = value;
+                        }
+                        catch
+                        {
+                            if (Handle != IntPtr.Zero)
+                            {
+                                CloseHandle(Handle);
+                                Handle = IntPtr.Zero;
+                            }
+                        }
                     }
                 }
             }
             
+            public bool HasExited {
+                get {
+                    if (_Process == null)
+                        return true;
+                    try
+                    {
+                        return _Process.HasExited;
+                    }
+                    catch
+                    {
+                        return true;
+                    }
+                }
+            }
+
             public bool Close()
             {
                 try

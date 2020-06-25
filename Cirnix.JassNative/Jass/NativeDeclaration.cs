@@ -6,7 +6,7 @@ namespace Cirnix.JassNative.JassAPI
 {
     public class NativeDeclaration
     {
-        private readonly IntPtr FunctionPtr;
+        internal readonly IntPtr FunctionPtr;
         public readonly Delegate Function;
         public readonly string Name;
         public readonly string Prototype;

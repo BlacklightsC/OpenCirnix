@@ -38,21 +38,21 @@ namespace Cirnix.Global.Registry
         /// 모델 디테일 (0 ~ 2)
         /// </summary>
         public static int ModelDetail {
-            get => (int)com.GetValue("Video", "modeldetail");
+            get => (int)com.GetValue("Video", "modeldetail", 0);
             set => com.SetValue("Video", "modeldetail", value);
         }
         /// <summary>
         /// 애니메이션 화질 (0 ~ 2)
         /// </summary>
         public static int AnimationQuality {
-            get => (int)com.GetValue("Video", "animquality");
+            get => (int)com.GetValue("Video", "animquality", 1);
             set => com.SetValue("Video", "animquality", value);
         }
         /// <summary>
         /// 텍스쳐 화질 (0 ~ 2)
         /// </summary>
         public static int TextureQuality {
-            get => (int)com.GetValue("Video", "texquality");
+            get => (int)com.GetValue("Video", "texquality", 1);
             set {
                 com.SetValue("Video", "texquality", value);
                 switch (value)
@@ -76,7 +76,7 @@ namespace Cirnix.Global.Registry
         /// 입자 (0 ~ 2)
         /// </summary>
         public static int Particles {
-            get => (int)com.GetValue("Video", "particles");
+            get => (int)com.GetValue("Video", "particles", 1);
             set {
                 com.SetValue("Video", "particles", value);
                 com.SetValue("Video", "spellfilter", value);
@@ -86,21 +86,21 @@ namespace Cirnix.Global.Registry
         /// 광원 (0 ~ 2)
         /// </summary>
         public static int Lights {
-            get => (int)com.GetValue("Video", "lights");
+            get => (int)com.GetValue("Video", "lights", 1);
             set => com.SetValue("Video", "lights", value);
         }
         /// <summary>
         /// 유닛 그림자
         /// </summary>
         public static bool UnitShadows {
-            get => (int)com.GetValue("Video", "unitshadows") == 1;
+            get => (int)com.GetValue("Video", "unitshadows", 1) == 1;
             set => com.SetValue("Video", "unitshadows", value);
         }
         /// <summary>
         /// 투명화
         /// </summary>
         public static bool Occlusion {
-            get => (int)com.GetValue("Video", "occlusion") == 1;
+            get => (int)com.GetValue("Video", "occlusion", 1) == 1;
             set => com.SetValue("Video", "occlusion", value);
         }
         #endregion

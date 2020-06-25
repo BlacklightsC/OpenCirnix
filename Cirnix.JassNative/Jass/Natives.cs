@@ -1183,20 +1183,22 @@ namespace Cirnix.JassNative.JassAPI
         public static void Initialize()
         {
             if (Kernel32.GetModuleHandle("game.dll") == IntPtr.Zero)
-                throw new Exception("Attempted to initialize " + typeof(Natives).Name + " before 'game.dll' has been loaded.");
+                throw new Exception($"Attempted to initialize {typeof(Natives).Name} before 'game.dll' has been loaded.");
             if (!GameAddresses.IsReady)
-                throw new Exception("Attempted to initialize " + typeof(Natives).Name + " before " + typeof(GameAddresses).Name + " was ready.");
+                throw new Exception($"Attempted to initialize {typeof(Natives).Name} before {typeof(GameAddresses).Name} was ready.");
             InitNatives = Memory.InstallHook(GameAddresses.InitNatives, new InitNativesPrototype(InitNativesHook), true, false);
-            Trace.Write("Scanning vanilla natives . ");
+            Trace.WriteLine("Scanning vanilla natives . . .");
             IntPtr initNatives = GameAddresses.InitNatives;
             int num = 5;
             while (Memory.Read<byte>(initNatives + num) == 0x68)
             {
-                vanillaNatives.Add(new NativeDeclaration(initNatives + num));
+                NativeDeclaration native = new NativeDeclaration(initNatives + num);
+                //Trace.WriteLine($"{native.Name}\t{native.Prototype}\t0x{native.FunctionPtr.ToInt32():X8}");
+                vanillaNatives.Add(native);
                 num += 20;
             }
             InitializeVanillaNatives();
-            Trace.WriteLine("found " + vanillaNatives.Count + "!");
+            Trace.WriteLine($"found {vanillaNatives.Count}!");
         }
 
         private static int InitNativesHook()
@@ -1210,7 +1212,7 @@ namespace Cirnix.JassNative.JassAPI
 
         private static void Add(NativeDeclaration native)
         {
-            Trace.WriteLine("Native added: " + native.Name + native.Prototype);
+            Trace.WriteLine($"Native added: {native.Name}{native.Prototype}");
             customNatives.Add(native);
         }
 

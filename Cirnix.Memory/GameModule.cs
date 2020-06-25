@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using static Cirnix.Global.Globals;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
 
@@ -144,7 +143,7 @@ namespace Cirnix.Memory
 
         public static WarcraftState InitWarcraft3Info()
         {
-            if (Warcraft3Info.Process != null && !Warcraft3Info.Process.HasExited) return WarcraftState.OK;
+            if (!Warcraft3Info.HasExited) return WarcraftState.OK;
             Process[] procs = Process.GetProcessesByName("Warcraft III");
             if (procs.Length == 0)
             {
@@ -177,7 +176,7 @@ namespace Cirnix.Memory
         {
             if (proc.HasExited)
             {
-                proc.Kill();
+                try { proc.Kill(); } catch { }
                 return WarcraftState.Closed;
             }
             Warcraft3Info.Process = proc;
