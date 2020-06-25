@@ -42,7 +42,7 @@ namespace Cirnix.Forms
         {
             try
             {
-                if (IsSingle)
+                if (!IsSingle)
                 {
                     string fileName = Path.GetFileName(ProgramPath);
                     if (File.Exists(fileName))
@@ -62,6 +62,12 @@ namespace Cirnix.Forms
                     File.Delete($"{name}.exe");
                     File.Move("update.tmp", Path.GetFileName(ProgramPath));
                 }
+                Close();
+            }
+            else if (e.Error != null)
+            {
+                LabelTitle.Text = "업데이트 실패!";
+                MetroDialog.OK("오류 발생!", "업데이트 파일을 불러오는데 실패했습니다.");
                 Close();
             }
             else

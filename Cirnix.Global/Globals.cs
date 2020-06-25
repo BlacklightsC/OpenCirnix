@@ -47,6 +47,10 @@ namespace Cirnix.Global
         public static void InitGlobal(bool IsUpdated)
         {
             if (!Directory.Exists(ResourcePath)) Directory.CreateDirectory(ResourcePath);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                   | SecurityProtocolType.Tls11
+                   | SecurityProtocolType.Tls12
+                   | SecurityProtocolType.Ssl3;
             Code = new string[24];
             hotkeyList = new HotkeyList();
             commandList = new CommandList();

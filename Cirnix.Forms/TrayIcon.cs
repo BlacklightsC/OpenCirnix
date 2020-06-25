@@ -248,11 +248,16 @@ namespace Cirnix.Forms
             {
                 try
                 {
-                    main.Dispose();
-                    option.Dispose();
-                    info.Dispose();
-                    channel.Dispose();
-                    sepro.Dispose();
+                    if (main != null)
+                        main.Dispose();
+                    if (option != null)
+                        option.Dispose();
+                    if (info != null)
+                        info.Dispose();
+                    if (channel != null)
+                        channel.Dispose();
+                    if (sepro != null)
+                        sepro.Dispose();
                     MainTrayIcon.Visible = false;
                 }
                 catch { }
