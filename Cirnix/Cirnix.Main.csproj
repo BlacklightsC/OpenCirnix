@@ -103,10 +103,6 @@ COPY /Y Cirnix.exe CirnixBeta.exe</PostBuildEvent>
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cirnix.Global\Cirnix.Global.csproj">
-      <Project>{3428be9f-46b3-478b-a8c5-3779b2ec68dd}</Project>
-      <Name>Cirnix.Global</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cirnix.Forms\Cirnix.Forms.csproj">
       <Project>{19807330-9ba4-4980-a242-cf92bd939404}</Project>
       <Name>Cirnix.Forms</Name>

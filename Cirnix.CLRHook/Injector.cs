@@ -5,6 +5,7 @@ using Cirnix.CLRHook.Properties;
 using System.Security.Cryptography;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Cirnix.CLRHook
 {
@@ -65,7 +66,7 @@ namespace Cirnix.CLRHook
 
         public static void InstallHookLib()
         {
-            string CirnixPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             CheckInstall(Path.Combine(CirnixPath, "EasyHook.dll"), Resources.EasyHook);
             CheckInstall(Path.Combine(CirnixPath, "EasyLoad32.dll"), Resources.EasyLoad32);
         }
@@ -89,6 +90,12 @@ namespace Cirnix.CLRHook
                 }
                 else
                     CheckInstall(M16Mix, Resources.M16);
+            }
+            string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            if (!CirnixPath.Equals(path, StringComparison.OrdinalIgnoreCase))
+            {
+                CheckDelete(Path.Combine(path, "EasyHook.dll"));
+                CheckDelete(Path.Combine(path, "EasyLoad32.dll"));
             }
             string JNServicePath = Path.Combine(Global.Globals.ResourcePath, "JNService");
             string RuntimePath = Path.Combine(JNServicePath, "Cirnix.JassNative.Runtime.dll");

@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -32,6 +33,13 @@ namespace Cirnix.Forms
         public TrayIcon()
         {
             InitializeComponent();
+            bool IsUpdated = false;
+            if (File.Exists("update.tmp"))
+            {
+                File.Delete("update.tmp");
+                IsUpdated = true;
+            }
+            InitGlobal(IsUpdated);
             MainTrayIcon.Icon = Icon = Global.Properties.Resources.CirnixIcon;
         }
 
@@ -312,8 +320,15 @@ namespace Cirnix.Forms
                         ClipboardConverter.IsUTF8 = false;
                         string text = ClipboardConverter.GetUTF8Text();
                         if (text == null) break;
-                        Clipboard.SetText(text);
-                        ClipboardConverter.SetUTF8Text(text);
+                        try
+                        {
+                            Clipboard.SetText(text);
+                            ClipboardConverter.SetUTF8Text(text);
+                        }
+                        catch
+                        {
+                            // ExternalException : 요청한 클립보드 작업을 수행하지 못했습니다.
+                        }
                     }
                     else
                     {

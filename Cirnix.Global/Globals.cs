@@ -45,7 +45,8 @@ namespace Cirnix.Global
         private static readonly string[] CheatSetPhases = Properties.Resources.CheatSetPhrase.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
         public static void InitGlobal(bool IsUpdated)
-        {            
+        {
+            if (!Directory.Exists(ResourcePath)) Directory.CreateDirectory(ResourcePath);
             Code = new string[24];
             hotkeyList = new HotkeyList();
             commandList = new CommandList();
