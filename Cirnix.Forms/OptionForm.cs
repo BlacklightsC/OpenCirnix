@@ -57,7 +57,7 @@ namespace Cirnix.Forms
             Combo_ScreenShotExtension.Text = Settings.ConvertExtention;
             Toggle_AutoConvert.Checked = Settings.IsConvertScreenShot;
             Toggle_RemoveOriginal.Checked = Settings.IsOriginalRemove;
-            Toggle_War3AutoKil.Checked = Settings.IsAntiZombieProcess;
+            Toggle_War3FixClipboard.Checked = Settings.IsFixClipboard;
             Num_CameraDistance.Value = Convert.ToInt32(Settings.CameraDistance);
             Num_CameraX.Value = Convert.ToInt32(Settings.CameraAngleX);
             Num_CameraY.Value = Convert.ToInt32(Settings.CameraAngleY);
@@ -275,7 +275,11 @@ namespace Cirnix.Forms
         private void War3AutoKillToggle_CheckedChanged(object sender, EventArgs e)
         {
             if (IsUpdating) return;
-            Settings.IsAntiZombieProcess = Toggle_War3AutoKil.Checked;
+            Settings.IsFixClipboard = Toggle_War3FixClipboard.Checked;
+            if (Toggle_War3FixClipboard.Checked)
+                ClipboardConverter.FixStart();
+            else
+                ClipboardConverter.FixEnd();
         }
         private void CommandHideToggle_CheckedChanged(object sender, EventArgs e)
         {

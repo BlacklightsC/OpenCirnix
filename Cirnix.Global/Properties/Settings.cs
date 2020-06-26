@@ -122,9 +122,9 @@ namespace Cirnix.Global
             get => Reg.GetBoolean(nameof(IsCommandHide));
             set => Reg.SetValue(nameof(IsCommandHide), value);
         }
-        public static bool IsAntiZombieProcess {
-            get => Reg.GetBoolean(nameof(IsAntiZombieProcess));
-            set => Reg.SetValue(nameof(IsAntiZombieProcess), value);
+        public static bool IsFixClipboard {
+            get => Reg.GetBoolean(nameof(IsFixClipboard));
+            set => Reg.SetValue(nameof(IsFixClipboard), value);
         }
         public static int ChannelChatBGColor {
             get => Reg.GetInt32(nameof(ChannelChatBGColor), -12566464);

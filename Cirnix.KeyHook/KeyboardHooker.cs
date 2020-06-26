@@ -99,12 +99,10 @@ namespace Cirnix.KeyHook
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
                 _HookID = SetWindowsHookEx(0xD, _proc, GetModuleHandle(curModule.ModuleName), 0);
-            ClipboardConverter.ChainedWnd = SetClipboardViewer(GlobalHandle);
         }
         public static void HookEnd()
         {
             UnhookWindowsHookEx(_HookID);
-            ChangeClipboardChain(GlobalHandle, ClipboardConverter.ChainedWnd);
         }
     }
 }

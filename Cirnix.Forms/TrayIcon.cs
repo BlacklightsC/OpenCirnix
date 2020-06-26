@@ -52,6 +52,8 @@ namespace Cirnix.Forms
                 Globals.ProgramShutDown = ProgramShutDown;
                 InitFunction.Init();
                 KeyboardHooker.HookStart();
+                if (Settings.IsFixClipboard)
+                    ClipboardConverter.FixStart();
                 MainWorker.RunWorkers();
                 CLRHook.Injector.InstallHookLib();
                 WarcraftInit = CLRHook.Injector.Init;
@@ -357,6 +359,8 @@ namespace Cirnix.Forms
         {
             MainTrayIcon.Visible = false;
             KeyboardHooker.HookEnd();
+            if (Settings.IsFixClipboard)
+                ClipboardConverter.FixEnd();
             try
             {
                 Application.Exit();

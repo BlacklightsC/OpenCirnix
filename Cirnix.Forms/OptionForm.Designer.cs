@@ -48,7 +48,7 @@ namespace Cirnix.Forms
             this.Toggle_CheatMapCheck = new MetroFramework.Controls.MetroToggle();
             this.Label_ChannelChatViewer = new System.Windows.Forms.Label();
             this.Toggle_ChannelChatViewer = new MetroFramework.Controls.MetroToggle();
-            this.Label_War3AutoKill = new System.Windows.Forms.Label();
+            this.Label_War3FixClipboard = new System.Windows.Forms.Label();
             this.Label_HpCommandAuto = new System.Windows.Forms.Label();
             this.GB_ScreenShot = new System.Windows.Forms.GroupBox();
             this.Combo_ScreenShotExtension = new MetroFramework.Controls.MetroComboBox();
@@ -62,7 +62,7 @@ namespace Cirnix.Forms
             this.Num_GameStartDelay = new System.Windows.Forms.NumericUpDown();
             this.Label_GameDelay = new System.Windows.Forms.Label();
             this.Label_GameStartDelay = new System.Windows.Forms.Label();
-            this.Toggle_War3AutoKil = new MetroFramework.Controls.MetroToggle();
+            this.Toggle_War3FixClipboard = new MetroFramework.Controls.MetroToggle();
             this.Toggle_HpCommandAuto = new MetroFramework.Controls.MetroToggle();
             this.GroupBox_MemoryOptimization = new System.Windows.Forms.GroupBox();
             this.TB_MemoryOptimizationDelay = new System.Windows.Forms.TextBox();
@@ -268,11 +268,11 @@ namespace Cirnix.Forms
             this.War3SettingTab.Controls.Add(this.Toggle_CheatMapCheck);
             this.War3SettingTab.Controls.Add(this.Label_ChannelChatViewer);
             this.War3SettingTab.Controls.Add(this.Toggle_ChannelChatViewer);
-            this.War3SettingTab.Controls.Add(this.Label_War3AutoKill);
+            this.War3SettingTab.Controls.Add(this.Label_War3FixClipboard);
             this.War3SettingTab.Controls.Add(this.Label_HpCommandAuto);
             this.War3SettingTab.Controls.Add(this.GB_ScreenShot);
             this.War3SettingTab.Controls.Add(this.GB_Host);
-            this.War3SettingTab.Controls.Add(this.Toggle_War3AutoKil);
+            this.War3SettingTab.Controls.Add(this.Toggle_War3FixClipboard);
             this.War3SettingTab.Controls.Add(this.Toggle_HpCommandAuto);
             this.War3SettingTab.Controls.Add(this.GroupBox_MemoryOptimization);
             this.War3SettingTab.Controls.Add(this.GB_Camera);
@@ -516,16 +516,16 @@ namespace Cirnix.Forms
             this.Toggle_ChannelChatViewer.UseSelectable = true;
             this.Toggle_ChannelChatViewer.CheckedChanged += new System.EventHandler(this.Toggle_ChannelChatViewer_CheckedChanged);
             // 
-            // Label_War3AutoKill
+            // Label_War3FixClipboard
             // 
-            this.Label_War3AutoKill.BackColor = System.Drawing.Color.Transparent;
-            this.Label_War3AutoKill.Font = new System.Drawing.Font("맑은 고딕", 9F);
-            this.Label_War3AutoKill.Location = new System.Drawing.Point(0, 195);
-            this.Label_War3AutoKill.Name = "Label_War3AutoKill";
-            this.Label_War3AutoKill.Size = new System.Drawing.Size(135, 15);
-            this.Label_War3AutoKill.TabIndex = 67;
-            this.Label_War3AutoKill.Text = "워크 프로세스 종료감지";
-            this.Label_War3AutoKill.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_War3FixClipboard.BackColor = System.Drawing.Color.Transparent;
+            this.Label_War3FixClipboard.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.Label_War3FixClipboard.Location = new System.Drawing.Point(0, 195);
+            this.Label_War3FixClipboard.Name = "Label_War3FixClipboard";
+            this.Label_War3FixClipboard.Size = new System.Drawing.Size(139, 15);
+            this.Label_War3FixClipboard.TabIndex = 67;
+            this.Label_War3FixClipboard.Text = "워크 클립보드 오류 수정";
+            this.Label_War3FixClipboard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Label_HpCommandAuto
             // 
@@ -699,18 +699,18 @@ namespace Cirnix.Forms
             this.Label_GameStartDelay.Text = "시작 대기시간";
             this.Label_GameStartDelay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Toggle_War3AutoKil
+            // Toggle_War3FixClipboard
             // 
-            this.Toggle_War3AutoKil.BackColor = System.Drawing.SystemColors.ControlText;
-            this.Toggle_War3AutoKil.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Toggle_War3AutoKil.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_War3AutoKil.Location = new System.Drawing.Point(133, 195);
-            this.Toggle_War3AutoKil.Name = "Toggle_War3AutoKil";
-            this.Toggle_War3AutoKil.Size = new System.Drawing.Size(70, 15);
-            this.Toggle_War3AutoKil.TabIndex = 23;
-            this.Toggle_War3AutoKil.Text = "Off";
-            this.Toggle_War3AutoKil.UseSelectable = true;
-            this.Toggle_War3AutoKil.CheckedChanged += new System.EventHandler(this.War3AutoKillToggle_CheckedChanged);
+            this.Toggle_War3FixClipboard.BackColor = System.Drawing.SystemColors.ControlText;
+            this.Toggle_War3FixClipboard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Toggle_War3FixClipboard.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Toggle_War3FixClipboard.Location = new System.Drawing.Point(137, 195);
+            this.Toggle_War3FixClipboard.Name = "Toggle_War3FixClipboard";
+            this.Toggle_War3FixClipboard.Size = new System.Drawing.Size(70, 15);
+            this.Toggle_War3FixClipboard.TabIndex = 23;
+            this.Toggle_War3FixClipboard.Text = "Off";
+            this.Toggle_War3FixClipboard.UseSelectable = true;
+            this.Toggle_War3FixClipboard.CheckedChanged += new System.EventHandler(this.War3AutoKillToggle_CheckedChanged);
             // 
             // Toggle_HpCommandAuto
             // 
@@ -2555,9 +2555,9 @@ namespace Cirnix.Forms
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage2.HorizontalScrollbarSize = 10;
-            this.metroTabPage2.Location = new System.Drawing.Point(4, 38);
+            this.metroTabPage2.Location = new System.Drawing.Point(4, 36);
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Size = new System.Drawing.Size(632, 233);
+            this.metroTabPage2.Size = new System.Drawing.Size(632, 235);
             this.metroTabPage2.TabIndex = 4;
             this.metroTabPage2.Text = "도움말";
             this.metroTabPage2.VerticalScrollbarBarColor = true;
@@ -2847,7 +2847,7 @@ namespace Cirnix.Forms
         private GroupBox GB_KeyReMap;
         private MetroFramework.Controls.MetroComboBox Combo_ScreenShotExtension;
         private Label Label_Title;
-        private MetroFramework.Controls.MetroToggle Toggle_War3AutoKil;
+        private MetroFramework.Controls.MetroToggle Toggle_War3FixClipboard;
         private MetroFramework.Controls.MetroToggle Toggle_HpCommandAuto;
         private MetroFramework.Controls.MetroToggle Toggle_CommandHide;
         private MetroFramework.Controls.MetroToggle Toggle_RemoveOriginal;
@@ -2875,7 +2875,7 @@ namespace Cirnix.Forms
         private MetroFramework.Controls.MetroTextBox TB_RPGEN;
         private Button BTN_RPGPath;
         private MetroFramework.Controls.MetroTextBox TB_RPGPath;
-        private Label Label_War3AutoKill;
+        private Label Label_War3FixClipboard;
         private Label Label_HpCommandAuto;
         private Label Label_RemoveOriginal;
         private Label Label_AutoConvert;

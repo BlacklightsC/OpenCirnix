@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using static Cirnix.Global.Globals;
 using static Cirnix.KeyHook.NativeMethods;
 
 namespace Cirnix.KeyHook
@@ -40,7 +41,7 @@ namespace Cirnix.KeyHook
         {
             if (!OpenClipboard(IntPtr.Zero)) return;
             int length = Encoding.UTF8.GetByteCount(text) + 1;
-            if (length >= 0x100) length = 0xFF;
+            if (length >= 0x80) length = 0x7F;
             byte[] buffer = new byte[Encoding.UTF8.GetByteCount(text) + 1];
             Encoding.UTF8.GetBytes(text, 0, text.Length, buffer, 0);
             IntPtr hGlob = Marshal.AllocHGlobal(length + 1);
@@ -53,5 +54,15 @@ namespace Cirnix.KeyHook
             }
             CloseClipboard();
         }
+
+        public static void FixStart()
+        {
+            ChainedWnd = SetClipboardViewer(GlobalHandle);
+        }
+        public static void FixEnd()
+        {
+            ChangeClipboardChain(GlobalHandle, ChainedWnd);
+        }
+
     }
 }
