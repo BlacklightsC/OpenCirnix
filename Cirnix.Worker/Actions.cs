@@ -30,9 +30,9 @@ namespace Cirnix.Worker
             InitHotkey();
             InitCommand();
 
-            AntiZombieProcessChecker = new HangWatchdog(0, 0, 5);
-            AntiZombieProcessChecker.Condition = () => Settings.IsAntiZombieProcess && Warcraft3Info.Process.MainWindowHandle == IntPtr.Zero;
-            AntiZombieProcessChecker.Actions += () => Warcraft3Info.Close();
+            //AntiZombieProcessChecker = new HangWatchdog(0, 0, 5);
+            //AntiZombieProcessChecker.Condition = () => (Warcraft3Info.Process?.MainWindowHandle == IntPtr.Zero) ?? false;
+            //AntiZombieProcessChecker.Actions += () => Warcraft3Info.Close();
 
             MemoryOptimizeChecker = new HangWatchdog(() => new TimeSpan(0, Settings.MemoryOptimizeCoolDown, 0));
             MemoryOptimizeChecker.Condition = () => Settings.IsMemoryOptimize;
@@ -667,7 +667,7 @@ namespace Cirnix.Worker
             }
             if (Settings.IsAutoHp && !HPView) HPView = true;
 
-            AntiZombieProcessChecker.Check();
+            //AntiZombieProcessChecker.Check();
             MemoryOptimizeChecker.Check();
                     
             StatusCheck();
@@ -692,7 +692,7 @@ namespace Cirnix.Worker
         {
             if (WaitGameStart)
             {
-                if (!GetReceiveStatus()) return;
+                if (!GetStaticReceiveStatus()) return;
                 WaitGameStart = false;
                 MainWorker.autoRG.CancelAsync();
                 MainWorker.MapFileWatcher.EnableRaisingEvents = false;
