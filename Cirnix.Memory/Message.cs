@@ -16,7 +16,8 @@ namespace Cirnix.Memory
         private static readonly byte[] MessageSearchPattern = new byte[] { 0x94, 0x28, 0x49, 0x65, 0x94 };
         private static readonly byte[] MessageAdditionalPattern = new byte[] { 0x65, 0x9B, 3, 0x36, 0x65 };
         private static readonly byte[] MessageDialogPattern = new byte[] { 0x6D, 0x6F };
-        private static readonly byte[] ReceiverSearchPattern = new byte[] { 0xD3, 0xAF, 0x2A, 0x26, 0xD3 };
+        private static readonly byte[] ReceiverSearchPattern = new byte[] { 0xD3, 0xAF, 0x2A, 0x26, 0xD3 }; // 0x25C
+        //private static readonly byte[] ReceiverSearchPattern = new byte[] { 0xB0, 0x32, 0x5B, 0x2C, 0xB0 }; // 0x2A4
         internal static IntPtr CEditBoxOffset = IntPtr.Zero;
         internal static IntPtr MessageOffset = IntPtr.Zero;
         internal static IntPtr ReceiverOffset = IntPtr.Zero;
@@ -60,38 +61,33 @@ namespace Cirnix.Memory
             return Encoding.UTF8.GetString(iBuffer);
         }
 
-        public static async 
-        Task
-DetectChatFrequency()
+        public static async Task DetectChatFrequency()
         {
             CEditBoxOffset = SearchAddress(MessageSearchPattern);
-            if (CEditBoxOffset != IntPtr.Zero)
-            {
-                byte[] buffer = new byte[1];
-                byte[] bytes = Encoding.UTF8.GetBytes($"{Theme.MsgTitle} 채팅 주파수 검색 중...");
-                for (int i = 0; i < 20; i++)
-                    WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), bytes, bytes.Length + 1, out _);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-                await Task.Delay(200);
-                for (int i = 0; i < 20; i++)
-                    if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), buffer, 1, out _)
-                     && buffer[0] == 0)
-                    {
-                        Settings.ChatFrequency = i;
-                        for (int j = 0; j < 20; j++)
-                            WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * j), new byte[] { 0 }, 1, out _);
-                        return;
-                    }
-            }
+            if (CEditBoxOffset == IntPtr.Zero) return;
+            byte[] buffer = new byte[1];
+            byte[] bytes = Encoding.UTF8.GetBytes($"{Theme.MsgTitle} 채팅 주파수 검색 중...");
+            for (int i = 0; i < 20; i++)
+                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), bytes, bytes.Length + 1, out _);
+            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            await Task.Delay(200);
+            for (int i = 0; i < 20; i++)
+                if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), buffer, 1, out _) && buffer[0] == 0)
+                {
+                    Settings.ChatFrequency = i;
+                    for (int j = 0; j < 20; j++)
+                        WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * j), new byte[] { 0 }, 1, out _);
+                    return;
+                }
         }
 
-        public static bool GetReceiveStatus()
+        public static bool GetStaticReceiveStatus()
         {
             ReceiverOffset = SearchAddress(ReceiverSearchPattern);
             if (ReceiverOffset != IntPtr.Zero)
@@ -117,7 +113,7 @@ DetectChatFrequency()
         
         public static void MessageHide(bool isHide)
         {
-            if (!GetReceiveStatus()) return;
+            if (!GetStaticReceiveStatus()) return;
             if (isHide)
             {
                 if (chatMode == ChatMode.Private) return;
