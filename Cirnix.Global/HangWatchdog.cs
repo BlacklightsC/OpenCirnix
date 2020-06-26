@@ -10,7 +10,7 @@ namespace Cirnix.Global
         private TimeSpan _Interval;
 
         public TimeSpan Interval {
-            get => DynamicInterval == null ? DynamicInterval() : _Interval;
+            get => DynamicInterval == null ? _Interval : DynamicInterval();
             set {
                 DynamicInterval = null;
                 _Interval = value;
