@@ -1,12 +1,13 @@
-﻿using Cirnix.ServerStatus;
+﻿using Cirnix.Global;
+using Cirnix.ServerStatus;
 
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Cirnix.Forms
+namespace Cirnix.Forms.ServerStatus
 {
-    internal partial class RoomListSearchPlayerDialog : Global.DraggableLabelForm
+    internal partial class RoomListSearchPlayerDialog : DraggableLabelForm
     {
         internal List<RoomInformation.Field> infoList = null;
         internal int ResultIndex = -1;
@@ -27,18 +28,18 @@ namespace Cirnix.Forms
             PlayerName = TB_ID.Text;
             for (int i = 0; i < infoList.Count; i++)
             {
-                if (infoList[i].player0.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player1.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player2.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player3.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player4.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player5.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player6.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player7.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player8.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player9.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player10.Equals(PlayerName, StringComparison.OrdinalIgnoreCase)
-                 || infoList[i].player11.Equals(PlayerName, StringComparison.OrdinalIgnoreCase))
+                if (PlayerName.Equals(infoList[i].player0, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player1, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player2, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player3, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player4, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player5, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player6, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player7, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player8, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player9, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player10, StringComparison.OrdinalIgnoreCase)
+                 || PlayerName.Equals(infoList[i].player11, StringComparison.OrdinalIgnoreCase))
                 {
                     ResultIndex = i;
                     break;
