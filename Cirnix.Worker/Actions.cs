@@ -104,6 +104,8 @@ namespace Cirnix.Worker
             commandList.Register("j", "ㅓ", RoomJoin);
             commandList.Register("c", "ㅊ", RoomCreate);
             commandList.Register("dbg", "윻", KeyDebug);
+            commandList.Register("wa", "ㅈㅁ", BanlistCheck);
+            commandList.Register("va", "ㅍㅁ", IpAddrMaching);
         }
     }
 
@@ -935,6 +937,16 @@ namespace Cirnix.Worker
             string arg = GetFullArgs();
             SendMsg(true, $"'{arg}'방을 생성합니다.");
             Join.RoomCreate(arg);
+        }
+
+        internal static void BanlistCheck()
+        {
+            BanList.CheckBanList();
+        }
+
+        internal static void IpAddrMaching()
+        {
+            BanList.IPAddrMaching();
         }
     }
 }

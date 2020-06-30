@@ -111,7 +111,7 @@
             this.metroLabel3.Size = new System.Drawing.Size(256, 20);
             this.metroLabel3.Style = MetroFramework.MetroColorStyle.Red;
             this.metroLabel3.TabIndex = 77;
-            this.metroLabel3.Text = "* PID를 클릭한뒤 선택버튼을 누르세요";
+            this.metroLabel3.Text = "PID를 클릭한뒤 선택버튼을 누르세요";
             this.metroLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroLabel3.UseStyleColors = true;
             // 

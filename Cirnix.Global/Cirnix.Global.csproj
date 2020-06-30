@@ -43,6 +43,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\BanlistModel.cs" />
     <Compile Include="HangWatchdog.cs" />
     <Compile Include="Cryptography.cs" />
     <Compile Include="ExceptionLogger\ExceptionSender.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="Registry\Warcraft.cs" />
     <Compile Include="SaveFiles.cs" />
+    <Compile Include="SaveLoad.cs" />
     <Compile Include="TGAReader.cs" />
     <Compile Include="Theme.cs" />
   </ItemGroup>

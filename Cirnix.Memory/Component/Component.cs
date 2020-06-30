@@ -231,7 +231,8 @@ namespace Cirnix.Memory
                 Message.MessageOffset =
                 Message.SelectedReceiverOffset =
                 Message.TargetReceiverOffset =
-                Join.Offset = IntPtr.Zero;
+                Join.Offset = 
+                BanList.Offset = IntPtr.Zero;
             }
         }
 
