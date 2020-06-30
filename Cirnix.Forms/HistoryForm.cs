@@ -5,7 +5,7 @@ namespace Cirnix.Forms
 {
     internal partial class HistoryForm : Global.DraggableLabelForm
     {
-        private string URL;
+        private readonly string URL;
         internal HistoryForm(string URL)
         {
             InitializeComponent();

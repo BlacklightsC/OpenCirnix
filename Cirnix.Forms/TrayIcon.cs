@@ -1,8 +1,8 @@
-﻿using Cirnix.Global;
+﻿using Cirnix.Forms.ServerStatus;
+using Cirnix.Forms.Update;
+using Cirnix.Global;
 using Cirnix.KeyHook;
 using Cirnix.Worker;
-
-using Newtonsoft.Json.Linq;
 
 using System;
 using System.ComponentModel;
@@ -19,7 +19,7 @@ namespace Cirnix.Forms
     public partial class TrayIcon : Form
     {
         private static int[] Latest;
-        private static string LatestURL, HistoryURL;
+        private static string LatestURL;
         private MainForm main;
         private OptionForm option;
         private InfoForm info;
@@ -204,8 +204,8 @@ namespace Cirnix.Forms
         }
         private void InitHistoryForm()
         {
-            if (string.IsNullOrEmpty(HistoryURL)) return;
-            Process.Start(HistoryURL);
+            if (string.IsNullOrEmpty(ReleaseChecker.HistoryURL)) return;
+            Process.Start(ReleaseChecker.HistoryURL);
 
             //if (!(history == null
             // || history.IsDisposed))
@@ -226,12 +226,11 @@ namespace Cirnix.Forms
             VersionChecker = new BackgroundWorker();
             VersionChecker.DoWork += new DoWorkEventHandler(VersionChecker_DoWork);
             VersionChecker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(VersionChecker_RunWorkerCompleted);
-            Latest = new int[4];
+            Latest = new int[2];
             VersionChecker.RunWorkerAsync();
         }
         private void VersionChecker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(infoURL)) return;
             if (e.Error != null)
             {
                 MetroDialog.OK("연결 오류", "업데이트 서버에 연결할 수 없습니다.");
@@ -242,11 +241,7 @@ namespace Cirnix.Forms
             if (version[0] > Latest[0]) return;
             else if (version[0] == Latest[0])
                 if (version[1] > Latest[1]) return;
-                else if (version[1] == Latest[1])
-                    if (version[2] > Latest[2]) return;
-                    else if (version[2] == Latest[2])
-                        if (version[3] >= Latest[3]) return;
-            if (MetroDialog.YesNo("업데이트 필요", $"최신 버전이 확인되었습니다.\n 현재: {version[0]}.{version[1]}.{version[2]}.{version[3]}\n 최신: {Latest[0]}.{Latest[1]}.{Latest[2]}.{Latest[3]}\n업데이트 하시겠습니까?"))
+            if (MetroDialog.YesNo("업데이트 필요", $"최신 버전이 확인되었습니다.\n 현재: {version[0]}.{version[1]}\n 최신: {Latest[0]}.{Latest[1]}\n업데이트 하시겠습니까?"))
             {
                 try
                 {
@@ -271,15 +266,13 @@ namespace Cirnix.Forms
         }
         private void VersionChecker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(infoURL)) return;
-            JObject json = JObject.Parse(GetDataFromServer(infoURL));
             #region [    Cirnix Config    ]
             bool IsBeta = Settings.BetaUser;
-            string[] latestTemp = json[IsBeta ? "Latest_Version" : "Recommanded_Version"].ToString().Split('.');
-            for (int i = 0; i < 4; i++)
+            
+            string[] latestTemp = (IsBeta ? ReleaseChecker.Latest.tag_name : ReleaseChecker.Recommanded.tag_name).Split('.');
+            for (int i = 0; i < 2; i++)
                 Latest[i] = int.Parse(latestTemp[i]);
-            LatestURL = json[IsBeta ? "Latest_URL" : "Recommanded_URL"].ToString();
-            HistoryURL = json["History"].ToString();
+            LatestURL = IsBeta ? ReleaseChecker.Latest.assets[0].browser_download_url : ReleaseChecker.Recommanded.assets[0].browser_download_url;
             #endregion
         }
         #endregion

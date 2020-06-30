@@ -1,4 +1,4 @@
-﻿namespace Cirnix.Forms
+﻿namespace Cirnix.Forms.Update
 {
 	partial class UpdateForm
 	{

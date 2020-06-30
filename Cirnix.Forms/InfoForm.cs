@@ -1,15 +1,11 @@
-﻿using Cirnix.Global;
+﻿using Cirnix.Forms.Update;
+using Cirnix.Global;
 
 using MetroFramework.Forms;
-
-using Newtonsoft.Json.Linq;
 
 using System;
 using System.ComponentModel;
 using System.Reflection;
-using System.Windows.Forms;
-
-using static Cirnix.Global.Globals;
 
 namespace Cirnix.Forms
 {
@@ -38,10 +34,10 @@ namespace Cirnix.Forms
             VersionChecker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(VersionChecker_RunWorkerCompleted);
 
             Version ver = Assembly.GetEntryAssembly().GetName().Version;
-            Current = new int[4] { ver.Major, ver.Minor, ver.Build, ver.Revision };
-            Recommanded = new int[4];
-            Latest = new int[4];
-            CurrentVersion.Text = $"{Current[0]}.{Current[1]}.{Current[2]}.{Current[3]}";
+            Current = new int[2] { ver.Major, ver.Minor };
+            Recommanded = new int[2];
+            Latest = new int[2];
+            CurrentVersion.Text = $"{Current[0]}.{Current[1]}";
         }
 
         private void InfoForm_Shown(object sender, EventArgs e)
@@ -53,18 +49,17 @@ namespace Cirnix.Forms
 
         private void VersionChecker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(infoURL)) LatestVersion.Text = "서버 없음";
-            else if (e.Error != null) LatestVersion.Text = "연결 실패";
+            if (e.Error != null) LatestVersion.Text = "연결 실패";
             else VersionUpdate();
         }
 
         private void VersionUpdate()
         {
             int[] version = Settings.BetaUser ? Latest : Recommanded;
-            LatestVersion.Text = $"{version[0]}.{version[1]}.{version[2]}.{version[3]}";
-            for (int i = 0; i < 4; i++)
+            LatestVersion.Text = $"{version[0]}.{version[1]}";
+            for (int i = 0; i < 2; i++)
             {
-                if (i != 3 && Current[i] == version[i]) continue;
+                if (i != 1 && Current[i] == version[i]) continue;
                 if (Current[i] >= version[i])
                 {
                     UpdateButton.Text = "최신 버전";
@@ -81,16 +76,15 @@ namespace Cirnix.Forms
 
         private void VersionChecker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(infoURL)) return;
-            JObject json = JObject.Parse(GetDataFromServer(infoURL));
-            string[] latestTemp = json["Recommanded_Version"].ToString().Split('.');
-            for (int i = 0; i < 4; i++)
+            ReleaseChecker.GetRelease();
+            string[] latestTemp = ReleaseChecker.Recommanded.tag_name.Split('.');
+            for (int i = 0; i < 2; i++)
                 Recommanded[i] = int.Parse(latestTemp[i]);
-            RecommandedURL = json["Recommanded_URL"].ToString();
-            latestTemp = json["Latest_Version"].ToString().Split('.');
-            for (int i = 0; i < 4; i++)
+            RecommandedURL = ReleaseChecker.Recommanded.assets[0].browser_download_url;
+            latestTemp = ReleaseChecker.Latest.tag_name.Split('.');
+            for (int i = 0; i < 2; i++)
                 Latest[i] = int.Parse(latestTemp[i]);
-            LatestURL = json["Latest_URL"].ToString();
+            LatestURL = ReleaseChecker.Latest.assets[0].browser_download_url;
         }
 
         private void Update_Click(object sender, EventArgs e)
@@ -101,30 +95,13 @@ namespace Cirnix.Forms
         private void CurrentVersion_Click(object sender, EventArgs e)
         {
             historyForm();
-            
         }
 
         private void Toggle_BetaUser_CheckedChanged(object sender, EventArgs e)
         {
             if (IsUpdating) return;
             Settings.BetaUser = Toggle_BetaUser.Checked;
-            if (string.IsNullOrWhiteSpace(infoURL)) LatestVersion.Text = "서버 없음";
-            else VersionUpdate();
-        }
-
-        private void CopyRight_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void InfoForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Picture_Click(object sender, EventArgs e)
-        {
-
+            VersionUpdate();
         }
 
         private void LicenceButton_Click(object sender, EventArgs e)

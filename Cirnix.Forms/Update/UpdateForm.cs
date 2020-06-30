@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Cirnix.Forms
+namespace Cirnix.Forms.Update
 {
     public sealed partial class UpdateForm : MetroForm
     {

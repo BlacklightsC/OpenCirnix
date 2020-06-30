@@ -52,7 +52,6 @@
             this.Picture.Size = new System.Drawing.Size(256, 256);
             this.Picture.TabIndex = 0;
             this.Picture.TabStop = false;
-            this.Picture.Click += new System.EventHandler(this.Picture_Click);
             // 
             // CopyRight
             // 
@@ -66,7 +65,6 @@
             this.CopyRight.Text = "제작: 평타천국 (BlacklightsC)\r\n\r\n";
             this.CopyRight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.CopyRight.UseStyleColors = true;
-            this.CopyRight.Click += new System.EventHandler(this.CopyRight_Click);
             // 
             // Label_CurrentVersion
             // 
@@ -210,7 +208,6 @@
             this.Resizable = false;
             this.Text = "프로그램 정보";
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
-            this.Load += new System.EventHandler(this.InfoForm_Load);
             this.Shown += new System.EventHandler(this.InfoForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
             this.ResumeLayout(false);
