@@ -1,7 +1,7 @@
 ﻿using Cirnix.Global;
 using Cirnix.KeyHook;
 using Cirnix.Memory;
-
+using System.Collections.Generic;
 using ModernFolderBrowserDialog;
 
 using System;
@@ -9,6 +9,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+
 
 using static Cirnix.Forms.NativeMethods;
 using static Cirnix.Global.Globals;
@@ -174,6 +176,7 @@ namespace Cirnix.Forms
             Number_ChatFrequency.Enabled = BTN_DetectFrequency.Enabled = !Settings.IsAutoFrequency;
             Number_ChatFrequency.Value = Settings.ChatFrequency + 1;
             IsUpdating = false;
+            Banlistload();
         }
         private void OptionForm_Activated(object sender, EventArgs e)
         {
@@ -1703,6 +1706,18 @@ namespace Cirnix.Forms
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "워크래프트의 방을 생성합니다.\r\n 생성할때 이전에 만들었던 방의 맵으로 생성됩니다.";
                     break;
+                case "wa":
+                    Label_CommandTitle.Text = "밴 리스트";
+                    Label_CommandKR.Text = "ㅈㅁ";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "밴리스트에 저장된 IP 및 ID를 방에 접속된 인원의\r\n IP 및 ID와 매칭하여 조건에 맞을 경우 출력합니다.\r\n\r\nID 및 IP의 일부를 입력해주세요. \r\n\r\n1.2를 입력할 경우 1.2.3.4 IP를 검색합니다.\r\n1.2.3.4를 입력할 경우 무조건 같은 IP를 검색합니다.";
+                    break;
+                case "va":
+                    Label_CommandTitle.Text = "IP 매칭";
+                    Label_CommandKR.Text = "ㅍㅁ";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "방에 접속된 인원의 IP 및 ID를 출력합니다.";
+                    break;
                 case "exit":
                     Label_CommandTitle.Text = "워크래프트 종료";
                     Label_CommandKR.Text = "종료";
@@ -1713,6 +1728,59 @@ namespace Cirnix.Forms
                     return;
             }
             Label_CommandEN.Text = value;
+        }
+
+
+        private void Banlistload()
+        {
+            List<BanlistModel> list = new SaveBanlistUsers().Load();
+            if (list == null)
+            {
+                return;
+            }
+            banlistview.Items.Clear();
+            Memory.BanList.Clear();
+            try
+            {
+                banlistview.BeginUpdate();
+                foreach (BanlistModel banlistModel in list)
+                {
+                    string[] row = { banlistModel.ID, banlistModel.IP, banlistModel.Reason };
+                    ListViewItem newitem = new ListViewItem(row) { Tag = banlistModel };
+                    banlistview.Items.Add(newitem);
+                    Memory.BanList.Add(banlistModel);
+                }
+            }
+            finally
+            {
+                banlistview.EndUpdate();
+            }
+        }
+
+        private void AddSave(BanlistModel data)
+        {
+            List<BanlistModel> list = new List<BanlistModel>();
+            foreach (object obj in banlistview.Items)
+            {
+                ListViewItem listViewItem = (ListViewItem)obj;
+                list.Add((BanlistModel)listViewItem.Tag);
+            }
+            list.Add(data);
+            new SaveBanlistUsers().Save(list);
+            Banlistload();
+        }
+
+        private void DelSave(BanlistModel data)
+        {
+            List<BanlistModel> list = new List<BanlistModel>();
+            foreach (object obj in banlistview.Items)
+            {
+                ListViewItem listViewItem = (ListViewItem)obj;
+                list.Add((BanlistModel)listViewItem.Tag);
+            }
+            list.Remove(data);
+            new SaveBanlistUsers().Save(list);
+            Banlistload();
         }
 
         private async void BTN_HotKeyDebug_Click(object sender, EventArgs e)
@@ -1728,6 +1796,28 @@ namespace Cirnix.Forms
             if (IsUpdating) return;
             Settings.IsAutoFrequency = Toggle_AutoFrequency.Checked;
             Number_ChatFrequency.Enabled = BTN_DetectFrequency.Enabled = !Toggle_AutoFrequency.Checked;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            BanlistModel banlistModel = new BanlistModel();
+            banlistModel.ID = IdTextBox.Text;
+            banlistModel.IP = IPTextBox.Text;
+            banlistModel.Reason = ReasonTextBox.Text;
+            IdTextBox.Text = "";
+            IPTextBox.Text = "";
+            ReasonTextBox.Text = "";
+            this.AddSave(banlistModel);
+            Banlistload();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (banlistview.SelectedItems.Count <= 0)
+            {
+                return;
+            }
+            this.DelSave((BanlistModel)this.banlistview.SelectedItems[0].Tag);
         }
 
         private void Number_ChatFrequency_ValueChanged(object sender, EventArgs e)

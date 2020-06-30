@@ -70,6 +70,7 @@
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="Registry\Warcraft.cs" />
     <Compile Include="SaveFiles.cs" />
+    <Compile Include="SaveLoad.cs" />
     <Compile Include="TGAReader.cs" />
     <Compile Include="Theme.cs" />
   </ItemGroup>

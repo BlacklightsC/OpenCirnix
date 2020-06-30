@@ -496,4 +496,13 @@ namespace Cirnix.Global
             return result;
         }
     }
+
+
+    public class BanlistModel
+    {
+        public string ID { get; set; }
+        public string IP { get; set; }
+        public string Reason { get; set; }
+    }
+
 }

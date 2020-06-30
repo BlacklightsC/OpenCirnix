@@ -1,7 +1,7 @@
 ﻿using Cirnix.Global;
 using Cirnix.KeyHook;
 using Cirnix.Worker;
-
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 using System;
@@ -59,6 +59,7 @@ namespace Cirnix.Forms
                 WarcraftInit = CLRHook.Injector.Init;
                 commandList.Register("rl", "기", () => Invoke(new Action(InitRoomListForm)));
                 channel = new ChannelChatForm();
+                InitBanList();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
                 InitMainForm();
                 main.Show();
@@ -89,6 +90,22 @@ namespace Cirnix.Forms
             await Task.Delay(200);
             Memory.Message.SendMsg(true, $"Debug Mode On, Version: {version[0]}.{version[1]}.{version[2]}.{version[3]}");
         }
+
+        private void InitBanList()
+        {
+            List<BanlistModel> list = new Memory.SaveBanlistUsers().Load();
+            if (list != null)
+            {
+                foreach (BanlistModel banlistModel in list)
+                {
+                    if (banlistModel != null)
+                    {
+                        Memory.BanList.Add(banlistModel);
+                    }
+                }
+            }
+        }
+
         private void InitMainForm()
         {
             if (!(main == null

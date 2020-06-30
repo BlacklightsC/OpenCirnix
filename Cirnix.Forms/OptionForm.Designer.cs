@@ -30,6 +30,7 @@ namespace Cirnix.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.MainTabControl = new MetroFramework.Controls.MetroTabControl();
             this.War3SettingTab = new MetroFramework.Controls.MetroTabPage();
             this.GB_MixFile = new System.Windows.Forms.GroupBox();
@@ -178,6 +179,19 @@ namespace Cirnix.Forms
             this.Key5 = new MetroFramework.Controls.MetroButton();
             this.Key7 = new MetroFramework.Controls.MetroButton();
             this.Key8 = new MetroFramework.Controls.MetroButton();
+            this.BanList = new MetroFramework.Controls.MetroTabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ReasonTextBox = new System.Windows.Forms.TextBox();
+            this.IPTextBox = new System.Windows.Forms.TextBox();
+            this.IdTextBox = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.banlistview = new System.Windows.Forms.ListView();
+            this.ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.IP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.사유 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
             this.BTN_HotKeyDebug = new System.Windows.Forms.Button();
             this.GB_ChatFrequency = new System.Windows.Forms.GroupBox();
@@ -210,6 +224,7 @@ namespace Cirnix.Forms
             this.Toggle_CommandHide = new MetroFramework.Controls.MetroToggle();
             this.Label_Title = new System.Windows.Forms.Label();
             this.CommandHideText = new System.Windows.Forms.Label();
+            this.metroContextMenu1 = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.MainTabControl.SuspendLayout();
             this.War3SettingTab.SuspendLayout();
             this.GB_MixFile.SuspendLayout();
@@ -241,6 +256,7 @@ namespace Cirnix.Forms
             this.GB_SmartKey.SuspendLayout();
             this.GB_SmartKeyPrevention.SuspendLayout();
             this.GB_KeyReMap.SuspendLayout();
+            this.BanList.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             this.GB_ChatFrequency.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Number_ChatFrequency)).BeginInit();
@@ -252,11 +268,12 @@ namespace Cirnix.Forms
             this.MainTabControl.Controls.Add(this.War3SettingTab);
             this.MainTabControl.Controls.Add(this.RPGTab);
             this.MainTabControl.Controls.Add(this.MacroTab);
+            this.MainTabControl.Controls.Add(this.BanList);
             this.MainTabControl.Controls.Add(this.metroTabPage1);
             this.MainTabControl.Controls.Add(this.metroTabPage2);
             this.MainTabControl.Location = new System.Drawing.Point(10, 30);
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 0;
+            this.MainTabControl.SelectedIndex = 3;
             this.MainTabControl.Size = new System.Drawing.Size(640, 275);
             this.MainTabControl.TabIndex = 6;
             this.MainTabControl.UseSelectable = true;
@@ -280,9 +297,9 @@ namespace Cirnix.Forms
             this.War3SettingTab.HorizontalScrollbarBarColor = true;
             this.War3SettingTab.HorizontalScrollbarHighlightOnWheel = false;
             this.War3SettingTab.HorizontalScrollbarSize = 10;
-            this.War3SettingTab.Location = new System.Drawing.Point(4, 38);
+            this.War3SettingTab.Location = new System.Drawing.Point(4, 36);
             this.War3SettingTab.Name = "War3SettingTab";
-            this.War3SettingTab.Size = new System.Drawing.Size(632, 233);
+            this.War3SettingTab.Size = new System.Drawing.Size(632, 235);
             this.War3SettingTab.TabIndex = 2;
             this.War3SettingTab.Text = "워크래프트";
             this.War3SettingTab.VerticalScrollbarBarColor = true;
@@ -2300,6 +2317,131 @@ namespace Cirnix.Forms
             this.Key8.Click += new System.EventHandler(this.Key8_Click);
             this.Key8.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.KeyReMapping_PreviewKeyDown);
             // 
+            // BanList
+            // 
+            this.BanList.Controls.Add(this.button2);
+            this.BanList.Controls.Add(this.label4);
+            this.BanList.Controls.Add(this.label3);
+            this.BanList.Controls.Add(this.label2);
+            this.BanList.Controls.Add(this.ReasonTextBox);
+            this.BanList.Controls.Add(this.IPTextBox);
+            this.BanList.Controls.Add(this.IdTextBox);
+            this.BanList.Controls.Add(this.button1);
+            this.BanList.Controls.Add(this.banlistview);
+            this.BanList.HorizontalScrollbarBarColor = true;
+            this.BanList.HorizontalScrollbarHighlightOnWheel = false;
+            this.BanList.HorizontalScrollbarSize = 10;
+            this.BanList.Location = new System.Drawing.Point(4, 38);
+            this.BanList.Name = "BanList";
+            this.BanList.Size = new System.Drawing.Size(632, 233);
+            this.BanList.TabIndex = 5;
+            this.BanList.Text = "밴리스트";
+            this.BanList.VerticalScrollbarBarColor = true;
+            this.BanList.VerticalScrollbarHighlightOnWheel = false;
+            this.BanList.VerticalScrollbarSize = 10;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(464, 207);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 11;
+            this.button2.Text = "삭제";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.SystemColors.Window;
+            this.label4.Location = new System.Drawing.Point(483, 94);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 12);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "사유";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.Window;
+            this.label3.Location = new System.Drawing.Point(483, 57);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(16, 12);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "IP";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.SystemColors.Window;
+            this.label2.Location = new System.Drawing.Point(483, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(16, 12);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "ID";
+            // 
+            // ReasonTextBox
+            // 
+            this.ReasonTextBox.Location = new System.Drawing.Point(527, 91);
+            this.ReasonTextBox.Name = "ReasonTextBox";
+            this.ReasonTextBox.Size = new System.Drawing.Size(100, 21);
+            this.ReasonTextBox.TabIndex = 7;
+            // 
+            // IPTextBox
+            // 
+            this.IPTextBox.Location = new System.Drawing.Point(527, 54);
+            this.IPTextBox.Name = "IPTextBox";
+            this.IPTextBox.Size = new System.Drawing.Size(100, 21);
+            this.IPTextBox.TabIndex = 6;
+            // 
+            // IdTextBox
+            // 
+            this.IdTextBox.Location = new System.Drawing.Point(527, 15);
+            this.IdTextBox.Name = "IdTextBox";
+            this.IdTextBox.Size = new System.Drawing.Size(100, 21);
+            this.IdTextBox.TabIndex = 4;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(551, 127);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "추가";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // banlistview
+            // 
+            this.banlistview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ID,
+            this.IP,
+            this.사유});
+            this.banlistview.FullRowSelect = true;
+            this.banlistview.GridLines = true;
+            this.banlistview.HideSelection = false;
+            this.banlistview.Location = new System.Drawing.Point(3, 5);
+            this.banlistview.Name = "banlistview";
+            this.banlistview.Size = new System.Drawing.Size(445, 227);
+            this.banlistview.TabIndex = 2;
+            this.banlistview.UseCompatibleStateImageBehavior = false;
+            this.banlistview.View = System.Windows.Forms.View.Details;
+            // 
+            // ID
+            // 
+            this.ID.Text = "ID";
+            this.ID.Width = 112;
+            // 
+            // IP
+            // 
+            this.IP.Text = "IP";
+            this.IP.Width = 115;
+            // 
+            // 사유
+            // 
+            this.사유.Text = "사유";
+            this.사유.Width = 213;
+            // 
             // metroTabPage1
             // 
             this.metroTabPage1.Controls.Add(this.BTN_HotKeyDebug);
@@ -2532,6 +2674,8 @@ namespace Cirnix.Forms
             "rework",
             "j",
             "c",
+            "wa",
+            "va",
             "exit"});
             this.CommandListBox.Location = new System.Drawing.Point(6, 18);
             this.CommandListBox.Name = "CommandListBox";
@@ -2754,6 +2898,11 @@ namespace Cirnix.Forms
             this.CommandHideText.Text = "명령어 숨기기";
             this.CommandHideText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // metroContextMenu1
+            // 
+            this.metroContextMenu1.Name = "metroContextMenu1";
+            this.metroContextMenu1.Size = new System.Drawing.Size(61, 4);
+            // 
             // OptionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -2809,6 +2958,8 @@ namespace Cirnix.Forms
             this.GB_SmartKey.ResumeLayout(false);
             this.GB_SmartKeyPrevention.ResumeLayout(false);
             this.GB_KeyReMap.ResumeLayout(false);
+            this.BanList.ResumeLayout(false);
+            this.BanList.PerformLayout();
             this.metroTabPage1.ResumeLayout(false);
             this.GB_ChatFrequency.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Number_ChatFrequency)).EndInit();
@@ -2999,5 +3150,19 @@ namespace Cirnix.Forms
         private Button BTN_AutoRightMouseOn;
         private Label Label_AutoMouseDelay;
         private Label Label_Border;
+        private MetroFramework.Controls.MetroTabPage BanList;
+        private ListView banlistview;
+        private ColumnHeader ID;
+        private ColumnHeader IP;
+        private ColumnHeader 사유;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private TextBox ReasonTextBox;
+        private TextBox IPTextBox;
+        private TextBox IdTextBox;
+        private Button button1;
+        private MetroFramework.Controls.MetroContextMenu metroContextMenu1;
+        private Button button2;
     }
 }
