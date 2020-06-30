@@ -113,7 +113,7 @@ namespace Cirnix.Memory
             OK = 2
         }
 
-        internal enum ChatMode : byte
+        internal enum ChatMode : int
         {
             Private = 0,
             Team = 1,
@@ -229,7 +229,9 @@ namespace Cirnix.Memory
                 LoadedFiles.Offset =
                 Message.CEditBoxOffset =
                 Message.MessageOffset =
-                Message.ReceiverOffset = IntPtr.Zero;
+                Message.SelectedReceiverOffset =
+                Message.TargetReceiverOffset =
+                Join.Offset = IntPtr.Zero;
             }
         }
 
