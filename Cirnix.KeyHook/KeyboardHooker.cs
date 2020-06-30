@@ -64,11 +64,10 @@ namespace Cirnix.KeyHook
                     {
                         try
                         {
-                            if (States.IsInGame
-                             && lParam.vkCode == 0xD
+                            if (lParam.vkCode == 0xD
                              && Message.GetMessage()[0] == '!')
                             {
-                                System.Windows.Forms.SendKeys.Send("{ESC}");
+                                Message.SetEmpty();
                                 return (IntPtr)1;
                             }
                         }
