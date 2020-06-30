@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using static Cirnix.Global.Globals;
 using static Cirnix.Global.NativeMethods;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
@@ -38,11 +37,6 @@ namespace Cirnix.Memory
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
                 WriteProcessMemory(Warcraft3Info.Handle, Offset, buffer, buffer.Length + 1, out _);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
             }
