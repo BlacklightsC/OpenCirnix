@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Cirnix.Global;
+using System;
 using System.Windows.Forms;
 
-namespace Cirnix.Forms
+namespace Cirnix.Forms.ServerStatus
 {
-    internal partial class RoomListStartLogDialog : Global.DraggableLabelForm
+    internal partial class RoomListStartLogDialog : DraggableLabelForm
     {
         internal string MapName = string.Empty;
 

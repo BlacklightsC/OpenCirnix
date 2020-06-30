@@ -18,9 +18,9 @@ using static Cirnix.Forms.Component;
 using static Cirnix.Global.Globals;
 using static Cirnix.ServerStatus.RoomWebDataBase;
 
-namespace Cirnix.Forms
+namespace Cirnix.Forms.ServerStatus
 {
-    internal sealed partial class RoomListForm : Global.DraggableLabelForm
+    internal sealed partial class RoomListForm : DraggableLabelForm
     {
         private RoomListStatistics Statistics;
         private bool IsMapSearch = false, IsSearchResult = false;

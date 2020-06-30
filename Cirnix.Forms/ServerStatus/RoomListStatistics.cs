@@ -1,4 +1,5 @@
-﻿using Cirnix.ServerStatus;
+﻿using Cirnix.Global;
+using Cirnix.ServerStatus;
 
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 using static Cirnix.ServerStatus.StatusWebDataBase;
 
-namespace Cirnix.Forms
+namespace Cirnix.Forms.ServerStatus
 {
-    internal partial class RoomListStatistics : Global.DraggableLabelForm
+    internal partial class RoomListStatistics : DraggableLabelForm
     {
         private static readonly Font defFont = new Font("맑은 고딕", 8F);
         private const int MaxElement = 18;
