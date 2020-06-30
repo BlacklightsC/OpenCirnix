@@ -131,7 +131,7 @@ namespace Cirnix.Global
             set => Reg.SetValue(nameof(ChannelChatBGColor), value);
         }
         public static bool IsChannelChatDetect {
-            get => Reg.GetBoolean(nameof(IsChannelChatDetect));
+            get => Reg.GetBoolean(nameof(IsChannelChatDetect), true);
             set => Reg.SetValue(nameof(IsChannelChatDetect), value);
         }
         public static bool IsMemoryOptimize {

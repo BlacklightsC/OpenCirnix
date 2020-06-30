@@ -293,10 +293,5 @@ namespace Cirnix.Forms
         {
             selectProcess();
         }
-
-        private void ImageBox_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

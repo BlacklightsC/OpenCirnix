@@ -15,18 +15,6 @@ namespace Cirnix.Global
 {
     public static class Globals
     {
-        /*
-            다운로드될 InfoData.json에 대한 예시
-
-            {
-              "Recommanded_Version": "0.11.7338.2214", // 안정적인 버전
-              "Recommanded_URL": "안정적인 버전 다운로드 주소",
-              "Latest_Version": "0.11.7338.2214", // 베타 버전
-              "Latest_URL": "베타 버전 다운로드 주소",
-              "History": "패치 로그 웹페이지 주소"
-            }
-         */
-        public static readonly string infoURL = "https://raw.githubusercontent.com/BlacklightsC/OpenCirnix/master/InfoData.json";
         public static readonly string DocumentPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\Warcraft III";
         public static readonly string ResourcePath = $"{Environment.GetEnvironmentVariable("APPDATA")}\\Cirnix";
         public static string[] Code { get; set; }
@@ -57,7 +45,7 @@ namespace Cirnix.Global
             saveFilePath = new SaveFilePath();
             UserState = CommandTag.None;
             Version ver = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-            version = new int[4] { ver.Major, ver.Minor, ver.Build, ver.Revision };
+            version = new int[2] { ver.Major, ver.Minor };
             saveFilePath.Read();
             Category = new string[3];
             Category[0] = Settings.MapType;

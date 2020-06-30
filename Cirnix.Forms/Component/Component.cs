@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Cirnix.Forms
 {
-    internal static class Component
+    public static class Component
     {
-        internal static void SetRTBText(ref RichTextBox RTB, string Text, bool IsNew = false, bool IsNegative = false, bool IsMiddleSort = false)
+        public static void SetRTBText(ref RichTextBox RTB, string Text, bool IsNew = false, bool IsNegative = false, bool IsMiddleSort = false)
         {
             if (IsNew) RTB.Text = string.Empty;
             List<int> Pos = new List<int>();
@@ -32,6 +32,10 @@ namespace Cirnix.Forms
                                 ColorCode.Add(IsNegative ? 0x000000 : 0xFFFFFF);
                                 Text = Text.Remove(idx, 2);
                                 break;
+                            case 'n':
+                                Text = Text.Remove(idx, 2).Insert(idx, "\n");
+                                i = idx - 1;
+                                continue;
                             default: i = idx + 1; continue;
                         }
                         Pos.Add(idx + (IsNew ? 0 : RTB.Text.Length));
