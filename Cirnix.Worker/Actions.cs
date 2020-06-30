@@ -492,8 +492,9 @@ namespace Cirnix.Worker
         }
         internal static void SetHPView()
         {
-            SendMsg(true, $"HP 최대값 표기가 {(HPView ? "나타납" : "사라집")}니다.");
-            HPView = !HPView;
+            bool value = HPView;
+            SendMsg(true, $"HP 최대값 표기가 {(value ? "나타납" : "사라집")}니다.");
+            HPView = !value;
         }
         internal static void RollDice()
         {
@@ -639,7 +640,7 @@ namespace Cirnix.Worker
         }
 
         internal static HangWatchdog MemoryOptimizeChecker;
-        internal static HangWatchdog AntiZombieProcessChecker;
+        //internal static HangWatchdog AntiZombieProcessChecker;
         internal static async Task<bool> ProcessCheck()
         {
             if (GameModule.InitWarcraft3Info() != WarcraftState.OK
@@ -692,7 +693,7 @@ namespace Cirnix.Worker
         {
             if (WaitGameStart)
             {
-                if (!GetStaticReceiveStatus()) return;
+                if (!GetSelectedReceiveStatus()) return;
                 WaitGameStart = false;
                 MainWorker.autoRG.CancelAsync();
                 MainWorker.MapFileWatcher.EnableRaisingEvents = false;
