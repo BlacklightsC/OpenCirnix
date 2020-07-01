@@ -4,7 +4,7 @@ namespace Cirnix.Global
 {
     public static class Settings
     {
-        private static readonly CryptoRegistryComponent Reg = new CryptoRegistryComponent(@"BlacklightsC\Cirnix", "チルノ⑨");
+        private static readonly CryptoRegistryComponent Reg = new CryptoRegistryComponent(@"BlacklightsC\Cirnix", "チルノ⑨", true);
 
         public static int GlobalDelay {
             get => Reg.GetInt32(nameof(GlobalDelay), 500);
