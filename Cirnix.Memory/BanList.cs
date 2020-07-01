@@ -45,10 +45,6 @@ namespace Cirnix.Memory
 						await Task.Delay(300);
 						SendMsg(true, $"밴리 사유 : {banlistModel.Reason}");
 					}
-					else
-					{
-						SendMsg(true, "밴 리스트에 추가한 유저가 없습니다.");
-					}
 					await Task.Delay(300);
 				}
 				SendMsg(true, "현재 연결된 유저의 검사를 종료합니다.");
