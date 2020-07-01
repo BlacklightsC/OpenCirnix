@@ -655,10 +655,11 @@ namespace Cirnix.Worker
 
                 return true;
             }
-            if (!InitializedWarcraft)
+            else if (!InitializedWarcraft)
             {
                 InitializedWarcraft = true;
                 await Task.Delay(2000);
+                Warcraft3Info.Process?.Refresh();
                 GameDll.GetOffset();
                 GameDelay = 50;
                 RefreshCooldown = 0.01f;
