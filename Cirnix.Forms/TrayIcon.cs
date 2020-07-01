@@ -88,8 +88,8 @@ namespace Cirnix.Forms
         [Conditional("DEBUG")]
         public async void DebugWarcraftOutput()
         {
-            await Task.Delay(200);
-            Memory.Message.SendMsg(true, $"Debug Mode On, Version: {version[0]}.{version[1]}.{version[2]}.{version[3]}");
+            await Task.Delay(3000);
+            Memory.Message.SendMsg(true, $"Debug Mode On, Version: {version[0]}.{version[1]}");
         }
 
         private void InitBanList()
