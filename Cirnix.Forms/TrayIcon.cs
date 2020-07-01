@@ -85,7 +85,7 @@ namespace Cirnix.Forms
             MainTrayIcon.ShowBalloonTip(5000);
         }
 
-        [System.Diagnostics.Conditional("DEBUG")]
+        [Conditional("DEBUG")]
         public async void DebugWarcraftOutput()
         {
             await Task.Delay(200);
@@ -252,7 +252,7 @@ namespace Cirnix.Forms
             if (isUpdated) InitHistoryForm();
             if (version[0] > Latest[0]) return;
             else if (version[0] == Latest[0])
-                if (version[1] > Latest[1]) return;
+                if (version[1] >= Latest[1]) return;
             if (MetroDialog.YesNo("업데이트 필요", $"최신 버전이 확인되었습니다.\n 현재: {version[0]}.{version[1]}\n 최신: {Latest[0]}.{Latest[1]}\n업데이트 하시겠습니까?"))
             {
                 try
