@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading;
 using static Cirnix.Memory.Message;
 
 namespace Cirnix.Worker.InnerWorker
@@ -42,7 +43,7 @@ namespace Cirnix.Worker.InnerWorker
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if(isRunning) DelayCount++;
+            if (isRunning) DelayCount++;
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -60,8 +61,9 @@ namespace Cirnix.Worker.InnerWorker
                 else if (AutoRGCount > 0)
                 {
                     //MessageStack(true);
-                    SendMsg(false, "/rg");
-                    SendMsg(true, $"자동 RG 사용 중: {++LoopedCount}회");
+                    SendSingleMsg(false, "/rg");
+                    Thread.Sleep(10);
+                    SendSingleMsg(true, $"자동 RG 사용 중: {++LoopedCount}회");
                     if (LoopedCount >= AutoRGCount)
                     {
                         isRunning = false;
