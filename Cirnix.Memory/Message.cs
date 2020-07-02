@@ -182,14 +182,20 @@ namespace Cirnix.Memory
             {
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-                if (TryHide) Thread.Sleep(20);
+                if (TryHide) Thread.Sleep(50);
             }
             if (TryHide) MessageHide();
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            Thread.Sleep(20);
+            if (States.IsChatBoxOpen)
+            {
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            }
         }
 
-        private static void MessageCut(string pMessage)
+        private static void MessageCut(string pMessage, bool IsHide)
         {
             if (string.IsNullOrEmpty(pMessage)) return;
             if (CEditBoxOffset == IntPtr.Zero)
@@ -206,6 +212,7 @@ namespace Cirnix.Memory
             {
                 case '!':
                     UserState = CommandTag.Default;
+                    bytes[0] = 0;
                     break;
                 case '-':
                     UserState = CommandTag.Chat;
@@ -214,10 +221,15 @@ namespace Cirnix.Memory
 
             if (Settings.IsAutoFrequency) WriteProcessMemory(Warcraft3Info.Handle, MessageOffset, bytes, bytes.Length + 1, out _);
             else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * Settings.ChatFrequency), bytes, bytes.Length + 1, out _);
-            ApplyChat(Settings.IsCommandHide);
+            if (bytes[0] != 0) ApplyChat(IsHide && Settings.IsCommandHide);
         }
 
-        public static bool SendMsg(bool UseTitle, params string[] args) => SendMsg(UseTitle, args, 100);
+        public static bool SendMsg(bool UseTitle, params string[] args)
+        {
+            if (args == null || args.Length == 0) return false;
+            if (args.Length == 1) return SendSingleMsg(UseTitle, args[0]);
+            else return SendMsg(UseTitle, args, 100);
+        }
         public static bool SendMsg(bool UseTitle, string[] args, int delay, bool IsHide = true)
         {
             if (Warcraft3Info.Process == null) return false;
@@ -225,8 +237,14 @@ namespace Cirnix.Memory
             {
                 Thread.Sleep(delay);
                 if (!string.IsNullOrEmpty(arg))
-                    MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg);
+                    MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg, IsHide);
             }
+            return true;
+        }
+        public static bool SendSingleMsg(bool UseTitle, string arg, bool IsHide = true)
+        {
+            if (Warcraft3Info.Process == null || string.IsNullOrEmpty(arg)) return false;
+            MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg, IsHide);
             return true;
         }
     }

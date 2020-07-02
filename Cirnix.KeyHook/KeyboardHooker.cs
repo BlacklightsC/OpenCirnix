@@ -45,33 +45,32 @@ namespace Cirnix.KeyHook
                 }
 
             KEYDOWN:
+                if (isChatBoxOpen)
+                {
+                    if (Settings.IsCommandHide)
+                        try
+                        {
+                            if (lParam.vkCode == 0xD)
+                            {
+                                string msg = Message.GetMessage();
+                                if (msg != null && msg.Length >= 0 && msg[0] == '!')
+                                    Message.SetEmpty();
+                            }
+                        }
+                        catch { }
+                    goto RETURN;
+                }
                 if (Counter >= 4) goto KEYUP;
                 if (WaitKeyInput)
                 {
                     WaitKeyInput = false;
-                    if (!isChatBoxOpen)
+                    int vkCode = lParam.vkCode;
+                    var hotkey = hotkeyList.Find(item => (int)item.vk == vkCode);
+                    if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
                     {
-                        int vkCode = lParam.vkCode;
-                        var hotkey = hotkeyList.Find(item => (int)item.vk == vkCode);
-                        if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
-                        {
-                            hotkey.function(hotkey.fk);
-                            if (!hotkey.recall)
-                                return (IntPtr)1;
-                        }
-                    }
-                    else if (Settings.IsCommandHide)
-                    {
-                        try
-                        {
-                            if (lParam.vkCode == 0xD
-                             && Message.GetMessage()[0] == '!')
-                            {
-                                Message.SetEmpty();
-                                goto RETURN;
-                            }
-                        }
-                        catch { }
+                        hotkey.function(hotkey.fk);
+                        if (!hotkey.recall)
+                            return (IntPtr)1;
                     }
                 }
                 else if (lParam.flags == 0x00)
