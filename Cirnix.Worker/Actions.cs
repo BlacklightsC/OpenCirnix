@@ -353,7 +353,7 @@ namespace Cirnix.Worker
             TypeCommands(int.Parse(args[1]));
         }
 
-        private static void TypeCommands(int index = -1)
+        private static async void TypeCommands(int index = -1)
         {
             string Command;
             switch(index)
@@ -387,9 +387,49 @@ namespace Cirnix.Worker
                     SendMsg(true, "Error - 해당 프리셋이 존재하지 않습니다.");
                     return;
             }
-            if (index != -1) SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
-            if (string.IsNullOrEmpty(Command)) return;
-            SendMsg(false, Command.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries), Settings.GlobalDelay + 100);
+            if (index != -1)
+            {
+                if (string.IsNullOrWhiteSpace(Command))
+                {
+                    SendMsg(true, $"명령어 프리셋 {index}이 비어 있습니다.");
+                    return;
+                }
+                SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
+            }
+            int GlobalDelay = Settings.GlobalDelay + 100;
+            foreach (var item in Command.Replace("\r", string.Empty).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                switch (item[0])
+                {
+                    case '#':
+                    {
+                        string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        switch (str[0].ToLower())
+                        {
+                            case "delay":
+                            {
+                                if (str.Length < 2) break;
+                                if (int.TryParse(str[1], out int result))
+                                    await Task.Delay(result);
+                                break;
+                            }
+                            case "globaldelay":
+                            {
+                                if (str.Length < 2) break;
+                                if (int.TryParse(str[1], out int result))
+                                    GlobalDelay = result;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case '%': break;
+                    default:
+                    {
+                        if (GlobalDelay != 0) await Task.Delay(GlobalDelay);
+                        SendSingleMsg(false, item);
+                        break;
+                    }
+                }
         }
         internal static void SetSave()
         {
@@ -514,7 +554,7 @@ namespace Cirnix.Worker
                     goto Error;
                 }
             }
-            SendMsg(true, $"주사위에서 {new Random().Next(diceNumber + 1)} (이)가 나왔습니다. ({diceNumber})");
+            SendMsg(true, new string[] { $"주사위에서 {new Random().Next(diceNumber + 1)} (이)가 나왔습니다. ({diceNumber})" }, 100, false);
             return;
             Error:
             SendMsg(true, "Error - 주사위 범위: 0 ~ 2,147,483,646");
@@ -703,9 +743,11 @@ namespace Cirnix.Worker
                 await Task.Delay(500);
                 CameraInit();
                 GameDelay = Settings.GameDelay;
-                if (!Settings.IsAutoLoad) return;
-                await Task.Delay(3000);
-                LoadCodeSelect();
+                if (Settings.IsAutoLoad)
+                {
+                    await Task.Delay(3000);
+                    LoadCodeSelect();
+                }
             }
             else
             {
@@ -755,7 +797,7 @@ namespace Cirnix.Worker
                 SendMsg(true, "로드된 맵이 없습니다.");
                 return;
             }
-            SendMsg(true, $"현재 로드된 맵 경로: {MapPath.Substring(MapPath.IndexOf(@"\Warcraft III\Maps\") + 14)}");
+            SendMsg(true, $"현재 로드된 맵 경로: {MapPath.Substring(MapPath.IndexOf("\\Warcraft III\\Maps\\") + 14)}");
         }
         private static async void KeyDebugFunc()
         {

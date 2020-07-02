@@ -71,7 +71,7 @@ namespace Cirnix.Forms
             RPGListBox.Items.Clear();
             RPGListBox.Items.Add("(새로 만들기)");
             if(saveFilePath.Count > 0)
-                foreach (Global.SavePath item in saveFilePath)
+                foreach (SavePath item in saveFilePath)
                     RPGListBox.Items.Add(saveFilePath.ConvertName(item.nameEN));
             RPGListBox.EndUpdate();
             CB_AutoLoad.Checked = Settings.IsAutoLoad;
@@ -175,8 +175,8 @@ namespace Cirnix.Forms
             Toggle_AutoFrequency.Checked = Settings.IsAutoFrequency;
             Number_ChatFrequency.Enabled = BTN_DetectFrequency.Enabled = !Settings.IsAutoFrequency;
             Number_ChatFrequency.Value = Settings.ChatFrequency + 1;
-            IsUpdating = false;
             Banlistload();
+            IsUpdating = false;
         }
         private void OptionForm_Activated(object sender, EventArgs e)
         {
