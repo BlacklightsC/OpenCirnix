@@ -300,12 +300,15 @@ namespace Cirnix.Forms
             Manabar = GetPrivateProfileInt("Cirnix", "Mana Bar", 0, Settings.InstallPath + @"\Cirnix.ini") == 1;
             SpeedNumberize = GetPrivateProfileInt("Cirnix", "Show AS & MS in Number", 0, Settings.InstallPath + @"\Cirnix.ini") == 1;
         }
-        private bool IsMixFileInstalled {
-            get {
+        private bool IsMixFileInstalled
+        {
+            get
+            {
                 if (string.IsNullOrEmpty(Settings.InstallPath)) return false;
                 return File.Exists($"{Settings.InstallPath}\\Cirnix.mix");
             }
-            set {
+            set
+            {
                 if (string.IsNullOrEmpty(Settings.InstallPath))
                 {
                     MetroDialog.OK("경로 오류", "경로가 비어있습니다.\n경로를 입력하세요.");
@@ -333,25 +336,31 @@ namespace Cirnix.Forms
                 }
             }
         }
-        private bool IsMixFIleFormEnabled {
+        private bool IsMixFIleFormEnabled
+        {
             get => BTN_UninstallMix.Enabled;
-            set {
+            set
+            {
                 GB_SpeenNumberize.Enabled =
                 BTN_UninstallMix.Enabled =
                 GB_Manabar.Enabled = value;
                 BTN_InstallMix.Enabled = !value;
             }
         }
-        private bool SpeedNumberize {
+        private bool SpeedNumberize
+        {
             get => RB_EnableSpeedNumberize.Checked;
-            set {
+            set
+            {
                 RB_EnableSpeedNumberize.Checked = value;
                 RB_DisableSpeedNumberize.Checked = !value;
             }
         }
-        private bool Manabar {
+        private bool Manabar
+        {
             get => RB_EnableManabar.Checked;
-            set {
+            set
+            {
                 RB_EnableManabar.Checked = value;
                 RB_DisableManabar.Checked = !value;
             }
@@ -534,7 +543,7 @@ namespace Cirnix.Forms
             string RPG = saveFilePath.GetFullPath(RPGListBox.SelectedItem.ToString());
             if (Directory.Exists(RPG + @"\" + TB_HeroName.Text))
             {
-                MetroDialog.OK("이미 존재하는 이름", IsKoreanBlock(TB_HeroName.Text,"은", "는") + " 이미 존재하는 이름입니다.\n다른 이름을 사용하시기 바랍니다.");
+                MetroDialog.OK("이미 존재하는 이름", IsKoreanBlock(TB_HeroName.Text, "은", "는") + " 이미 존재하는 이름입니다.\n다른 이름을 사용하시기 바랍니다.");
                 return;
             }
             switch (BTN_HeroAddMod.Text)
@@ -568,7 +577,7 @@ namespace Cirnix.Forms
                 return;
             }
             string name = HeroListBox.SelectedItem.ToString();
-            if (!MetroDialog.YesNo("제거 여부 확인", "분류에 포함된 모든 세이브 파일이 삭제됩니다.\n정말 " + IsKoreanBlock(name,"을","를") +" 삭제하시겠습니까?")) return;
+            if (!MetroDialog.YesNo("제거 여부 확인", "분류에 포함된 모든 세이브 파일이 삭제됩니다.\n정말 " + IsKoreanBlock(name, "을", "를") + " 삭제하시겠습니까?")) return;
             string path = saveFilePath.GetFullPath(RPGListBox.SelectedItem.ToString()) + @"\" + name;
             foreach (FileInfo file in new DirectoryInfo(path).GetFiles("*.*", SearchOption.AllDirectories))
                 file.Attributes = FileAttributes.Normal;
@@ -856,32 +865,35 @@ namespace Cirnix.Forms
         {
             Settings.SmartKeyPreventionType = SmartKeyPreventionType;
         }
-        private int SmartKeyPreventionType {
-            get {
+        private int SmartKeyPreventionType
+        {
+            get
+            {
                 if (RB_Prev2.Checked) return 1;
                 if (RB_Prev3.Checked) return 2;
                 if (RB_Prev4.Checked) return 3;
                 return 0;
             }
-            set {
+            set
+            {
                 switch (value)
                 {
                     case 0:
                         RB_Prev1.Checked = true;
                         RB_Prev2.Checked =
-                        RB_Prev3.Checked = 
+                        RB_Prev3.Checked =
                         RB_Prev4.Checked = false;
                         break;
                     case 1:
                         RB_Prev2.Checked = true;
                         RB_Prev1.Checked =
-                        RB_Prev3.Checked = 
+                        RB_Prev3.Checked =
                         RB_Prev4.Checked = false;
                         break;
                     case 2:
                         RB_Prev3.Checked = true;
                         RB_Prev1.Checked =
-                        RB_Prev2.Checked = 
+                        RB_Prev2.Checked =
                         RB_Prev4.Checked = false;
                         break;
                     case 3:
@@ -1065,7 +1077,7 @@ namespace Cirnix.Forms
             if (IsUpdating) return;
             KeyReMapDefault();
             if (Toggle_KeyRemapping.Checked
-             &&(hotkeyList.IsRegistered((Keys)Settings.KeyMap7)
+             && (hotkeyList.IsRegistered((Keys)Settings.KeyMap7)
              || hotkeyList.IsRegistered((Keys)Settings.KeyMap8)
              || hotkeyList.IsRegistered((Keys)Settings.KeyMap4)
              || hotkeyList.IsRegistered((Keys)Settings.KeyMap5)
@@ -1157,10 +1169,10 @@ namespace Cirnix.Forms
             if (!IsRemapKeyInput) return;
             Keys key, hotkey = e.KeyCode;
             string KeyText = GetHotkeyString(hotkey);
-            foreach(string item in new string[] { "Control", "Alt", "Shift", "Menu" })
+            foreach (string item in new string[] { "Control", "Alt", "Shift", "Menu" })
                 if (KeyText.IndexOf(item) != -1)
                     return;
-            
+
             if (hotkeyList.IsRegistered(hotkey)
              || isKeyReMapped(hotkey))
             {
@@ -1224,10 +1236,10 @@ namespace Cirnix.Forms
         #region [    Text Macro Setting    ]
         private void RB_Chat_SetCurrentFont(int type, bool state)
         {
-            switch(CurrentChatIndex)
+            switch (CurrentChatIndex)
             {
                 case 0:
-                    switch(type)
+                    switch (type)
                     {
                         case 0:
                             RB_Chat1.Font = state ? new Font("맑은 고딕", 9F, FontStyle.Bold) : new Font("맑은 고딕", 9F);
@@ -1531,7 +1543,7 @@ namespace Cirnix.Forms
             if (hotkeyList.IsRegistered(hotkey) || isKeyReMapped(hotkey) || autoMouse.IsRegistered(hotkey))
             {
                 MetroDialog.OK("이미 등록된 단축키", "해당 키가 이미 단축키로 등록되어 있습니다.\n스마트키나 키리맵핑, 채팅 단축키에서 먼저 해제해주시기 바랍니다.");
-                switch(TargetMouse)
+                switch (TargetMouse)
                 {
                     case SelectedAutoMouseType.Off:
                         Label_AutoMouseOff.Text = "없음";
@@ -1639,6 +1651,12 @@ namespace Cirnix.Forms
                     Label_CommandKR.Text = "싳";
                     Label_ParameterValue.Text = "(선택) 분류 이름";
                     TB_CommandDescription.Text = "현재 지정된 세이브를 즉시 로드합니다.\r\nTWRPG맵만 지원하며, 로드 직후 설정된 명령어 프리셋을 입력합니다.\r\n분류 이름을 입력할 경우, 해당 분류의 최신 세이브를 로드하며, 현재 로드 지정 대상도 즉시 변경합니다.";
+                    break;
+                case "olc":
+                    Label_CommandTitle.Text = "원피스 랜던 디펜스 세이브 코드 로드";
+                    Label_CommandKR.Text = "ㅐㅣㅊ";
+                    Label_ParameterValue.Text = "(선택) 분류 이름";
+                    TB_CommandDescription.Text = "현재 지정된 세이브를 즉시 로드합니다.\r\n원피스 랜덤 디펜스맵만 지원하며, 로드 직후 설정된 명령어 프리셋을 입력합니다.\r\n분류 이름을 입력할 경우, 해당 분류의 최신 세이브를 로드하며, 현재 로드 지정 대상도 즉시 변경합니다.";
                     break;
                 case "cmd":
                     Label_CommandTitle.Text = "명령어 프리셋 로드";

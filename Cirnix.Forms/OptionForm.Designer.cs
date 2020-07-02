@@ -2664,6 +2664,7 @@ namespace Cirnix.Forms
             "set",
             "lc",
             "tlc",
+            "olc",
             "cmd",
             "cam",
             "camx",

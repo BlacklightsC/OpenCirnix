@@ -253,6 +253,53 @@ namespace Cirnix.Global
                 if (isBreak) return;
             }
         }
+        public static void GetCodes3()
+        {
+            if (string.IsNullOrEmpty(Category[0])
+            || string.IsNullOrEmpty(Category[1])
+            || string.IsNullOrEmpty(Category[2]))
+            {
+                for (int i = 0; i < 24; i++)
+                    Code[i] = string.Empty;
+                return;
+            }
+            List<string> buffer = new List<string>();
+            string[] lines = File.ReadAllLines(GetCurrentPath(2));
+            bool isFound = false;
+            for (int i = 0; true; i++)
+            {
+                int index;
+                if ((index = lines[i].IndexOf("\"-")) == -1)
+                    if (isFound) break;
+                    else continue;
+                isFound = true;
+                index += 1;
+                int x = lines[i].LastIndexOf("\" )");
+                buffer.Add(lines[i].Substring(index, lines[i].LastIndexOf("\" )") - index).Trim());
+            }
+            for (int i = 0; i < 24; i++)
+                Code[i] = i < buffer.Count ? buffer[i] : string.Empty;
+            while (true)
+            {
+                bool isBreak = true;
+                for (int i = 0; i < 24; i++)
+                {
+                    if (string.IsNullOrEmpty(Code[i])) break;
+                    if (Code[i][0] == '/')
+                    {
+                        isBreak = false;
+                        for (int j = i; j < 24; j++)
+                        {
+                            int k = j - 1;
+                            if (string.IsNullOrEmpty(Code[j])) break;
+                            Code[j] = Code[k][Code[k].Length - 1] + Code[j];
+                            Code[k] = Code[k].Substring(0, Code[k].Length - 1);
+                        }
+                    }
+                }
+                if (isBreak) return;
+            }
+        }
 
         public static async Task<string[]> GetLines(string path)
         {
@@ -467,7 +514,7 @@ namespace Cirnix.Global
                     file = map.Find(@"scripts\war3map.j");
                     if (file == null) file = map.Find("war3map.j");
                     string JassScript = Encoding.UTF8.GetString(file.File);
-                    
+
                     foreach (string item in CheatSetPhases)
                         if (JassScript.IndexOf(item) != -1)
                         {
