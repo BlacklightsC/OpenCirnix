@@ -68,7 +68,7 @@ namespace Cirnix.KeyHook
                              && Message.GetMessage()[0] == '!')
                             {
                                 Message.SetEmpty();
-                                return (IntPtr)1;
+                                goto RETURN;
                             }
                         }
                         catch { }

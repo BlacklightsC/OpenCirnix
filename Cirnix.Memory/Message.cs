@@ -149,6 +149,7 @@ namespace Cirnix.Memory
 
         public static void MessageHide()
         {
+            if (!GetTargetReceiveStatus()) return;
             byte[] buffer = new byte[4];
             buffer[0] = 0x7F;
             WriteProcessMemory(Warcraft3Info.Handle, TargetReceiverOffset, buffer, 4, out _);
@@ -181,7 +182,7 @@ namespace Cirnix.Memory
             {
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-                if (TryHide) Thread.Sleep(100);
+                if (TryHide) Thread.Sleep(20);
             }
             if (TryHide) MessageHide();
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
