@@ -80,6 +80,7 @@ namespace Cirnix.Worker
         {
             commandList.Register("lc", "ㅣㅊ", LoadCode);
             commandList.Register("tlc", "싳", LoadCode2);
+            commandList.Register("olc", "ㅐㅣㅊ", LoadCode3);
             commandList.Register("dr", "ㅇㄱ", SetGameDelay);
             commandList.Register("ss", "ㄴㄴ", SetStartSpeed);
             commandList.Register("hp", "ㅗㅔ", SetHPView);
@@ -203,7 +204,7 @@ namespace Cirnix.Worker
             ListUpdate(0);
             return;
 
-            AutoChange:
+        AutoChange:
             Category[1] = "미지정";
             await SaveFileMover(e.FullPath);
             ListUpdate(2);
@@ -301,7 +302,7 @@ namespace Cirnix.Worker
             await Task.Delay(200);
             TypeCommands();
             return;
-            Error:
+        Error:
             SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
 
@@ -342,6 +343,43 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
+        internal static async void LoadCode3()
+        {
+            if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
+            {
+                string saveName = GetFullArgs();
+                string path = $"{GetCurrentPath(0)}\\{saveName}";
+                SendMsg(false, new string[] { path });
+                if (!Directory.Exists(path))
+                {
+                    SendMsg(true, $"{IsKoreanBlock(saveName, "은", "는")} 존재하지 않습니다.");
+                    return;
+                }
+                Settings.HeroType = Category[1] = saveName;
+                Category[2] = Path.GetFileName(GetLastest(GetCurrentPath(1)));
+                ListUpdate(2);
+            }
+            try
+            {
+                GetCodes3();
+            }
+            catch
+            {
+                goto Error;
+            }
+            if (string.IsNullOrEmpty(Code[0])) goto Error;
+            SendMsg(true, $"{Category[1]}\\{Category[2]} 파일을 로드합니다.");
+            for (int i = 0; i < 24; i++)
+            {
+                if (string.IsNullOrEmpty(Code[i])) break;
+                SendMsg(false, new string[] { Code[i].Substring(0, Code[i].Length >= 130 ? 130 : Code[i].Length) }, Settings.GlobalDelay);
+            }
+            await Task.Delay(200);
+            TypeCommands();
+            return;
+        Error:
+            SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
+        }
 
         internal static void LoadCommands()
         {
@@ -356,7 +394,7 @@ namespace Cirnix.Worker
         private static async void TypeCommands(int index = -1)
         {
             string Command;
-            switch(index)
+            switch (index)
             {
                 case -1:
                     switch (Settings.SelectedCommand)
@@ -406,34 +444,34 @@ namespace Cirnix.Worker
                 switch (item[0])
                 {
                     case '#':
-                    {
-                        string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                        switch (str[0].ToLower())
                         {
-                            case "delay":
+                            string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            switch (str[0].ToLower())
                             {
-                                if (str.Length < 2) break;
-                                if (int.TryParse(str[1], out int result))
-                                    await Task.Delay(result);
-                                break;
+                                case "delay":
+                                    {
+                                        if (str.Length < 2) break;
+                                        if (int.TryParse(str[1], out int result))
+                                            await Task.Delay(result);
+                                        break;
+                                    }
+                                case "globaldelay":
+                                    {
+                                        if (str.Length < 2) break;
+                                        if (int.TryParse(str[1], out int result))
+                                            GlobalDelay = result;
+                                        break;
+                                    }
                             }
-                            case "globaldelay":
-                            {
-                                if (str.Length < 2) break;
-                                if (int.TryParse(str[1], out int result))
-                                    GlobalDelay = result;
-                                break;
-                            }
+                            break;
                         }
-                        break;
-                    }
                     case '%': break;
                     default:
-                    {
-                        if (GlobalDelay > 0) await Task.Delay(GlobalDelay);
-                        SendSingleMsg(false, item);
-                        break;
-                    }
+                        {
+                            if (GlobalDelay > 0) await Task.Delay(GlobalDelay);
+                            SendSingleMsg(false, item);
+                            break;
+                        }
                 }
             }
 
@@ -515,7 +553,7 @@ namespace Cirnix.Worker
             Settings.GameDelay = delay;
             if (IsInGame) GameDelay = Settings.GameDelay;
             return;
-            Error:
+        Error:
             SendMsg(true, "Error - Delay 값 범위: 0 ~ 550");
         }
         internal static void SetStartSpeed()
@@ -537,7 +575,7 @@ namespace Cirnix.Worker
             else StartDelay = Convert.ToSingle(delay);
             Settings.StartSpeed = StartDelay;
             return;
-            Error:
+        Error:
             SendMsg(true, "Error - StartSpeed 값 범위: 0 ~ 6");
         }
         internal static void SetHPView()
@@ -564,7 +602,7 @@ namespace Cirnix.Worker
             }
             SendMsg(true, new string[] { $"주사위에서 {new Random().Next(diceNumber + 1)} (이)가 나왔습니다. ({diceNumber})" }, 100, false);
             return;
-            Error:
+        Error:
             SendMsg(true, "Error - 주사위 범위: 0 ~ 2,147,483,646");
         }
         internal static void ExecuteRG()
@@ -593,7 +631,7 @@ namespace Cirnix.Worker
             SendMsg(true, $"자동 RG 기능이 시작되었습니다. ▷반복: {args[1]}회");
             MainWorker.autoRG.RunWorkerAsync(value);
             return;
-            Error:
+        Error:
             SendMsg(true, "자동 RG 기능이 시작되었습니다. ▷반복: 무제한");
             MainWorker.autoRG.RunWorkerAsync(-1);
         }
@@ -618,7 +656,7 @@ namespace Cirnix.Worker
             ListUpdate(2);
             return;
 
-            Error:
+        Error:
             MainWorker.SaveWatcherTimer.Enabled = MainWorker.SaveFileWatcher.EnableRaisingEvents = true;
         }
         internal static void CamDistance()
@@ -638,7 +676,7 @@ namespace Cirnix.Worker
             Settings.CameraDistance = CameraDistance = value;
             CameraInit();
             return;
-            Error:
+        Error:
             SendMsg(true, "Error - 시야 범위: 0 ~ 6000");
         }
         internal static void CamAngleX()
@@ -658,7 +696,7 @@ namespace Cirnix.Worker
             Settings.CameraAngleX = CameraAngleX = value;
             CameraInit();
             return;
-            Error:
+        Error:
             SendMsg(true, "Error - X축 각도 범위: 0 ~ 360");
         }
         internal static void CamAngleY()
@@ -678,7 +716,7 @@ namespace Cirnix.Worker
             Settings.CameraAngleY = CameraAngleY = value;
             CameraInit();
             return;
-            Error:
+        Error:
             SendMsg(true, "Error - Y축 각도 범위: 0 ~ 360");
         }
 
@@ -721,7 +759,7 @@ namespace Cirnix.Worker
 
             //AntiZombieProcessChecker.Check();
             MemoryOptimizeChecker.Check();
-                    
+
             StatusCheck();
             return false;
         }
@@ -740,7 +778,7 @@ namespace Cirnix.Worker
             }
             else SendMsg(true, "Error - 최적화 중에 예외가 발생했습니다.");
         }
-        internal static async void StatusCheck() 
+        internal static async void StatusCheck()
         {
             if (WaitGameStart)
             {
@@ -964,7 +1002,7 @@ namespace Cirnix.Worker
             Settings.InstallPath = LastInstallPath;
             string[] args = GetArguments(Warcraft3Info.ID);
             Warcraft3Info.Close();
-            
+
             await Task.Delay(2000);
             int windowState = 1;
             if (args.Length != 0)
