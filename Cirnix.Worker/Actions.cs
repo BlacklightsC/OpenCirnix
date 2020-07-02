@@ -387,17 +387,22 @@ namespace Cirnix.Worker
                     SendMsg(true, "Error - 해당 프리셋이 존재하지 않습니다.");
                     return;
             }
-            if (index != -1)
+            if (index != -1 && string.IsNullOrWhiteSpace(Command))
             {
-                if (string.IsNullOrWhiteSpace(Command))
-                {
-                    SendMsg(true, $"명령어 프리셋 {index}이 비어 있습니다.");
-                    return;
-                }
-                SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
+                SendMsg(true, $"명령어 프리셋 {index}이 비어 있습니다.");
+                return;
             }
             int GlobalDelay = Settings.GlobalDelay + 100;
-            foreach (var item in Command.Replace("\r", string.Empty).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            int line = 0;
+            string[] list = Command.Replace("\r", string.Empty).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            if (index != -1 && !list[0].Equals("#silent", StringComparison.OrdinalIgnoreCase))
+            {
+                SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
+                line++;
+            }
+            for (; line < list.Length; line++)
+            {
+                string item = list[line];
                 switch (item[0])
                 {
                     case '#':
@@ -430,6 +435,9 @@ namespace Cirnix.Worker
                         break;
                     }
                 }
+            }
+
+                
         }
         internal static void SetSave()
         {
