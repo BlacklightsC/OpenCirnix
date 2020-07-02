@@ -425,7 +425,7 @@ namespace Cirnix.Worker
                     case '%': break;
                     default:
                     {
-                        if (GlobalDelay != 0) await Task.Delay(GlobalDelay);
+                        if (GlobalDelay > 0) await Task.Delay(GlobalDelay);
                         SendSingleMsg(false, item);
                         break;
                     }
