@@ -8,6 +8,7 @@ namespace Cirnix.Global
 {
     public class SaveLoad
     {
+               
         public static void RootCheck(string str)
         {
             string path = $"{ResourcePath}\\{str}";
@@ -15,6 +16,7 @@ namespace Cirnix.Global
                 File.Create(path).Close();
         }
 
+        
         public static T Load<T>(string name)
         {
             string path = $"{ResourcePath}\\{name}";
@@ -46,18 +48,18 @@ namespace Cirnix.Global
             }
         }
 
+        
         public static void Save(string Name, object obj)
         {
             File.Delete($"{ResourcePath}\\{Name}");
             string s = JsonConvert.SerializeObject(obj);
-            using (StreamWriter writer = File.CreateText($"{ResourcePath}\\{Name}"))
-            using (GZipStream gzipStream = new GZipStream(writer.BaseStream, CompressionMode.Compress))
+            using (GZipStream gzipStream = new GZipStream(File.CreateText($"{ResourcePath}\\{Name}").BaseStream, CompressionMode.Compress))
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(s);
                 gzipStream.Write(bytes, 0, bytes.Length);
                 gzipStream.Close();
-                writer.Close();
             }
         }
+
     }
 }
