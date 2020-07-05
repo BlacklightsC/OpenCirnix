@@ -9,11 +9,11 @@ using static Cirnix.Memory.Message;
 
 namespace Cirnix.Worker.InnerWorker
 {
-    public sealed class Commands
+    internal sealed class Commands
     {
         private BackgroundWorker Worker;
 
-        public Commands()
+        internal Commands()
         {
             Worker = new BackgroundWorker();
             Worker.DoWork += new DoWorkEventHandler(Worker_DoWork);

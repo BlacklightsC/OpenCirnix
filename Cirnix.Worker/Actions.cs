@@ -215,7 +215,7 @@ namespace Cirnix.Worker
         }
         internal static async void ReplayWatcher_Function(object sender, FileSystemEventArgs e)
         {
-            if (Settings.IsOptimizeAfterEndGame && await CProcess.TrimProcessMemory())
+            if (Settings.IsOptimizeAfterEndGame && await CProcess.TrimProcessMemory() && Settings.IsMemoryOptimize)
                 MemoryOptimizeChecker.Restart();
             if (!Settings.IsAutoReplay)
             {
@@ -432,50 +432,72 @@ namespace Cirnix.Worker
             }
             int GlobalDelay = Settings.GlobalDelay + 100;
             int line = 0;
-            string[] list = Command.Replace("\r", string.Empty).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            if (index != -1 && !list[0].Equals("#silent", StringComparison.OrdinalIgnoreCase))
+            bool UseTitle = false, Silent = false;
+            List<string> list = new List<string>(Command.Replace("\r", string.Empty).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+            while (list.Count != 0)
             {
-                SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
-                line++;
+                string item = list[0];
+                if (item[0] != '#') break;
+                string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                switch (str[0].ToLower())
+                {
+                    case "silent": Silent = true; break;
+                    default: goto EndPreprocess;
+                }
+                list.RemoveAt(0);
             }
-            for (; line < list.Length; line++)
+            EndPreprocess:
+            if (index != -1 && !Silent) SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
+            for (; line < list.Count; line++)
             {
                 string item = list[line];
                 switch (item[0])
                 {
                     case '#':
+                    {
+                        string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (str.Length < 2) break;
+                        switch (str[0].ToLower())
                         {
-                            string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                            switch (str[0].ToLower())
+                            case "delay":
                             {
-                                case "delay":
-                                    {
-                                        if (str.Length < 2) break;
-                                        if (int.TryParse(str[1], out int result))
-                                            await Task.Delay(result);
-                                        break;
-                                    }
-                                case "globaldelay":
-                                    {
-                                        if (str.Length < 2) break;
-                                        if (int.TryParse(str[1], out int result))
-                                            GlobalDelay = result;
-                                        break;
-                                    }
+                                if (int.TryParse(str[1], out int result))
+                                    await Task.Delay(result);
+                                break;
                             }
-                            break;
+                            case "globaldelay":
+                            {
+                                if (int.TryParse(str[1], out int result))
+                                    GlobalDelay = result;
+                                break;
+                            }
+                            case "title":
+                            {
+                                switch (str[1].ToLower())
+                                {
+                                    case "on":
+                                    case "true":
+                                        UseTitle = true;
+                                        break;
+                                    case "off":
+                                    case "false":
+                                        UseTitle = false;
+                                        break;
+                                }
+                                break;
+                            }
                         }
+                        break;
+                    }
                     case '%': break;
                     default:
-                        {
-                            if (GlobalDelay > 0) await Task.Delay(GlobalDelay);
-                            SendSingleMsg(false, item);
-                            break;
-                        }
+                    {
+                        if (GlobalDelay > 0) await Task.Delay(GlobalDelay);
+                        SendInstantMsg(UseTitle, item);
+                        break;
+                    }
                 }
             }
-
-                
         }
         internal static void SetSave()
         {
@@ -745,8 +767,8 @@ namespace Cirnix.Worker
             {
                 InitializedWarcraft = true;
                 await Task.Delay(2000);
-                Warcraft3Info.Process?.Refresh();
-                GameDll.GetOffset();
+                Warcraft3Info.Refresh();
+                GameModule.GetOffset();
                 GameDelay = 50;
                 RefreshCooldown = 0.01f;
                 name = string.Empty;
@@ -765,8 +787,7 @@ namespace Cirnix.Worker
         }
         internal static async void MemoryOptimize()
         {
-            if (Settings.IsMemoryOptimize)
-                MemoryOptimizeChecker.Restart();
+            if (Settings.IsMemoryOptimize) MemoryOptimizeChecker.Restart();
             SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
             if (await CProcess.TrimProcessMemory(true))
             {
@@ -801,6 +822,7 @@ namespace Cirnix.Worker
                 {
                     GameDelay = 50;
                     WaitLobby = true;
+                    Warcraft3Info.Refresh();
                 }
                 if (!WaitLobby || GameDelay != 100) return;
                 GameDelay = 550;
@@ -1011,7 +1033,9 @@ namespace Cirnix.Worker
                     case "-windows": windowState = 0; break;
                     case "-nativefullscr": windowState = 2; break;
                 }
-            GameModule.InitWarcraft3Info(WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt"))));
+            int procId = WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
+            await Task.Delay(5000);
+            GameModule.InitWarcraft3Info(procId);
         }
 
         internal static void RoomJoin()

@@ -47,5 +47,7 @@ namespace Cirnix.Global
         }
 
         public void Restart() => Timer.Restart();
+
+        public void Reset() => Timer.Reset();
     }
 }
