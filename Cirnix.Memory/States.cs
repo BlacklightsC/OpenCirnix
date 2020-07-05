@@ -1,15 +1,16 @@
 ﻿using System;
-using static Cirnix.Memory.GameDll;
 using static Cirnix.Memory.Message;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
+
 namespace Cirnix.Memory
 {
-    
+
     public static class States
     {
-        private static readonly byte[] ChatStartPattern = new byte[] { 0x6D, 0x6F };
-        private static readonly byte[] HostStatePattern = new byte[] { 0x4C, 0x7F, 0x65, 7, 0x4C };
+        private static readonly byte[] ChatStartPattern = { 0x6D, 0x6F };
+        private static readonly byte[] OsTcpSearchPattern = { 0x4C, 0x7F, 0x65, 7, 0x4C };
+        internal static IntPtr OsTcpOffset = IntPtr.Zero;
 
         public static bool IsLobbyList {
             get {
@@ -24,13 +25,7 @@ namespace Cirnix.Memory
             }
         }
 
-        public static bool IsChatBoxOpen {
-            get {
-                if (GameDllOffset != IntPtr.Zero)
-                    return BitConverter.ToBoolean(Bring(GameDllOffset + 0xD04FEC, 4), 0);
-                return false;
-            }
-        }
+        public static bool IsChatBoxOpen => GameDllOffset != IntPtr.Zero && BitConverter.ToBoolean(Bring(GameDllOffset + 0xD04FEC, 4), 0);
 
         public static MusicState CurrentMusicState {
             get {
@@ -55,8 +50,15 @@ namespace Cirnix.Memory
             }
         }
 
-        public static int PlayerNumber => BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern) + 0x33C, 4), 0);
+        private static bool GetOsTcpOffset()
+        {
+            if (StormDllOffset == IntPtr.Zero) return false;
+            OsTcpOffset = FollowPointer(StormDllOffset + 0x58160, OsTcpSearchPattern);
+            return OsTcpOffset != IntPtr.Zero;
+        }
 
-        public static bool IsHostPlayer => BitConverter.ToInt32(Bring(SearchAddress(HostStatePattern) + 0x210, 4), 0) == 2;
+        public static int PlayerNumber => GetOsTcpOffset() ? BitConverter.ToInt32(Bring(OsTcpOffset + 0x33C, 4), 0) : 0;
+
+        public static bool IsHostPlayer => GetOsTcpOffset() && BitConverter.ToInt32(Bring(OsTcpOffset + 0x210, 4), 0) == 2;
     }
 }

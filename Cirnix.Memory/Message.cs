@@ -13,11 +13,11 @@ namespace Cirnix.Memory
 {
     public static class Message
     {
-        private static readonly byte[] MessageSearchPattern = new byte[] { 0x94, 0x28, 0x49, 0x65, 0x94 };
-        private static readonly byte[] MessageAdditionalPattern = new byte[] { 0x65, 0x9B, 3, 0x36, 0x65 };
-        private static readonly byte[] MessageDialogPattern = new byte[] { 0x6D, 0x6F };
-        private static readonly byte[] SelectedReceiverPattern = new byte[] { 0xD3, 0xAF, 0x2A, 0x26, 0xD3 }; // 0x25C
-        private static readonly byte[] TargetReceiverPattern = new byte[] { 0xB0, 0x32, 0x5B, 0x2C, 0xB0 }; // 0x2A4
+        private static readonly byte[] MessageSearchPattern = { 0x94, 0x28, 0x49, 0x65, 0x94 };
+        private static readonly byte[] MessageAdditionalPattern = { 0x65, 0x9B, 3, 0x36, 0x65 };
+        private static readonly byte[] MessageDialogPattern = { 0x6D, 0x6F };
+        private static readonly byte[] SelectedReceiverPattern = { 0xD3, 0xAF, 0x2A, 0x26, 0xD3 }; // 0x260
+        private static readonly byte[] TargetReceiverPattern = { 0xB0, 0x32, 0x5B, 0x2C, 0xB0 }; // 0x2A8
         internal static IntPtr CEditBoxOffset = IntPtr.Zero;
         internal static IntPtr MessageOffset = IntPtr.Zero;
         internal static IntPtr SelectedReceiverOffset = IntPtr.Zero;
@@ -25,22 +25,28 @@ namespace Cirnix.Memory
         private static byte chatTarget = 0;
         private static ChatMode chatMode = ChatMode.Team;
         private static byte[] Stack = new byte[0x100];
+        
+        internal static bool GetOffset()
+        {
+            if (StormDllOffset == IntPtr.Zero) return false;
+            CEditBoxOffset = FollowPointer(StormDllOffset + 0x58280, MessageSearchPattern);
+            return CEditBoxOffset != IntPtr.Zero;
+        }
 
         public static string GetMessage()
         {
-            CEditBoxOffset = SearchAddress(MessageSearchPattern);
-            if (CEditBoxOffset != IntPtr.Zero)
+            if (GetOffset())
             {
                 byte[] buffer = new byte[0x100];
                 if (Settings.IsAutoFrequency)
                     for (int i = 0; i < 20; i++)
-                        if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x82 + (0x110 * i), buffer, 2, out _))
+                        if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x86 + (0x110 * i), buffer, 2, out _))
                         {
                             if (!CompareArrays(MessageDialogPattern, buffer, 2)) continue;
-                            if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x84 + (0x110 * i), buffer, 0x100, out _))
+                            if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + (0x110 * i), buffer, 0x100, out _))
                                 return ConvertToString(buffer);
                         }
-                else if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x84 + (0x110 * Settings.ChatFrequency), buffer, 0x100, out _))
+                else if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), buffer, 0x100, out _))
                     return ConvertToString(buffer);
             }
             CEditBoxOffset = IntPtr.Zero;
@@ -64,31 +70,30 @@ namespace Cirnix.Memory
 
         public static async Task DetectChatFrequency()
         {
-            CEditBoxOffset = SearchAddress(MessageSearchPattern);
-            if (CEditBoxOffset == IntPtr.Zero) return;
+            if (!GetOffset()) return;
             byte[] buffer = new byte[1];
             byte[] bytes = Encoding.UTF8.GetBytes($"{Theme.MsgTitle} 채팅 주파수 검색 중...");
             for (int i = 0; i < 20; i++)
-                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), bytes, bytes.Length + 1, out _);
+                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * i), bytes, bytes.Length + 1, out _);
             ApplyChat(false);
             await Task.Delay(200);
             for (int i = 0; i < 20; i++)
-                if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * i), buffer, 1, out _) && buffer[0] == 0)
+                if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * i), buffer, 1, out _) && buffer[0] == 0)
                 {
                     Settings.ChatFrequency = i;
                     for (int j = 0; j < 20; j++)
-                        WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * j), new byte[] { 0 }, 1, out _);
+                        WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * j), new byte[] { 0 }, 1, out _);
                     return;
                 }
         }
 
         public static bool GetSelectedReceiveStatus()
         {
-            SelectedReceiverOffset = SearchAddress(SelectedReceiverPattern);
+            SelectedReceiverOffset = FollowPointer(StormDllOffset + 0x5837C, SelectedReceiverPattern);
             if (SelectedReceiverOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[4];
-                if (ReadProcessMemory(Warcraft3Info.Handle, SelectedReceiverOffset += 0x25C, buffer, 4, out _))
+                if (ReadProcessMemory(Warcraft3Info.Handle, SelectedReceiverOffset += 0x260, buffer, 4, out _))
                     return true;
             }
             SelectedReceiverOffset = IntPtr.Zero;
@@ -97,11 +102,10 @@ namespace Cirnix.Memory
 
         public static bool GetTargetReceiveStatus()
         {
-            TargetReceiverOffset = SearchAddress(TargetReceiverPattern);
+            TargetReceiverOffset = FollowPointer(StormDllOffset + 0x582F0, TargetReceiverPattern);
             if (TargetReceiverOffset != IntPtr.Zero)
             {
-                byte[] buffer = new byte[4];
-                if (ReadProcessMemory(Warcraft3Info.Handle, TargetReceiverOffset += 0x2A4, buffer, 4, out _))
+                if (DirectBring(TargetReceiverOffset += 0x2A8, 4, out _))
                     return true;
             }
             TargetReceiverOffset = IntPtr.Zero;
@@ -110,8 +114,7 @@ namespace Cirnix.Memory
 
         public static void SetEmpty()
         {
-            if (Settings.IsAutoFrequency) WriteProcessMemory(Warcraft3Info.Handle, MessageOffset, new byte[] { 0 }, 1, out _);
-            else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * Settings.ChatFrequency), new byte[] { 0 }, 1, out _);
+            DirectPatch(Settings.IsAutoFrequency ? MessageOffset : (CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency)), 0);
         }
 
         public static void CheckErrorChat()
@@ -130,20 +133,19 @@ namespace Cirnix.Memory
             if (isHide)
             {
                 if (chatMode == ChatMode.Private) return;
-                byte[] buffer = new byte[8];
-                ReadProcessMemory(Warcraft3Info.Handle, SelectedReceiverOffset, buffer, 8, out _);
+                DirectBring(SelectedReceiverOffset, 8, out byte[] buffer);
                 chatMode = (ChatMode)buffer[0];
                 chatTarget = buffer[4];
                 buffer[0] = 0;
                 buffer[4] = 0x7F;
-                WriteProcessMemory(Warcraft3Info.Handle, SelectedReceiverOffset, buffer, 8, out _);
+                DirectPatch(SelectedReceiverOffset, buffer);
             }
             else
             {
                 byte[] buffer = new byte[8];
                 buffer[0] = (byte)chatMode;
                 buffer[4] = chatTarget;
-                WriteProcessMemory(Warcraft3Info.Handle, SelectedReceiverOffset, buffer, 8, out _);
+                DirectPatch(SelectedReceiverOffset, buffer);
             }
         }
 
@@ -152,26 +154,27 @@ namespace Cirnix.Memory
             if (!GetTargetReceiveStatus()) return;
             byte[] buffer = new byte[4];
             buffer[0] = 0x7F;
-            WriteProcessMemory(Warcraft3Info.Handle, TargetReceiverOffset, buffer, 4, out _);
+            DirectPatch(TargetReceiverOffset, buffer);
         }
 
+        [Obsolete]
         public static void MessageStack(bool IsPush)
         {
             if (CEditBoxOffset == IntPtr.Zero)
             {
                 CEditBoxOffset = SearchAddress(MessageAdditionalPattern);
-                MessageOffset = CEditBoxOffset + 0x84;
+                MessageOffset = CEditBoxOffset + 0x88;
             }
             if (CEditBoxOffset == IntPtr.Zero) return;
             if (IsPush)
             {
                 if (Settings.IsAutoFrequency) ReadProcessMemory(Warcraft3Info.Handle, MessageOffset, Stack, 0x100, out _);
-                else ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * Settings.ChatFrequency), Stack, 0x100, out _);
+                else ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), Stack, 0x100, out _);
             }
             else
             {
                 if (Settings.IsAutoFrequency) WriteProcessMemory(Warcraft3Info.Handle, MessageOffset, Stack, 0x100, out _);
-                else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * Settings.ChatFrequency), Stack, 0x100, out _);
+                else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), Stack, 0x100, out _);
                 for (int i = 0; i < 0x100; i++) Stack[i] = 0;
             }
         }
@@ -187,7 +190,7 @@ namespace Cirnix.Memory
             if (TryHide) MessageHide();
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
             PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
-            Thread.Sleep(20);
+            Thread.Sleep(50);
             if (States.IsChatBoxOpen)
             {
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
@@ -201,7 +204,7 @@ namespace Cirnix.Memory
             if (CEditBoxOffset == IntPtr.Zero)
             {
                 CEditBoxOffset = SearchAddress(MessageAdditionalPattern);
-                MessageOffset = CEditBoxOffset + 0x84;
+                MessageOffset = CEditBoxOffset + 0x88;
             }
             if (CEditBoxOffset == IntPtr.Zero) return;
             byte[] bytes = Encoding.UTF8.GetBytes(pMessage);
@@ -220,14 +223,18 @@ namespace Cirnix.Memory
             }
 
             if (Settings.IsAutoFrequency) WriteProcessMemory(Warcraft3Info.Handle, MessageOffset, bytes, bytes.Length + 1, out _);
-            else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x84 + (0x110 * Settings.ChatFrequency), bytes, bytes.Length + 1, out _);
+            else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), bytes, bytes.Length + 1, out _);
             if (bytes[0] != 0) ApplyChat(IsHide && Settings.IsCommandHide);
         }
 
         public static bool SendMsg(bool UseTitle, params string[] args)
         {
             if (args == null || args.Length == 0) return false;
-            if (args.Length == 1) return SendSingleMsg(UseTitle, args[0]);
+            if (args.Length == 1)
+            {
+                Thread.Sleep(100);
+                return SendInstantMsg(UseTitle, args[0]);
+            }
             else return SendMsg(UseTitle, args, 100);
         }
         public static bool SendMsg(bool UseTitle, string[] args, int delay, bool IsHide = true)
@@ -235,13 +242,13 @@ namespace Cirnix.Memory
             if (Warcraft3Info.Process == null) return false;
             foreach (var arg in args)
             {
-                Thread.Sleep(delay);
+                if (delay > 0) Thread.Sleep(delay);
                 if (!string.IsNullOrEmpty(arg))
                     MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg, IsHide);
             }
             return true;
         }
-        public static bool SendSingleMsg(bool UseTitle, string arg, bool IsHide = true)
+        public static bool SendInstantMsg(bool UseTitle, string arg, bool IsHide = true)
         {
             if (Warcraft3Info.Process == null || string.IsNullOrEmpty(arg)) return false;
             MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg, IsHide);

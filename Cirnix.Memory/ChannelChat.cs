@@ -8,19 +8,19 @@ namespace Cirnix.Memory
     
     public static class ChannelChat
     {
-        private static readonly byte[] ChannelSearchPattern = new byte[] { 0x1A, 0x27, 0xBA, 0x66, 0x1A };
-        private static readonly byte[] MessageSearchPattern = new byte[] { 0x16, 0x3C, 0x47, 0x5B, 0x16 };
+        private static readonly byte[] ChannelSearchPattern = { 0x1A, 0x27, 0xBA, 0x66, 0x1A };
+        private static readonly byte[] MessageSearchPattern = { 0x16, 0x3C, 0x47, 0x5B, 0x16 };
         internal static IntPtr ChannelOffset = IntPtr.Zero;
         internal static IntPtr MessageOffset = IntPtr.Zero;
         private static int PreviousLength = 0;
 
         private static string SearchChannelOffset()
         {
-            ChannelOffset = SearchAddress(ChannelSearchPattern);
+            ChannelOffset = FollowPointer(StormDllOffset + 0x58098, ChannelSearchPattern);
             if (ChannelOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[0x20];
-                if (ReadProcessMemory(Warcraft3Info.Handle, ChannelOffset + 0x380, buffer, 0x20, out _))
+                if (ReadProcessMemory(Warcraft3Info.Handle, ChannelOffset + 0x384, buffer, 0x20, out _))
                     return Encoding.UTF8.GetString(buffer);
             }
             ChannelOffset = IntPtr.Zero;
@@ -29,11 +29,11 @@ namespace Cirnix.Memory
 
         private static int SearchMessageOffset()
         {
-            MessageOffset = SearchAddress(MessageSearchPattern);
+            MessageOffset = FollowPointer(StormDllOffset + 0x58088, MessageSearchPattern);
             if (MessageOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[4];
-                if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset + 0x14, buffer, 4, out _))
+                if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset + 0x18, buffer, 4, out _))
                     return BitConverter.ToInt32(buffer, 0);
             }
             PreviousLength = 0;
@@ -58,7 +58,7 @@ namespace Cirnix.Memory
                 byte[] buffer = new byte[Length];
                 try
                 {
-                    ReadProcessMemory(Warcraft3Info.Handle, MessageOffset + 0x84, buffer, Length, out _);
+                    ReadProcessMemory(Warcraft3Info.Handle, MessageOffset + 0x88, buffer, Length, out _);
                 }
                 catch
                 {

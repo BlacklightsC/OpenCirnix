@@ -9,20 +9,21 @@ namespace Cirnix.Memory
 
     public static class LoadedFiles
     {
-        private static readonly byte[] SearchPattern = new byte[] { 0x53, 0x8E, 0x3F, 0x7F, 0x53 };
-        private static readonly byte[] FileLoadedPattern = new byte[] { 0x68, 2, 4 };
+        private static readonly byte[] SearchPattern = { 0x53, 0x8E, 0x3F, 0x7F, 0x53 };
+        private static readonly byte[] FileLoadedPattern = { 0x68, 2, 4 };
         internal static IntPtr Offset = IntPtr.Zero;
 
         private static bool GetOffset()
         {
-            Offset = SearchAddress(SearchPattern);
+            if (StormDllOffset == IntPtr.Zero) return false;
+            Offset = FollowPointer(StormDllOffset + 0x5817C, SearchPattern);
             if (Offset != IntPtr.Zero)
             {
                 byte[] innerBuffer = new byte[4];
-                if (ReadProcessMemory(Warcraft3Info.Handle, Offset += 0x9C, innerBuffer, 4, out _))
+                if (ReadProcessMemory(Warcraft3Info.Handle, Offset += 0xA0, innerBuffer, 4, out _))
                     return true;
+                Offset = IntPtr.Zero;
             }
-            Offset = IntPtr.Zero;
             return false;
         }
 

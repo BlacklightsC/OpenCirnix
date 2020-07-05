@@ -65,6 +65,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CirnoLib\CirnoLib\CirnoLib.csproj">
+      <Project>{ec749998-e306-4db9-a6cb-9692dc918b6b}</Project>
+      <Name>CirnoLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cirnix.Global\Cirnix.Global.csproj">
       <Project>{3428be9f-46b3-478b-a8c5-3779b2ec68dd}</Project>
       <Name>Cirnix.Global</Name>

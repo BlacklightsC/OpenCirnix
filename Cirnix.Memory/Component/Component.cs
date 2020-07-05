@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CirnoLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -13,6 +14,8 @@ namespace Cirnix.Memory
     public static class Component
     {
         public static WarcraftInfo Warcraft3Info;
+        internal static IntPtr GameDllOffset = IntPtr.Zero;
+        internal static IntPtr StormDllOffset = IntPtr.Zero;
 
         #region [    Custom Enum    ]
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -176,7 +179,7 @@ namespace Cirnix.Memory
                     }
                 }
             }
-            
+
             public bool HasExited {
                 get {
                     if (_Process == null)
@@ -190,6 +193,12 @@ namespace Cirnix.Memory
                         return true;
                     }
                 }
+            }
+
+            public void Refresh()
+            {
+                if (_Process == null) return;
+                _Process.Refresh();
             }
 
             public bool Close()
@@ -222,35 +231,42 @@ namespace Cirnix.Memory
                     _Process = null;
                 }
 
+                GameDllOffset =
+                StormDllOffset =
                 ChannelChat.ChannelOffset =
                 ChannelChat.MessageOffset =
                 ControlDelay.Offset =
-                GameDll.GameDllOffset =
                 LoadedFiles.Offset =
                 Message.CEditBoxOffset =
                 Message.MessageOffset =
                 Message.SelectedReceiverOffset =
                 Message.TargetReceiverOffset =
-                Join.Offset = 
+                States.OsTcpOffset = 
                 BanList.Offset = IntPtr.Zero;
             }
         }
-
-        internal static void Patch(IntPtr Offset, params byte[] buffer) => Patch(Offset, buffer.Length, buffer);
-
-        internal static void Patch(IntPtr Offset, int size, params byte[] buffer)
+        internal static void DirectPatch(IntPtr offset, params byte[] buffer) => WriteProcessMemory(Warcraft3Info.Handle, offset, buffer, buffer.Length, out _);
+        internal static void Patch(IntPtr offset, params byte[] buffer) => Patch(offset, buffer.Length, buffer);
+        internal static void Patch(IntPtr offset, int size, params byte[] buffer)
         {
-            VirtualProtectEx(Warcraft3Info.Handle, Offset, size, 0x40, out uint lpflOldProtect);
-            WriteProcessMemory(Warcraft3Info.Handle, Offset, buffer, size, out _);
-            VirtualProtectEx(Warcraft3Info.Handle, Offset, size, lpflOldProtect, out _);
+            VirtualProtectEx(Warcraft3Info.Handle, offset, size, 0x40, out uint lpflOldProtect);
+            WriteProcessMemory(Warcraft3Info.Handle, offset, buffer, size, out _);
+            VirtualProtectEx(Warcraft3Info.Handle, offset, size, lpflOldProtect, out _);
+        }
+        internal static bool DirectBring(IntPtr offset, int size, out byte[] buffer)
+        {
+            buffer = new byte[size];
+            bool ret = ReadProcessMemory(Warcraft3Info.Handle, offset, buffer, size, out _);
+            if (!ret) buffer = null;
+            return ret;
         }
         internal static byte[] Bring(IntPtr Offset, int size)
         {
             byte[] lpBuffer = new byte[size];
             VirtualProtectEx(Warcraft3Info.Handle, Offset, size, 0x40, out uint lpflOldProtect);
-            ReadProcessMemory(Warcraft3Info.Handle, Offset, lpBuffer, size, out _);
+            bool ret = ReadProcessMemory(Warcraft3Info.Handle, Offset, lpBuffer, size, out _);
             VirtualProtectEx(Warcraft3Info.Handle, Offset, size, lpflOldProtect, out _);
-            return lpBuffer;
+            return ret ? lpBuffer : null;
         }
         internal static bool CompareArrays(byte[] a, byte[] b, int num)
         {
@@ -303,6 +319,24 @@ namespace Cirnix.Memory
                 return SearchMemoryRegion(search, offset);
             else
                 return SearchAddress(search, 0x7FFFFFFF, offset);
+        }
+
+        internal static IntPtr FollowPointer(IntPtr offset, params byte[] signature)
+        {
+            int length = signature.Length;
+            byte[] buffer = Bring(offset, 4);
+            if (buffer == null) return IntPtr.Zero;
+            offset = new IntPtr(buffer.ToInt32());
+            while (true)
+            {
+                buffer = Bring(offset, 4 + length);
+                if (buffer == null) return IntPtr.Zero;
+                if (CompareArrays(buffer.SubArray(4), signature, length))
+                    return offset;
+                int newOffset = buffer.ToInt32();
+                if (newOffset == 0) return IntPtr.Zero;
+                offset = new IntPtr(buffer.ToInt32());
+            }
         }
 
         private static T ByteArrayToStructure<T>(byte[] bytes) where T : struct

@@ -1,34 +1,12 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 using static Cirnix.Global.NativeMethods;
 using static Cirnix.Memory.Component;
-using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
 {
     public static class GameDll
     {
-        internal static IntPtr GameDllOffset = IntPtr.Zero;
-
-        public static void GetOffset(bool isForced = false)
-        {
-            if (!isForced && GameDllOffset != IntPtr.Zero) return;
-            GameDllOffset = IntPtr.Zero;
-            if (Warcraft3Info.Process == null) return;
-            MODULEENTRY32 structure = new MODULEENTRY32();
-            //GetWindowThreadProcessId((IntPtr)FindWindow(TargetProcess, null), out processId);
-            IntPtr hSnapshot = CreateToolhelp32Snapshot(SnapshotFlags.TH32CS_SNAPMODULE, Warcraft3Info.ID);
-            structure.dwSize = (uint)Marshal.SizeOf(structure);
-            Module32First(hSnapshot, ref structure);
-            do
-            {
-                if (structure.szModule.Equals("game.dll", StringComparison.OrdinalIgnoreCase))
-                    GameDllOffset = structure.modBaseAddr;
-            }
-            while (Module32Next(hSnapshot, ref structure));
-        }
-
         public static bool HPView {
             get {
                 if (GameDllOffset != IntPtr.Zero)

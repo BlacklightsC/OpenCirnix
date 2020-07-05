@@ -14,13 +14,13 @@ namespace Cirnix.Memory
 {
     public static class BanList
     {
-		private static readonly byte[] SearchPattern = new byte[] { 0x1B, 0xA3, 0x1E, 0x0F };
+		private static readonly byte[] SearchPattern = { 0x1B, 0xA3, 0x1E, 0x0F, 0x1B };
 		internal static IntPtr Offset = IntPtr.Zero;
 		private static readonly List<BanlistModel> Banlist = new List<BanlistModel>();
 
 		private static bool GetOffset()
 		{
-			return (Offset = SearchAddress(SearchPattern)) != IntPtr.Zero;
+			return (Offset = FollowPointer(StormDllOffset + 0x5809C, SearchPattern)) != IntPtr.Zero;
 		}
 
 		public static async void CheckBanList()
