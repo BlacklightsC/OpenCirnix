@@ -21,7 +21,7 @@ namespace Cirnix.Memory
             if (GetOffset())
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
-                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset, buffer, buffer.Length + 1, out _);
+                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x6E8, buffer, buffer.Length + 1, out _);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
             }
@@ -45,7 +45,7 @@ namespace Cirnix.Memory
             if (GetOffset())
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
-                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset, buffer, buffer.Length + 1, out _);
+                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x6E8, buffer, buffer.Length + 1, out _);
                 await Task.Delay(3000);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
                 PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
