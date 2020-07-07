@@ -34,7 +34,7 @@ namespace Cirnix.Forms
         {
             OpenFileDialog OFD = new OpenFileDialog();
             OFD.Title = "검사할 맵 파일을 선택해주세요.";
-            OFD.InitialDirectory = Globals.DocumentPath + @"\Maps";
+            OFD.InitialDirectory = $"{Globals.DocumentPath}\\Maps";
             OFD.CheckFileExists = true;
             OFD.Multiselect = true;
             OFD.Filter = "Warcraft III 맵 (*.w3m;*.w3x)|*.w3m;*.w3x|모든 파일 (*.*)|*.*";
@@ -104,7 +104,7 @@ namespace Cirnix.Forms
         {
             OpenFileDialog OFD = new OpenFileDialog();
             OFD.Title = "변환할 스크린샷 파일을 선택해주세요.";
-            OFD.InitialDirectory = Globals.DocumentPath + @"\ScreenShots";
+            OFD.InitialDirectory = $"{Globals.DocumentPath}\\ScreenShots";
             OFD.CheckFileExists = true;
             OFD.Multiselect = true;
             OFD.Filter = "TGA 파일 (*.tga)|*.tga|모든 파일 (*.*)|*.*";
@@ -123,7 +123,7 @@ namespace Cirnix.Forms
                 List_Data.Rows[i].Cells[1].Value = "변환 중...";
                 List_Data.Rows[i].Cells[1].Style.BackColor = Color.Yellow;
                 Application.DoEvents();
-                if (TgaReader.SaveTo(await Globals.ReadFile(FileNames[i]), Path.GetDirectoryName(FileNames[i]) + @"\" + Path.GetFileNameWithoutExtension(FileNames[i]), Combo_ScreenShotExtension.Text))
+                if (TgaReader.SaveTo(await Globals.ReadFile(FileNames[i]), $"{Path.GetDirectoryName(FileNames[i])}\\{Path.GetFileNameWithoutExtension(FileNames[i])}", Combo_ScreenShotExtension.Text))
                 {
                     List_Data.Rows[i].Cells[1].Value = "변환 완료";
                     List_Data.Rows[i].Cells[1].Style.BackColor = Color.LightGreen;
