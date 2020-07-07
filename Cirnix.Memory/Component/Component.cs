@@ -339,6 +339,13 @@ namespace Cirnix.Memory
             }
         }
 
+        internal static IntPtr FollowPointer(IntPtr offset)
+        {
+            byte[] buffer = Bring(offset, 4);
+            if (buffer == null) return IntPtr.Zero;
+            return new IntPtr(buffer.ToInt32());
+        }
+
         private static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
         {
             GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);

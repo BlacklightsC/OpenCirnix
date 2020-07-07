@@ -53,7 +53,7 @@ namespace Cirnix.Memory
             return null;
         }
 
-        private static string ConvertToString(byte[] buffer)
+        internal static string ConvertToString(byte[] buffer)
         {
             int Length = buffer.Length - 1;
             for (int i = 1; i < buffer.Length; i++)

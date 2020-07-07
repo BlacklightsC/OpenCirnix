@@ -17,7 +17,7 @@ namespace Cirnix.Memory
                 if (CEditBoxOffset != IntPtr.Zero)
                 {
                     byte[] buffer = new byte[2];
-                    ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x6E2, buffer, 2, out _);
+                    ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x6E6, buffer, 2, out _);
                     if (CompareArrays(buffer, ChatStartPattern, 2))
                         return true;
                 }
