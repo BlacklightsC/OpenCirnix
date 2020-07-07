@@ -8,15 +8,15 @@ namespace Cirnix.Memory
     
     public static class ChannelChat
     {
-        private static readonly byte[] ChannelSearchPattern = { 0x1A, 0x27, 0xBA, 0x66, 0x1A };
-        private static readonly byte[] MessageSearchPattern = { 0x16, 0x3C, 0x47, 0x5B, 0x16 };
+        private static readonly byte[] ChannelSignature = { 0x1A, 0x27, 0xBA, 0x66, 0x1A };
+        private static readonly byte[] MessageSignature = { 0x16, 0x3C, 0x47, 0x5B, 0x16 };
         internal static IntPtr ChannelOffset = IntPtr.Zero;
         internal static IntPtr MessageOffset = IntPtr.Zero;
         private static int PreviousLength = 0;
 
         private static string SearchChannelOffset()
         {
-            ChannelOffset = FollowPointer(StormDllOffset + 0x58098, ChannelSearchPattern);
+            ChannelOffset = FollowPointer(StormDllOffset + 0x58098, ChannelSignature);
             if (ChannelOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[0x20];
@@ -29,7 +29,7 @@ namespace Cirnix.Memory
 
         private static int SearchMessageOffset()
         {
-            MessageOffset = FollowPointer(StormDllOffset + 0x58088, MessageSearchPattern);
+            MessageOffset = FollowPointer(StormDllOffset + 0x58088, MessageSignature);
             if (MessageOffset != IntPtr.Zero)
             {
                 byte[] buffer = new byte[4];

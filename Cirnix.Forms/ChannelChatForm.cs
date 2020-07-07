@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using static Cirnix.Forms.Component;
 using static Cirnix.Memory.ChannelChat;
+
 namespace Cirnix.Forms
 {
     internal partial class ChannelChatForm : Global.DraggableLabelForm
@@ -54,7 +55,8 @@ namespace Cirnix.Forms
                 return;
 
             if (!Visible) Visible = true;
-            string[] lines = ChatLog.Split('\n');
+            string[] lines = ChatLog.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            if (lines.Length == 0) return;
             string TimeLine = $"|CFFFFFFFF({DateTime.Now:hh:mm:ss})|R ";
             ChatLog = string.Empty;
             for (int i = 0; i < lines.Length; i++)
@@ -63,6 +65,7 @@ namespace Cirnix.Forms
                 ChatLog += TimeLine + lines[i];
             }
             SetRTBText(ref richTextBox, ChatLog);
+            richTextBox.AppendText("\n");
             if (WindowsCloseTimer.Enabled)
             {
                 WindowsCloseTimer.Enabled = false;
