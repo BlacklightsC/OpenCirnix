@@ -771,6 +771,7 @@ namespace Cirnix.Worker
                 GameModule.GetOffset();
                 GameDelay = 50;
                 RefreshCooldown = 0.01f;
+                ColorfulChat = true;
                 name = string.Empty;
                 StartDelay = Settings.StartSpeed > 0 ? Settings.StartSpeed : 0.01f;
                 CameraDistance = Settings.CameraDistance;

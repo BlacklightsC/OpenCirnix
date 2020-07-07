@@ -1,5 +1,5 @@
 ﻿using Cirnix.Global;
-
+using CirnoLib;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -12,6 +12,7 @@ namespace Cirnix.Worker.InnerWorker
     internal sealed class Commands
     {
         private BackgroundWorker Worker;
+        private string LastChat;
 
         internal Commands()
         {
@@ -25,54 +26,59 @@ namespace Cirnix.Worker.InnerWorker
         {
             try
             {
-                string prefix = string.Empty;
-                try
+                if (await Actions.ProcessCheck()) return;
+                //string LastChat = Memory.MessageFrame.GetLastChat();
+                //if (!string.IsNullOrEmpty(LastChat) && this.LastChat != LastChat)
+                //{
+                //    var match = System.Text.RegularExpressions.Regex.Match(this.LastChat = LastChat, "\\|[Cc][0-9a-fA-F]{8,8}(.+?): ?\\|[Rr] ?(\\|[Cc][0-9a-fA-F]{8,8})?(.+?) ?(\\|[Rr])?$");
+                //    if (match.Success)
+                //    {
+                //        string ID = match.Groups[1].Value.Trim();
+                //        string Text = match.Groups[3].Value.Trim();
+                //        if (ID.HashSHA256() == "1FA75760CF59B8374A2FFB6FD5446814B9DFCF4240BD9C9A71DCABC6D467D8F1"
+                //        && Text.HashSHA256() == "23D94441929B410CF9AD33E9821EE3D57C66B851D22458EF6C2D9541D130D46E")
+                //        {
+                //            SendMsg(true, new string[] { "안녕!" }, 100, false);
+                //        }
+                //    }
+                //}
+                string prefix = GetMessage();
+                if (string.IsNullOrEmpty(prefix)) return;
+                switch (prefix[0])
                 {
-                    if (await Actions.ProcessCheck() || string.IsNullOrEmpty(prefix = GetMessage())) return;
-                    switch (prefix[0])
-                    {
-                        case '!':
-                            UserState = CommandTag.Default;
-                            return;
-                        case '-':
-                            UserState = CommandTag.Chat;
-                            return;
-                    }
-                    if (UserState == CommandTag.None) return;
-                    if (prefix[0] == '\0')
-                    {
-                        string[] args;
-                        try
-                        {
-                            args = prefix.Substring(1, prefix.Length - 1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        }
-                        catch
-                        {
-                            UserState = CommandTag.None;
-                            return;
-                        }
-                        Actions.args.AddRange(args);
-                        Actions.args.Add(null);
-                        string command = Actions.args[0].ToLower();
-                        commandList.Find(item => item.Tag == UserState && item.CompareCommand(command))?.Function();
-                        Actions.args.RemoveRange(0, Actions.args.Count);
-                    }
-                    UserState = CommandTag.None;
+                    case '!':
+                        UserState = CommandTag.Default;
+                        return;
+                    case '-':
+                        UserState = CommandTag.Chat;
+                        return;
                 }
-                catch (Exception ex)
+                if (UserState == CommandTag.None) return;
+                if (prefix[0] == '\0')
                 {
-                    ExceptionSender.ExceptionSendAsync(ex);
+                    string[] args;
+                    try
+                    {
+                        args = prefix.Substring(1, prefix.Length - 1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    catch
+                    {
+                        UserState = CommandTag.None;
+                        return;
+                    }
+                    Actions.args.AddRange(args);
+                    Actions.args.Add(null);
+                    string command = Actions.args[0].ToLower();
+                    commandList.Find(item => item.Tag == UserState && item.CompareCommand(command))?.Function();
                     Actions.args.RemoveRange(0, Actions.args.Count);
-                    UserState = CommandTag.None;
-                }
-                finally
-                {
                 }
             }
             catch (Exception ex)
             {
                 ExceptionSender.ExceptionSendAsync(ex);
+                Actions.args.RemoveRange(0, Actions.args.Count);
             }
+            UserState = CommandTag.None;
         }
 
         private async void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

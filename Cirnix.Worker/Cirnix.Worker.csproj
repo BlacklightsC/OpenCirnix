@@ -57,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CirnoLib\CirnoLib\CirnoLib.csproj">
+      <Project>{ec749998-e306-4db9-a6cb-9692dc918b6b}</Project>
+      <Name>CirnoLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cirnix.KeyHook\Cirnix.KeyHook.csproj">
       <Project>{14ea16eb-22ca-43e8-be95-397bc7aa67c7}</Project>
       <Name>Cirnix.KeyHook</Name>

@@ -56,6 +56,24 @@ namespace Cirnix.Memory
             }
         }
 
+        public static bool ColorfulChat {
+            get {
+                if (GameDllOffset != IntPtr.Zero)
+                {
+                    byte[] pattern = { 0xE9 };
+                    byte[] buffer = Bring(GameDllOffset + 0x1518C0, 1);
+                    if (CompareArrays(buffer, pattern, 1))
+                        return true;
+                }
+                return false;
+            }
+            set {
+                if (GameDllOffset == IntPtr.Zero) return;
+                Patch(GameDllOffset + 0x1518C0, value ? new byte[] { 0xE9, 0x9B, 0x00, 0x00, 0x00, 0x90, 0x90, 0x90, 0x90 }
+                                                      : new byte[] { 0x83, 0xF8, 0x03, 0x0F, 0x87, 0x97, 0x00, 0x00, 0x00 });
+            }
+        }
+
         #region [    Camera Settings    ]
         public static void CameraInit()
         {
