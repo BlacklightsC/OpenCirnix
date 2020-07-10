@@ -1245,7 +1245,12 @@ namespace Cirnix.JassNative.JassAPI
             return Add(function, name, prototype);
         }
 
-        public static NativeDeclaration Add(Delegate function, bool AddJNPrefix = true)
+        public static NativeDeclaration Add(Delegate function)
+        {
+            return Add(function, $"JN{function.Method.Name}");
+        }
+
+        public static NativeDeclaration Add(Delegate function, bool AddJNPrefix)
         {
             return Add(function, (AddJNPrefix ? "JN" : string.Empty) + function.Method.Name);
         }
