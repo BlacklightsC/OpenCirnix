@@ -78,18 +78,21 @@ namespace Cirnix.CLRHook
             if (!(File.Exists(EXEPath) || File.Exists(EXEPath = Path.Combine(path, "war3.exe"))) 
              || FileVersionInfo.GetVersionInfo(EXEPath).FileVersion != "1.28.5.7680")
                 return 0;
-            CheckDelete(Path.Combine(path, "m16l.mix"));
-            if (isInstallM16)
+            if (!isDebug)
             {
-                string M16Mix = Path.Combine(path, "M16.mix");
-                string M16Mixnew = $"{M16Mix}_new";
-                if (File.Exists(M16Mixnew))
+                CheckDelete(Path.Combine(path, "m16l.mix"));
+                if (isInstallM16)
                 {
-                    CheckDelete(M16Mix);
-                    File.Move(M16Mixnew, M16Mix);
+                    string M16Mix = Path.Combine(path, "M16.mix");
+                    string M16Mixnew = $"{M16Mix}_new";
+                    if (File.Exists(M16Mixnew))
+                    {
+                        CheckDelete(M16Mix);
+                        File.Move(M16Mixnew, M16Mix);
+                    }
+                    else
+                        CheckInstall(M16Mix, Resources.M16);
                 }
-                else
-                    CheckInstall(M16Mix, Resources.M16);
             }
             string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             if (!CirnixPath.Equals(path, StringComparison.OrdinalIgnoreCase))
