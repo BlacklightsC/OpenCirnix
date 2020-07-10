@@ -15,7 +15,6 @@ namespace Cirnix.KeyHook
         private static IntPtr _HookID = IntPtr.Zero;
         private static bool WaitKeyInput = true;
         private static Stopwatch Timer = new Stopwatch();
-        private static int Counter = 0;
         private const int
             WM_KEYDOWN = 0x100,
             WM_KEYUP = 0x101,
@@ -27,9 +26,9 @@ namespace Cirnix.KeyHook
             if (nCode >= 0 && ForegroundWar3())
             {
                 bool isChatBoxOpen = States.IsChatBoxOpen;
-                if (Timer.ElapsedMilliseconds >= 50 || isChatBoxOpen)
+                if (isChatBoxOpen || Timer.ElapsedMilliseconds >= 25)
                 {
-                    Counter = 0;
+                    WaitKeyInput = true;
                     Timer.Reset();
                 }
 
@@ -47,6 +46,16 @@ namespace Cirnix.KeyHook
             KEYDOWN:
                 if (isChatBoxOpen)
                 {
+                    if (lParam.flags == 0x00)
+                    {
+                        switch (lParam.vkCode)
+                        {
+                            case 0x58: // X
+                            case 0x43: // C
+                                ClipboardConverter.IsUTF8 = true;
+                                break;
+                        }
+                    }
                     if (Settings.IsCommandHide)
                         try
                         {
@@ -58,12 +67,11 @@ namespace Cirnix.KeyHook
                             }
                         }
                         catch { }
-                    goto RETURN;
                 }
-                if (Counter >= 4) goto KEYUP;
-                if (WaitKeyInput)
+                else if (WaitKeyInput)
                 {
                     WaitKeyInput = false;
+                    Timer.Start();
                     int vkCode = lParam.vkCode;
                     var hotkey = hotkeyList.Find(item => (int)item.vk == vkCode);
                     if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
@@ -73,21 +81,11 @@ namespace Cirnix.KeyHook
                             return (IntPtr)1;
                     }
                 }
-                else if (lParam.flags == 0x00)
-                {
-                    switch (lParam.vkCode)
-                    {
-                        case 0x58: // X
-                        case 0x43: // C
-                            ClipboardConverter.IsUTF8 = true;
-                            break;
-                    }
-                }
+                //else goto KEYUP;
                 goto RETURN;
-            KEYUP:
-                WaitKeyInput = true;
-                Counter++;
-                Timer.Restart();
+            KEYUP:;
+            //    WaitKeyInput = true;
+            //    Timer.Reset();
             }
         RETURN: return CallNextHookEx(_HookID, nCode, wParam, ref lParam);
         }
