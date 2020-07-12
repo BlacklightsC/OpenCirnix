@@ -94,5 +94,15 @@ namespace Cirnix.Global.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static byte[] max {
+            get {
+                object obj = ResourceManager.GetObject("max", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

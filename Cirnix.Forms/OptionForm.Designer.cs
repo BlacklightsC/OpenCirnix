@@ -2678,6 +2678,9 @@ namespace Cirnix.Forms
             "c",
             "wa",
             "va",
+            "max",
+            "min",
+            "as",
             "exit"});
             this.CommandListBox.Location = new System.Drawing.Point(6, 18);
             this.CommandListBox.Name = "CommandListBox";

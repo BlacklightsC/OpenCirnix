@@ -21,7 +21,8 @@ namespace Cirnix.Memory
 		private static bool GetOffset()
 		{
 			return (Offset = FollowPointer(StormDllOffset + 0x5809C, SearchPattern)) != IntPtr.Zero;
-		}
+	    }
+
 
 		public static async void CheckBanList()
 		{
