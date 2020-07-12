@@ -1,23 +1,41 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Cirnix.KeyHook
 {
     public static class Component
     {
-        internal delegate IntPtr HookProc
+        /// <summary>
+        /// https://docs.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc
+        /// </summary>
+        internal delegate IntPtr LowLevelKeyboardProc
         (
             int nCode,
             int wParam,
-            ref KeyData lParam
+            ref KBDLLHOOKSTRUCT lParam
         );
 
-        internal struct KeyData
+        /// <summary>
+        /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-kbdllhookstruct
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct KBDLLHOOKSTRUCT
         {
-            internal int vkCode;
+            internal Keys vkCode;
             internal int scanCode;
-            internal int flags;
+            internal KBDLLHOOKSTRUCTFlags flags;
             internal int time;
-            internal int dwExtraInfo;
+            internal IntPtr dwExtraInfo;
+        }
+
+        [Flags]
+        internal enum KBDLLHOOKSTRUCTFlags : int
+        {
+            LLKHF_EXTENDED = 0x01,
+            LLKHF_INJECTED = 0x10,
+            LLKHF_ALTDOWN = 0x20,
+            LLKHF_UP = 0x80,
         }
     }
 }

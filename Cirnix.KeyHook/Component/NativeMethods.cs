@@ -12,14 +12,14 @@ namespace Cirnix.KeyHook
             IntPtr hhk,
             int nCode,
             int wParam,
-            ref KeyData lParam
+            ref KBDLLHOOKSTRUCT lParam
         );
 
         [DllImport("user32", SetLastError = true)]
         internal static extern IntPtr SetWindowsHookEx
         (
             int idHook, 
-            HookProc lpfn,
+            LowLevelKeyboardProc lpfn,
             IntPtr hMod,
             uint dwThreadId
         );

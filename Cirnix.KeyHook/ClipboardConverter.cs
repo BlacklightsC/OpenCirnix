@@ -8,7 +8,14 @@ namespace Cirnix.KeyHook
 {
     public static class ClipboardConverter
     {
-        public static bool IsUTF8 = false;
+        private static bool _IsUTF8 = false;
+        public static bool IsUTF8 {
+            get => _IsUTF8;
+            set {
+                if (Global.Settings.IsFixClipboard)
+                    _IsUTF8 = true;
+            }
+        }
         public static bool IsBusy = false;
         public static IntPtr ChainedWnd;
         private const uint CF_TEXT = 1;

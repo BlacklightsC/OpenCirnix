@@ -2,6 +2,7 @@
 using Cirnix.Memory;
 using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 using static Cirnix.Global.Globals;
 using static Cirnix.KeyHook.Component;
 using static Cirnix.KeyHook.NativeMethods;
@@ -11,22 +12,23 @@ namespace Cirnix.KeyHook
 {
     public static class KeyboardHooker
     {
-        private static HookProc _proc = HookCallback;
+        private static LowLevelKeyboardProc _proc = HookCallback;
         private static IntPtr _HookID = IntPtr.Zero;
         private static bool WaitKeyInput = true;
         private static Stopwatch Timer = new Stopwatch();
+        private static bool IsControlKeyDown = false;
         private const int
             WM_KEYDOWN = 0x100,
             WM_KEYUP = 0x101,
             WM_SYSKEYDOWN = 0x104,
             WM_SYSKEYUP = 0x105;
 
-        private static IntPtr HookCallback(int nCode, int wParam, ref KeyData lParam)
+        private static IntPtr HookCallback(int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam)
         {
             if (nCode >= 0 && ForegroundWar3())
             {
                 bool isChatBoxOpen = States.IsChatBoxOpen;
-                if (isChatBoxOpen || Timer.ElapsedMilliseconds >= 25)
+                if (isChatBoxOpen || Timer.ElapsedMilliseconds >= 50)
                 {
                     WaitKeyInput = true;
                     Timer.Reset();
@@ -35,23 +37,26 @@ namespace Cirnix.KeyHook
                 switch (wParam)
                 {
                     case WM_KEYDOWN:
-                    case WM_SYSKEYDOWN:
                         goto KEYDOWN;
 
                     case WM_KEYUP:
-                    case WM_SYSKEYUP:
                         goto KEYUP;
+
+                    case WM_SYSKEYDOWN:
+                    case WM_SYSKEYUP:
+                        goto RETURN;
                 }
 
             KEYDOWN:
+                if (lParam.vkCode == Keys.LControlKey) IsControlKeyDown = true;
                 if (isChatBoxOpen)
                 {
-                    if (lParam.flags == 0x00)
+                    if (IsControlKeyDown)
                     {
                         switch (lParam.vkCode)
                         {
-                            case 0x58: // X
-                            case 0x43: // C
+                            case Keys.X: // X
+                            case Keys.C: // C
                                 ClipboardConverter.IsUTF8 = true;
                                 break;
                         }
@@ -59,11 +64,11 @@ namespace Cirnix.KeyHook
                     if (Settings.IsCommandHide)
                         try
                         {
-                            if (lParam.vkCode == 0xD)
+                            if (lParam.vkCode == Keys.Enter)
                             {
-                                string msg = Message.GetMessage();
+                                string msg = Memory.Message.GetMessage();
                                 if (msg != null && msg.Length >= 0 && msg[0] == '!')
-                                    Message.SetEmpty();
+                                    Memory.Message.SetEmpty();
                             }
                         }
                         catch { }
@@ -72,8 +77,8 @@ namespace Cirnix.KeyHook
                 {
                     WaitKeyInput = false;
                     Timer.Start();
-                    int vkCode = lParam.vkCode;
-                    var hotkey = hotkeyList.Find(item => (int)item.vk == vkCode);
+                    Keys vkCode = lParam.vkCode;
+                    var hotkey = hotkeyList.Find(item => item.vk == vkCode);
                     if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
                     {
                         hotkey.function(hotkey.fk);
@@ -83,9 +88,8 @@ namespace Cirnix.KeyHook
                 }
                 //else goto KEYUP;
                 goto RETURN;
-            KEYUP:;
-            //    WaitKeyInput = true;
-            //    Timer.Reset();
+            KEYUP:
+                if (lParam.vkCode == Keys.LControlKey) IsControlKeyDown = false;
             }
         RETURN: return CallNextHookEx(_HookID, nCode, wParam, ref lParam);
         }
