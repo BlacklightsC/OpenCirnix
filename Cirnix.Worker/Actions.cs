@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static Cirnix.Global.Globals;
+using static Cirnix.Global.Locale;
 using static Cirnix.Global.Hotkey;
 using static Cirnix.Global.TgaReader;
 using static Cirnix.Memory.Component;
@@ -139,7 +140,6 @@ namespace Cirnix.Worker
         }
         private static async Task SaveFileMover(string path)
         {
-            string FileName;
             if (!Directory.Exists(GetCurrentPath(1)))
                 Directory.CreateDirectory(GetCurrentPath(1));
             if (string.IsNullOrEmpty(name))
@@ -147,10 +147,11 @@ namespace Cirnix.Worker
                 IsTime = true;
                 name = GetFileTime(path);
             }
-            FileName = $"{GetCurrentPath(1)}\\{name}.txt";
+            string FileName = $"{GetCurrentPath(1)}\\{name}.txt";
             if (File.Exists(FileName)) File.Delete(FileName);
             try
             {
+                await Task.Delay(1000);
                 File.Move(path, FileName);
             }
             catch
