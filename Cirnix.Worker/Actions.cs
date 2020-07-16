@@ -561,17 +561,10 @@ namespace Cirnix.Worker
         }
         internal static void SetGameDelay()
         {
-            if (string.IsNullOrEmpty(args[1])) goto Error;
-            int delay;
-            try
-            {
-                delay = int.Parse(args[1]);
-            }
-            catch
-            {
+            if (string.IsNullOrEmpty(args[1])
+             || !int.TryParse(args[1], out int delay)
+             || delay < 0 || delay > 550)
                 goto Error;
-            }
-            if (delay < 0 || delay > 550) goto Error;
             SendMsg(true, $"Delay 값: {(IsHostPlayer ? "<Host> " : string.Empty)}{Settings.GameDelay}ms → {args[1]}ms");
             Settings.GameDelay = delay;
             if (IsInGame) GameDelay = Settings.GameDelay;
@@ -581,17 +574,10 @@ namespace Cirnix.Worker
         }
         internal static void SetStartSpeed()
         {
-            if (string.IsNullOrEmpty(args[1])) goto Error;
-            int delay;
-            try
-            {
-                delay = int.Parse(args[1]);
-            }
-            catch
-            {
+            if (string.IsNullOrEmpty(args[1])
+             || !int.TryParse(args[1], out int delay)
+             || delay < 0 || delay > 6)
                 goto Error;
-            }
-            if (delay < 0 || delay > 6) goto Error;
             float startSpeed = Settings.StartSpeed;
             SendMsg(true, $"StartSpeed 값: {(startSpeed <= 0.01 ? 0 : startSpeed)}초 → {args[1]}초");
             if (delay == 0) StartDelay = 0.01f;
@@ -641,16 +627,7 @@ namespace Cirnix.Worker
                 MainWorker.autoRG.CancelAsync();
                 return;
             }
-            int value;
-            try
-            {
-                value = int.Parse(args[1]);
-                if (value <= 0) goto Error;
-            }
-            catch
-            {
-                goto Error;
-            }
+            if (!int.TryParse(args[1], out int value) || value <= 0) goto Error;
             SendMsg(true, $"자동 RG 기능이 시작되었습니다. ▷반복: {args[1]}회");
             MainWorker.autoRG.RunWorkerAsync(value);
             return;
@@ -684,17 +661,10 @@ namespace Cirnix.Worker
         }
         internal static void CamDistance()
         {
-            if (string.IsNullOrEmpty(args[1])) goto Error;
-            float value;
-            try
-            {
-                value = float.Parse(args[1]);
-            }
-            catch
-            {
+            if (string.IsNullOrEmpty(args[1])
+             || !float.TryParse(args[1], out float value)
+             || value > 6000 || value < 0)
                 goto Error;
-            }
-            if (value > 6000 || value < 0) goto Error;
             SendMsg(true, $"설정된 시야 값: {args[1]}");
             Settings.CameraDistance = CameraDistance = value;
             CameraInit();
@@ -704,17 +674,10 @@ namespace Cirnix.Worker
         }
         internal static void CamAngleX()
         {
-            if (string.IsNullOrEmpty(args[1])) goto Error;
-            float value;
-            try
-            {
-                value = float.Parse(args[1]);
-            }
-            catch
-            {
+            if (string.IsNullOrEmpty(args[1])
+             || !float.TryParse(args[1], out float value)
+             || value > 360 || value < 0)
                 goto Error;
-            }
-            if (value > 360 || value < 0) goto Error;
             SendMsg(true, $"설정된 X축 각도 값: {args[1]}");
             Settings.CameraAngleX = CameraAngleX = value;
             CameraInit();
@@ -724,17 +687,10 @@ namespace Cirnix.Worker
         }
         internal static void CamAngleY()
         {
-            if (string.IsNullOrEmpty(args[1])) goto Error;
-            float value;
-            try
-            {
-                value = float.Parse(args[1]);
-            }
-            catch
-            {
+            if (string.IsNullOrEmpty(args[1])
+             || !float.TryParse(args[1], out float value)
+             || value > 360 || value < 0)
                 goto Error;
-            }
-            if (value > 360 || value < 0) goto Error;
             SendMsg(true, $"설정된 Y축 각도 값: {args[1]}");
             Settings.CameraAngleY = CameraAngleY = value;
             CameraInit();
