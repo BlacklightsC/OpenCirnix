@@ -1,6 +1,7 @@
 ﻿using Cirnix.Global;
 using Cirnix.Memory;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using static Cirnix.Global.Globals;
@@ -14,8 +15,8 @@ namespace Cirnix.KeyHook
     {
         private static LowLevelKeyboardProc _proc = HookCallback;
         private static IntPtr _HookID = IntPtr.Zero;
-        private static bool WaitKeyInput = true;
-        private static Stopwatch Timer = new Stopwatch();
+        private static Stopwatch Timer = Stopwatch.StartNew();
+        private static Keys LastDownKey;
         private static bool IsControlKeyDown = false;
         private const int
             WM_KEYDOWN = 0x100,
@@ -28,11 +29,6 @@ namespace Cirnix.KeyHook
             if (nCode >= 0 && ForegroundWar3())
             {
                 bool isChatBoxOpen = States.IsChatBoxOpen;
-                if (isChatBoxOpen || Timer.ElapsedMilliseconds >= 50)
-                {
-                    WaitKeyInput = true;
-                    Timer.Reset();
-                }
 
                 switch (wParam)
                 {
@@ -72,22 +68,26 @@ namespace Cirnix.KeyHook
                             }
                         }
                         catch { }
+                    goto RETURN;
                 }
-                else if (WaitKeyInput)
+                else
                 {
-                    WaitKeyInput = false;
-                    Timer.Start();
                     Keys vkCode = lParam.vkCode;
                     var hotkey = hotkeyList.Find(item => item.vk == vkCode);
                     if (hotkey != null && !(hotkey.onlyInGame && !States.IsInGame))
                     {
-                        hotkey.function(hotkey.fk);
-                        if (!hotkey.recall)
-                            return (IntPtr)1;
+                        if (Timer.ElapsedMilliseconds >= 65 || vkCode != LastDownKey)
+                        {
+                            Timer.Restart();
+                            LastDownKey = vkCode;
+                            hotkey.function(hotkey.fk);
+                            if (!hotkey.recall)
+                                return (IntPtr)1;
+                        }
                     }
+                    goto RETURN;
                 }
                 //else goto KEYUP;
-                goto RETURN;
             KEYUP:
                 if (lParam.vkCode == Keys.LControlKey) IsControlKeyDown = false;
             }
