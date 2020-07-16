@@ -300,7 +300,7 @@ namespace Cirnix.Worker
                 if (string.IsNullOrEmpty(Code[i])) break;
                 SendMsg(false, new string[] { Code[i].Substring(0, Code[i].Length >= 127 ? 127 : Code[i].Length) }, Settings.GlobalDelay);
             }
-            await Task.Delay(200);
+            await Task.Delay(500);
             TypeCommands();
             return;
         Error:
@@ -338,7 +338,7 @@ namespace Cirnix.Worker
                 if (string.IsNullOrEmpty(Code[i])) break;
                 SendMsg(false, new string[] { Code[i].Substring(0, Code[i].Length >= 130 ? 130 : Code[i].Length) }, Settings.GlobalDelay);
             }
-            await Task.Delay(200);
+            await Task.Delay(500);
             TypeCommands();
             return;
         Error:
@@ -375,7 +375,7 @@ namespace Cirnix.Worker
                 if (string.IsNullOrEmpty(Code[i])) break;
                 SendMsg(false, new string[] { Code[i].Substring(0, Code[i].Length >= 130 ? 130 : Code[i].Length) }, Settings.GlobalDelay);
             }
-            await Task.Delay(200);
+            await Task.Delay(500);
             TypeCommands();
             return;
         Error:
