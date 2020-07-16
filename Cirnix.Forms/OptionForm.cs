@@ -1721,6 +1721,24 @@ namespace Cirnix.Forms
                     Label_ParameterValue.Text = "없음";
                     TB_CommandDescription.Text = "방에 접속된 인원의 IP 및 ID를 출력합니다.";
                     break;
+                case "max":
+                    Label_CommandTitle.Text = "방 유저 카운트 알람(MAX)";
+                    Label_CommandKR.Text = "ㅡㅁㅌ";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "방의 유저 설정된 수 이상이되면 알립니다.\r\n\r\n !max off 명령어를 입력하면 중단합니다.";
+                    break;
+                case "min":
+                    Label_CommandTitle.Text = "방 유저 카운트 알람(MIN)";
+                    Label_CommandKR.Text = "ㅡㅑㅜ";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "방의 유저 설정된 수 이하가되면 알립니다.\r\n\r\n !min off 명령어를 입력하면 중단합니다.";
+                    break;
+                case "as":
+                    Label_CommandTitle.Text = "자동시작";
+                    Label_CommandKR.Text = "ㅁㄴ";
+                    Label_ParameterValue.Text = "없음";
+                    TB_CommandDescription.Text = "지정 이상의 인원이되면 10초 후 자동으로 시작합니다.\r\n\r\n !as off 로 하게되면 중단합니다.\r\n이미 10초 카운트다운을 하고있다면 중단이 불가능합니다.";
+                    break;
                 case "exit":
                     Label_CommandTitle.Text = "워크래프트 종료";
                     Label_CommandKR.Text = "종료";

@@ -20,7 +20,8 @@ using static Cirnix.Memory.GameDll;
 using static Cirnix.Memory.Message;
 using static Cirnix.Memory.States;
 using static Cirnix.Worker.Actions;
-
+using static Cirnix.Global.NativeMethods;
+using static Cirnix.Global.SoundManager;
 
 namespace Cirnix.Worker
 {
@@ -101,13 +102,16 @@ namespace Cirnix.Worker
             commandList.Register("kr", "키리맵핑", ToggleKeyRemapping);
             commandList.Register("rs", "ㄱㄴ", SearchRoomListRoom);
             commandList.Register("ms", "ㅡㄴ", SearchRoomListMap);
-            commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
+            //commandList.Register("test", "ㅅㄷㄴㅅ", LoadCodeSelect);
             commandList.Register("rework", "ㄱㄷ재가", Rework);
             commandList.Register("j", "ㅓ", RoomJoin);
             commandList.Register("c", "ㅊ", RoomCreate);
             commandList.Register("dbg", "윻", KeyDebug);
             commandList.Register("wa", "ㅈㅁ", BanlistCheck);
             commandList.Register("va", "ㅍㅁ", IpAddrMaching);
+            commandList.Register("max", "ㅡㅁㅌ", MaxRoom);
+            commandList.Register("min", "ㅡㅑㅜ", MinRoom);
+            commandList.Register("as", "ㅁㄴ", AutoStarter);
         }
     }
 
@@ -116,6 +120,9 @@ namespace Cirnix.Worker
         internal static List<string> args = new List<string>();
         private static string name = string.Empty;
         private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false;
+        private static bool State=false;
+        private static int Max;
+        private static int Min;
 
         internal static string GetFullArgs(bool isLower = false)
         {
@@ -1018,6 +1025,121 @@ namespace Cirnix.Worker
         internal static void IpAddrMaching()
         {
             BanList.IPAddrMaching();
+        }
+
+        internal async static void MaxRoom()
+        {
+            string arg = GetFullArgs();
+            State = true;
+            try
+            {
+                if (arg == "off")
+                {
+                    SendMsg(true, "알림설정을 취소합니다.");
+                    return;
+                }
+                Max = Convert.ToInt32(arg);
+                SendMsg(true, $"'{Max}'명 이상이 될때 알립니다.");
+                if (State)
+                {
+                    do
+                    {
+                        await Task.Delay(500);
+                    }
+                    while (Max > PlayerNumber);
+                    SendMsg(true, $"'{Max}'명 이상이 되었습니다.");
+                    Play();
+                    State = false;
+                    Max = 0;
+
+                }
+            }
+            catch
+            {
+                SendMsg(true, "알림설정을 실패하였습니다.");
+            }
+
+
+        }
+
+
+        internal async static void MinRoom()
+        {
+            string arg = GetFullArgs();
+            State = true;
+            try
+            {
+                if (arg == "off")
+                {
+                    SendMsg(true, "알림설정을 취소합니다.");
+                    return;
+                }
+                Min = Convert.ToInt32(arg);
+                SendMsg(true, $"'{Min}'명 이하가 될때 알립니다.");
+                if (State)
+                {
+                    do
+                    {
+                        await Task.Delay(500);
+                    }
+                    while (Min < PlayerNumber);
+                    SendMsg(true, $"'{Min}'명 이하가 되었습니다.");
+                    Play();
+                    State = false;
+                    Min = 0;
+
+                }
+            }
+            catch
+            {
+                SendMsg(true, "알림설정을 실패하였습니다.");
+            }
+
+
+        }
+
+        internal async static void AutoStarter()
+        {
+            string arg = GetFullArgs();
+            try
+            {
+                if (arg == "off")
+                {
+                    SendMsg(true," 자동 시작을 취소합니다.");
+                    return;
+                }
+                else
+                {
+                    Max = Convert.ToInt32(arg);
+                    SendMsg(true, $"'{Max}'명 입장시 10초후 시작합니다.");
+                    SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
+                    do
+                    {
+                        await Task.Delay(500);
+                    }
+                    while (Max > PlayerNumber);
+                    Play();
+                    for (int i = 10; i > 0; i--)
+                    {
+                        if (Max > PlayerNumber)
+                        {
+                            SendMsg(true, "지정된 인원보다 수가 적습니다. 시작을 취소합니다.");
+                            return;
+                        }
+                        SendMsg(true, $"{i}초후 게임을 시작합니다.");
+                        await Task.Delay(1000);
+                    }
+                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
+                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 83, 0);
+                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
+                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 83, 0);
+                }
+                Max = 0;
+            }
+            catch
+            {
+                SendMsg(true, "알림설정을 실패하였습니다.");
+            }
         }
     }
 }
