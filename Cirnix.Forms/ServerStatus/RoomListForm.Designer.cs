@@ -32,7 +32,6 @@
             this.Label_Title = new System.Windows.Forms.Label();
             this.RoomList = new System.Windows.Forms.ListBox();
             this.TB_ID = new System.Windows.Forms.TextBox();
-            this.TB_Name = new System.Windows.Forms.TextBox();
             this.Label_ID = new System.Windows.Forms.Label();
             this.Label_Flag = new System.Windows.Forms.Label();
             this.RTB_MapName = new System.Windows.Forms.RichTextBox();
@@ -88,6 +87,7 @@
             this.ServerStatus = new System.Windows.Forms.Timer(this.components);
             this.BTN_MapLog = new System.Windows.Forms.Button();
             this.BTN_RoomJoin = new System.Windows.Forms.Button();
+            this.RTB_Name = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.MapImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -128,19 +128,6 @@
             this.TB_ID.ReadOnly = true;
             this.TB_ID.Size = new System.Drawing.Size(30, 15);
             this.TB_ID.TabIndex = 3;
-            // 
-            // TB_Name
-            // 
-            this.TB_Name.BackColor = System.Drawing.Color.White;
-            this.TB_Name.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.TB_Name.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.TB_Name.Location = new System.Drawing.Point(196, 49);
-            this.TB_Name.Margin = new System.Windows.Forms.Padding(1);
-            this.TB_Name.Name = "TB_Name";
-            this.TB_Name.ReadOnly = true;
-            this.TB_Name.Size = new System.Drawing.Size(176, 15);
-            this.TB_Name.TabIndex = 4;
-            this.TB_Name.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Label_ID
             // 
@@ -793,11 +780,28 @@
             this.BTN_RoomJoin.UseVisualStyleBackColor = true;
             this.BTN_RoomJoin.Click += new System.EventHandler(this.BTN_RoomJoin_Click);
             // 
+            // TB_Name
+            // 
+            this.RTB_Name.BackColor = System.Drawing.Color.White;
+            this.RTB_Name.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.RTB_Name.DetectUrls = false;
+            this.RTB_Name.Font = new System.Drawing.Font("맑은 고딕", 8F);
+            this.RTB_Name.Location = new System.Drawing.Point(196, 49);
+            this.RTB_Name.Margin = new System.Windows.Forms.Padding(1);
+            this.RTB_Name.Multiline = false;
+            this.RTB_Name.Name = "TB_Name";
+            this.RTB_Name.ReadOnly = true;
+            this.RTB_Name.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.RTB_Name.Size = new System.Drawing.Size(176, 15);
+            this.RTB_Name.TabIndex = 58;
+            this.RTB_Name.Text = "";
+            // 
             // RoomListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(380, 477);
+            this.Controls.Add(this.RTB_Name);
             this.Controls.Add(this.BTN_RoomJoin);
             this.Controls.Add(this.BTN_MapLog);
             this.Controls.Add(this.BTN_ReserveRoom);
@@ -851,7 +855,6 @@
             this.Controls.Add(this.MapImage);
             this.Controls.Add(this.Label_Flag);
             this.Controls.Add(this.Label_ID);
-            this.Controls.Add(this.TB_Name);
             this.Controls.Add(this.TB_ID);
             this.Controls.Add(this.Label_Status);
             this.Controls.Add(this.RoomList);
@@ -877,7 +880,6 @@
         private System.Windows.Forms.Label Label_Title;
         private System.Windows.Forms.ListBox RoomList;
         private System.Windows.Forms.TextBox TB_ID;
-        private System.Windows.Forms.TextBox TB_Name;
         private System.Windows.Forms.Label Label_ID;
         private System.Windows.Forms.Label Label_Flag;
         private System.Windows.Forms.PictureBox MapImage;
@@ -933,6 +935,7 @@
         private System.Windows.Forms.Timer ServerStatus;
         private System.Windows.Forms.Button BTN_MapLog;
         private System.Windows.Forms.Button BTN_RoomJoin;
+        private System.Windows.Forms.RichTextBox RTB_Name;
     }
 }
 

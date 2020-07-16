@@ -159,7 +159,7 @@ namespace Cirnix.Forms.ServerStatus
             Label_Flag.Text =
             Label_MapExist.Text =
             TB_ID.Text =
-            TB_Name.Text =
+            RTB_Name.Text =
             RTB_MapName.Text =
             TB_RegDate.Text =
             TB_StartTime.Text =
@@ -338,7 +338,7 @@ namespace Cirnix.Forms.ServerStatus
                     break;
             }
             TB_ID.Text = Target.gid.ToString();
-            TB_Name.Text = Target.gname;
+            SetRTBText(ref RTB_Name, Target.gname, true, true, true);
             TB_RegDate.Text = ConvertAtTimeStamp(Target.regdate).ToString("yyyy-MM-dd HH:mm:ss");
             TB_StartTime.Text = Target.starttime != null ? ConvertAtTimeStamp(Convert.ToInt32(Target.starttime)).ToString("yyyy-MM-dd HH:mm:ss") : string.Empty;
             TB_Player0.Text = Target.player0 ?? string.Empty;
@@ -412,7 +412,7 @@ namespace Cirnix.Forms.ServerStatus
                         }
                         else
                         {
-                            image = Global.TgaReader.Load(thumbnail);
+                            image = TgaReader.Load(thumbnail);
                         }
                         JObject json = new JObject
                         {
@@ -435,7 +435,7 @@ namespace Cirnix.Forms.ServerStatus
         #endregion
         private void BTN_ChangeType_Click(object sender, EventArgs e)
         {
-            Label_Search.Text = ((IsMapSearch = !IsMapSearch) ? "맵 필터:" : "방 필터:");
+            Label_Search.Text = (IsMapSearch = !IsMapSearch) ? "맵 필터:" : "방 필터:";
             if (!string.IsNullOrEmpty(TB_Search.Text)) StatusChanged(sender, e);
         }
 
@@ -461,7 +461,7 @@ namespace Cirnix.Forms.ServerStatus
 
         private void BTN_RoomJoin_Click(object sender, EventArgs e)
         {
-            Join.RoomJoin(TB_Name.Text);
+            Join.RoomJoin(CurrentField.gname);
         }
 
         private void RoomListForm_Load(object sender, EventArgs e)
