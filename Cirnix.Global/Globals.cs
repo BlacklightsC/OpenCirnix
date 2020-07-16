@@ -190,7 +190,7 @@ namespace Cirnix.Global
                 for (int i = 0; i < 24; i++)
                 {
                     if (string.IsNullOrEmpty(Code[i])) break;
-                    if (Code[i][0] == '/')
+                    if (Code[i][0] == '/' || Code[i][0] == '!')
                     {
                         isBreak = false;
                         for (int j = i; j < 24; j++)
@@ -306,6 +306,7 @@ namespace Cirnix.Global
             if (Path.GetExtension(path).ToLower() != ".txt") return null;
             try
             {
+                await Task.Delay(1000);
                 return File.ReadAllLines(path);
             }
             catch
@@ -486,21 +487,6 @@ namespace Cirnix.Global
         public static string GetDirectorySafeName(string name)
         {
             return name.Replace('\\', ' ').Replace('/', ' ').Replace(':', ' ').Replace('*', ' ').Replace('?', ' ').Replace('\"', ' ').Replace('<', ' ').Replace('>', ' ').Replace('|', ' ');
-        }
-        /// <summary>
-        /// 한국어 받침 체크
-        /// </summary>
-        /// <param name="name">체크할 문자열</param>
-        /// <param name="firstValue">예: 을, 이, 은</param>
-        /// <param name="secondValue">예: 를, 가, 는</param>
-        /// <returns></returns>
-        public static string IsKoreanBlock(string name, string firstValue, string secondValue, bool isNameAdd = true)
-        {
-            if (name.Length <= 0) return $"{(isNameAdd ? "''" : string.Empty)}{firstValue}";
-            char lastName = name[name.Length - 1];
-            if (lastName < 0xAC00 || lastName > 0xD7A3) return $"{(isNameAdd ? $"'{name}'" : string.Empty)}({firstValue}){secondValue}";
-            string selectedValue = (lastName - 0xAC00) % 28 > 0 ? firstValue : secondValue;
-            return $"{(isNameAdd ? $"'{name}'" : string.Empty)}{selectedValue}";
         }
 
         public static bool IsCheatMap(string path)
