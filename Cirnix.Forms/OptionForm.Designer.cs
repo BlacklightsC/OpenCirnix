@@ -30,7 +30,6 @@ namespace Cirnix.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionForm));
             this.MainTabControl = new MetroFramework.Controls.MetroTabControl();
             this.War3SettingTab = new MetroFramework.Controls.MetroTabPage();
@@ -225,7 +224,6 @@ namespace Cirnix.Forms
             this.Toggle_CommandHide = new MetroFramework.Controls.MetroToggle();
             this.Label_Title = new System.Windows.Forms.Label();
             this.CommandHideText = new System.Windows.Forms.Label();
-            this.metroContextMenu1 = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.MainTabControl.SuspendLayout();
             this.War3SettingTab.SuspendLayout();
             this.GB_MixFile.SuspendLayout();
@@ -502,7 +500,7 @@ namespace Cirnix.Forms
             this.Toggle_CheatMapCheck.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_CheatMapCheck.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_CheatMapCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_CheatMapCheck.Location = new System.Drawing.Point(149, 213);
+            this.Toggle_CheatMapCheck.Location = new System.Drawing.Point(147, 213);
             this.Toggle_CheatMapCheck.Name = "Toggle_CheatMapCheck";
             this.Toggle_CheatMapCheck.Size = new System.Drawing.Size(70, 15);
             this.Toggle_CheatMapCheck.TabIndex = 70;
@@ -540,10 +538,10 @@ namespace Cirnix.Forms
             this.Label_War3FixClipboard.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_War3FixClipboard.Location = new System.Drawing.Point(0, 195);
             this.Label_War3FixClipboard.Name = "Label_War3FixClipboard";
-            this.Label_War3FixClipboard.Size = new System.Drawing.Size(139, 15);
+            this.Label_War3FixClipboard.Size = new System.Drawing.Size(148, 15);
             this.Label_War3FixClipboard.TabIndex = 67;
             this.Label_War3FixClipboard.Text = "워크 클립보드 오류 수정";
-            this.Label_War3FixClipboard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_War3FixClipboard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Label_HpCommandAuto
             // 
@@ -551,10 +549,10 @@ namespace Cirnix.Forms
             this.Label_HpCommandAuto.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_HpCommandAuto.Location = new System.Drawing.Point(0, 66);
             this.Label_HpCommandAuto.Name = "Label_HpCommandAuto";
-            this.Label_HpCommandAuto.Size = new System.Drawing.Size(95, 15);
+            this.Label_HpCommandAuto.Size = new System.Drawing.Size(151, 15);
             this.Label_HpCommandAuto.TabIndex = 62;
             this.Label_HpCommandAuto.Text = "!Hp 명령어 자동";
-            this.Label_HpCommandAuto.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_HpCommandAuto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GB_ScreenShot
             // 
@@ -567,7 +565,7 @@ namespace Cirnix.Forms
             this.GB_ScreenShot.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.GB_ScreenShot.Location = new System.Drawing.Point(0, 140);
             this.GB_ScreenShot.Name = "GB_ScreenShot";
-            this.GB_ScreenShot.Size = new System.Drawing.Size(196, 52);
+            this.GB_ScreenShot.Size = new System.Drawing.Size(219, 52);
             this.GB_ScreenShot.TabIndex = 54;
             this.GB_ScreenShot.TabStop = false;
             this.GB_ScreenShot.Text = "스크린샷";
@@ -594,7 +592,7 @@ namespace Cirnix.Forms
             this.Toggle_AutoConvert.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_AutoConvert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_AutoConvert.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_AutoConvert.Location = new System.Drawing.Point(122, 14);
+            this.Toggle_AutoConvert.Location = new System.Drawing.Point(147, 14);
             this.Toggle_AutoConvert.Name = "Toggle_AutoConvert";
             this.Toggle_AutoConvert.Size = new System.Drawing.Size(70, 15);
             this.Toggle_AutoConvert.TabIndex = 34;
@@ -607,7 +605,7 @@ namespace Cirnix.Forms
             this.Toggle_RemoveOriginal.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_RemoveOriginal.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_RemoveOriginal.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_RemoveOriginal.Location = new System.Drawing.Point(122, 32);
+            this.Toggle_RemoveOriginal.Location = new System.Drawing.Point(147, 32);
             this.Toggle_RemoveOriginal.Name = "Toggle_RemoveOriginal";
             this.Toggle_RemoveOriginal.Size = new System.Drawing.Size(70, 15);
             this.Toggle_RemoveOriginal.TabIndex = 35;
@@ -621,10 +619,10 @@ namespace Cirnix.Forms
             this.Label_RemoveOriginal.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_RemoveOriginal.Location = new System.Drawing.Point(65, 32);
             this.Label_RemoveOriginal.Name = "Label_RemoveOriginal";
-            this.Label_RemoveOriginal.Size = new System.Drawing.Size(59, 15);
+            this.Label_RemoveOriginal.Size = new System.Drawing.Size(83, 15);
             this.Label_RemoveOriginal.TabIndex = 66;
             this.Label_RemoveOriginal.Text = "원본 삭제";
-            this.Label_RemoveOriginal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_RemoveOriginal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Label_AutoConvert
             // 
@@ -632,10 +630,10 @@ namespace Cirnix.Forms
             this.Label_AutoConvert.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_AutoConvert.Location = new System.Drawing.Point(65, 14);
             this.Label_AutoConvert.Name = "Label_AutoConvert";
-            this.Label_AutoConvert.Size = new System.Drawing.Size(59, 15);
+            this.Label_AutoConvert.Size = new System.Drawing.Size(83, 15);
             this.Label_AutoConvert.TabIndex = 65;
             this.Label_AutoConvert.Text = "자동 변환";
-            this.Label_AutoConvert.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_AutoConvert.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GB_Host
             // 
@@ -648,7 +646,7 @@ namespace Cirnix.Forms
             this.GB_Host.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.GB_Host.Location = new System.Drawing.Point(0, 3);
             this.GB_Host.Name = "GB_Host";
-            this.GB_Host.Size = new System.Drawing.Size(160, 60);
+            this.GB_Host.Size = new System.Drawing.Size(219, 60);
             this.GB_Host.TabIndex = 52;
             this.GB_Host.TabStop = false;
             this.GB_Host.Text = "호스트";
@@ -656,7 +654,7 @@ namespace Cirnix.Forms
             // BTN_HostApply
             // 
             this.BTN_HostApply.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.BTN_HostApply.Location = new System.Drawing.Point(121, 10);
+            this.BTN_HostApply.Location = new System.Drawing.Point(180, 10);
             this.BTN_HostApply.Margin = new System.Windows.Forms.Padding(1);
             this.BTN_HostApply.Name = "BTN_HostApply";
             this.BTN_HostApply.Size = new System.Drawing.Size(37, 47);
@@ -669,7 +667,7 @@ namespace Cirnix.Forms
             // 
             this.Num_GameDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Num_GameDelay.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.Num_GameDelay.Location = new System.Drawing.Point(83, 11);
+            this.Num_GameDelay.Location = new System.Drawing.Point(142, 11);
             this.Num_GameDelay.Maximum = new decimal(new int[] {
             550,
             0,
@@ -684,7 +682,7 @@ namespace Cirnix.Forms
             // 
             this.Num_GameStartDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Num_GameStartDelay.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.Num_GameStartDelay.Location = new System.Drawing.Point(83, 34);
+            this.Num_GameStartDelay.Location = new System.Drawing.Point(142, 34);
             this.Num_GameStartDelay.Maximum = new decimal(new int[] {
             6,
             0,
@@ -701,10 +699,10 @@ namespace Cirnix.Forms
             this.Label_GameDelay.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_GameDelay.Location = new System.Drawing.Point(1, 11);
             this.Label_GameDelay.Name = "Label_GameDelay";
-            this.Label_GameDelay.Size = new System.Drawing.Size(83, 22);
+            this.Label_GameDelay.Size = new System.Drawing.Size(140, 22);
             this.Label_GameDelay.TabIndex = 59;
             this.Label_GameDelay.Text = "반응 지연시간";
-            this.Label_GameDelay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_GameDelay.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Label_GameStartDelay
             // 
@@ -712,17 +710,17 @@ namespace Cirnix.Forms
             this.Label_GameStartDelay.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_GameStartDelay.Location = new System.Drawing.Point(1, 34);
             this.Label_GameStartDelay.Name = "Label_GameStartDelay";
-            this.Label_GameStartDelay.Size = new System.Drawing.Size(83, 22);
+            this.Label_GameStartDelay.Size = new System.Drawing.Size(140, 22);
             this.Label_GameStartDelay.TabIndex = 61;
             this.Label_GameStartDelay.Text = "시작 대기시간";
-            this.Label_GameStartDelay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_GameStartDelay.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Toggle_War3FixClipboard
             // 
             this.Toggle_War3FixClipboard.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_War3FixClipboard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_War3FixClipboard.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_War3FixClipboard.Location = new System.Drawing.Point(137, 195);
+            this.Toggle_War3FixClipboard.Location = new System.Drawing.Point(147, 195);
             this.Toggle_War3FixClipboard.Name = "Toggle_War3FixClipboard";
             this.Toggle_War3FixClipboard.Size = new System.Drawing.Size(70, 15);
             this.Toggle_War3FixClipboard.TabIndex = 23;
@@ -735,7 +733,7 @@ namespace Cirnix.Forms
             this.Toggle_HpCommandAuto.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_HpCommandAuto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_HpCommandAuto.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_HpCommandAuto.Location = new System.Drawing.Point(93, 66);
+            this.Toggle_HpCommandAuto.Location = new System.Drawing.Point(147, 66);
             this.Toggle_HpCommandAuto.Name = "Toggle_HpCommandAuto";
             this.Toggle_HpCommandAuto.Size = new System.Drawing.Size(70, 15);
             this.Toggle_HpCommandAuto.TabIndex = 27;
@@ -754,7 +752,7 @@ namespace Cirnix.Forms
             this.GroupBox_MemoryOptimization.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.GroupBox_MemoryOptimization.Location = new System.Drawing.Point(0, 84);
             this.GroupBox_MemoryOptimization.Name = "GroupBox_MemoryOptimization";
-            this.GroupBox_MemoryOptimization.Size = new System.Drawing.Size(185, 53);
+            this.GroupBox_MemoryOptimization.Size = new System.Drawing.Size(219, 53);
             this.GroupBox_MemoryOptimization.TabIndex = 51;
             this.GroupBox_MemoryOptimization.TabStop = false;
             this.GroupBox_MemoryOptimization.Text = "메모리 최적화";
@@ -778,7 +776,7 @@ namespace Cirnix.Forms
             this.Toggle_MemoryOptimizationDelay.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_MemoryOptimizationDelay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_MemoryOptimizationDelay.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_MemoryOptimizationDelay.Location = new System.Drawing.Point(111, 15);
+            this.Toggle_MemoryOptimizationDelay.Location = new System.Drawing.Point(147, 15);
             this.Toggle_MemoryOptimizationDelay.Name = "Toggle_MemoryOptimizationDelay";
             this.Toggle_MemoryOptimizationDelay.Size = new System.Drawing.Size(70, 15);
             this.Toggle_MemoryOptimizationDelay.TabIndex = 33;
@@ -791,7 +789,7 @@ namespace Cirnix.Forms
             this.Toggle_OutGameAutoMemoryOptimization.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_OutGameAutoMemoryOptimization.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_OutGameAutoMemoryOptimization.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_OutGameAutoMemoryOptimization.Location = new System.Drawing.Point(111, 33);
+            this.Toggle_OutGameAutoMemoryOptimization.Location = new System.Drawing.Point(147, 33);
             this.Toggle_OutGameAutoMemoryOptimization.Name = "Toggle_OutGameAutoMemoryOptimization";
             this.Toggle_OutGameAutoMemoryOptimization.Size = new System.Drawing.Size(70, 15);
             this.Toggle_OutGameAutoMemoryOptimization.TabIndex = 44;
@@ -805,10 +803,10 @@ namespace Cirnix.Forms
             this.Label_MemoryOptimizationDelay.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_MemoryOptimizationDelay.Location = new System.Drawing.Point(26, 15);
             this.Label_MemoryOptimizationDelay.Name = "Label_MemoryOptimizationDelay";
-            this.Label_MemoryOptimizationDelay.Size = new System.Drawing.Size(87, 15);
+            this.Label_MemoryOptimizationDelay.Size = new System.Drawing.Size(122, 15);
             this.Label_MemoryOptimizationDelay.TabIndex = 63;
             this.Label_MemoryOptimizationDelay.Text = "분 마다 최적화";
-            this.Label_MemoryOptimizationDelay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_MemoryOptimizationDelay.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Label_OutGameAutoMemoryOptimization
             // 
@@ -816,10 +814,10 @@ namespace Cirnix.Forms
             this.Label_OutGameAutoMemoryOptimization.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_OutGameAutoMemoryOptimization.Location = new System.Drawing.Point(2, 33);
             this.Label_OutGameAutoMemoryOptimization.Name = "Label_OutGameAutoMemoryOptimization";
-            this.Label_OutGameAutoMemoryOptimization.Size = new System.Drawing.Size(111, 15);
+            this.Label_OutGameAutoMemoryOptimization.Size = new System.Drawing.Size(146, 15);
             this.Label_OutGameAutoMemoryOptimization.TabIndex = 64;
             this.Label_OutGameAutoMemoryOptimization.Text = "게임 끝난후 최적화";
-            this.Label_OutGameAutoMemoryOptimization.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_OutGameAutoMemoryOptimization.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GB_Camera
             // 
@@ -847,7 +845,7 @@ namespace Cirnix.Forms
             this.BTN_CameraPresetJurrasic.Name = "BTN_CameraPresetJurrasic";
             this.BTN_CameraPresetJurrasic.Size = new System.Drawing.Size(48, 22);
             this.BTN_CameraPresetJurrasic.TabIndex = 72;
-            this.BTN_CameraPresetJurrasic.Text = "쥬라기";
+            this.BTN_CameraPresetJurrasic.Text = "프리셋";
             this.BTN_CameraPresetJurrasic.UseVisualStyleBackColor = true;
             this.BTN_CameraPresetJurrasic.Click += new System.EventHandler(this.BTN_CameraPresetJurrasic_Click);
             // 
@@ -2332,9 +2330,9 @@ namespace Cirnix.Forms
             this.BanList.HorizontalScrollbarBarColor = true;
             this.BanList.HorizontalScrollbarHighlightOnWheel = false;
             this.BanList.HorizontalScrollbarSize = 10;
-            this.BanList.Location = new System.Drawing.Point(4, 38);
+            this.BanList.Location = new System.Drawing.Point(4, 36);
             this.BanList.Name = "BanList";
-            this.BanList.Size = new System.Drawing.Size(632, 233);
+            this.BanList.Size = new System.Drawing.Size(632, 235);
             this.BanList.TabIndex = 5;
             this.BanList.Text = "밴리스트";
             this.BanList.VerticalScrollbarBarColor = true;
@@ -2471,10 +2469,10 @@ namespace Cirnix.Forms
             // BTN_HotKeyDebug
             // 
             this.BTN_HotKeyDebug.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.BTN_HotKeyDebug.Location = new System.Drawing.Point(524, 92);
+            this.BTN_HotKeyDebug.Location = new System.Drawing.Point(512, 92);
             this.BTN_HotKeyDebug.Margin = new System.Windows.Forms.Padding(1);
             this.BTN_HotKeyDebug.Name = "BTN_HotKeyDebug";
-            this.BTN_HotKeyDebug.Size = new System.Drawing.Size(100, 23);
+            this.BTN_HotKeyDebug.Size = new System.Drawing.Size(110, 23);
             this.BTN_HotKeyDebug.TabIndex = 93;
             this.BTN_HotKeyDebug.Text = "단축키 디버깅";
             this.BTN_HotKeyDebug.UseVisualStyleBackColor = true;
@@ -2488,9 +2486,9 @@ namespace Cirnix.Forms
             this.GB_ChatFrequency.Controls.Add(this.Label_ChatFrequency);
             this.GB_ChatFrequency.Controls.Add(this.Label_AutoFrequency);
             this.GB_ChatFrequency.Controls.Add(this.Toggle_AutoFrequency);
-            this.GB_ChatFrequency.Location = new System.Drawing.Point(519, 3);
+            this.GB_ChatFrequency.Location = new System.Drawing.Point(507, 3);
             this.GB_ChatFrequency.Name = "GB_ChatFrequency";
-            this.GB_ChatFrequency.Size = new System.Drawing.Size(110, 85);
+            this.GB_ChatFrequency.Size = new System.Drawing.Size(120, 85);
             this.GB_ChatFrequency.TabIndex = 13;
             this.GB_ChatFrequency.TabStop = false;
             this.GB_ChatFrequency.Text = "채팅 주파수";
@@ -2501,7 +2499,7 @@ namespace Cirnix.Forms
             this.BTN_DetectFrequency.Location = new System.Drawing.Point(5, 57);
             this.BTN_DetectFrequency.Margin = new System.Windows.Forms.Padding(1);
             this.BTN_DetectFrequency.Name = "BTN_DetectFrequency";
-            this.BTN_DetectFrequency.Size = new System.Drawing.Size(100, 23);
+            this.BTN_DetectFrequency.Size = new System.Drawing.Size(110, 23);
             this.BTN_DetectFrequency.TabIndex = 92;
             this.BTN_DetectFrequency.Text = "채팅 주파수 검색";
             this.BTN_DetectFrequency.UseVisualStyleBackColor = true;
@@ -2511,7 +2509,7 @@ namespace Cirnix.Forms
             // 
             this.Number_ChatFrequency.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Number_ChatFrequency.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.Number_ChatFrequency.Location = new System.Drawing.Point(65, 33);
+            this.Number_ChatFrequency.Location = new System.Drawing.Point(75, 33);
             this.Number_ChatFrequency.Maximum = new decimal(new int[] {
             20,
             0,
@@ -2539,7 +2537,7 @@ namespace Cirnix.Forms
             this.Label_ChatFrequency.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_ChatFrequency.Location = new System.Drawing.Point(4, 33);
             this.Label_ChatFrequency.Name = "Label_ChatFrequency";
-            this.Label_ChatFrequency.Size = new System.Drawing.Size(59, 22);
+            this.Label_ChatFrequency.Size = new System.Drawing.Size(69, 22);
             this.Label_ChatFrequency.TabIndex = 66;
             this.Label_ChatFrequency.Text = "채널 번호";
             this.Label_ChatFrequency.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2550,7 +2548,7 @@ namespace Cirnix.Forms
             this.Label_AutoFrequency.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Label_AutoFrequency.Location = new System.Drawing.Point(4, 15);
             this.Label_AutoFrequency.Name = "Label_AutoFrequency";
-            this.Label_AutoFrequency.Size = new System.Drawing.Size(31, 15);
+            this.Label_AutoFrequency.Size = new System.Drawing.Size(41, 15);
             this.Label_AutoFrequency.TabIndex = 64;
             this.Label_AutoFrequency.Text = "자동";
             this.Label_AutoFrequency.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2560,7 +2558,7 @@ namespace Cirnix.Forms
             this.Toggle_AutoFrequency.BackColor = System.Drawing.SystemColors.ControlText;
             this.Toggle_AutoFrequency.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Toggle_AutoFrequency.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Toggle_AutoFrequency.Location = new System.Drawing.Point(34, 15);
+            this.Toggle_AutoFrequency.Location = new System.Drawing.Point(44, 15);
             this.Toggle_AutoFrequency.Name = "Toggle_AutoFrequency";
             this.Toggle_AutoFrequency.Size = new System.Drawing.Size(70, 15);
             this.Toggle_AutoFrequency.TabIndex = 63;
@@ -2583,12 +2581,12 @@ namespace Cirnix.Forms
             // 
             this.Label_ParameterInfo.BackColor = System.Drawing.Color.Transparent;
             this.Label_ParameterInfo.Font = new System.Drawing.Font("맑은 고딕", 11F);
-            this.Label_ParameterInfo.Location = new System.Drawing.Point(156, 65);
+            this.Label_ParameterInfo.Location = new System.Drawing.Point(141, 65);
             this.Label_ParameterInfo.Name = "Label_ParameterInfo";
-            this.Label_ParameterInfo.Size = new System.Drawing.Size(100, 20);
+            this.Label_ParameterInfo.Size = new System.Drawing.Size(115, 20);
             this.Label_ParameterInfo.TabIndex = 11;
             this.Label_ParameterInfo.Text = "매개 변수 :";
-            this.Label_ParameterInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_ParameterInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Label_ParameterValue
             // 
@@ -2614,12 +2612,12 @@ namespace Cirnix.Forms
             // 
             this.Label_CommandInfo.BackColor = System.Drawing.Color.Transparent;
             this.Label_CommandInfo.Font = new System.Drawing.Font("맑은 고딕", 11F);
-            this.Label_CommandInfo.Location = new System.Drawing.Point(156, 40);
+            this.Label_CommandInfo.Location = new System.Drawing.Point(141, 40);
             this.Label_CommandInfo.Name = "Label_CommandInfo";
-            this.Label_CommandInfo.Size = new System.Drawing.Size(100, 20);
+            this.Label_CommandInfo.Size = new System.Drawing.Size(115, 20);
             this.Label_CommandInfo.TabIndex = 7;
             this.Label_CommandInfo.Text = "입력 명령어 :";
-            this.Label_CommandInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_CommandInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Label_CommandEN
             // 
@@ -2645,12 +2643,12 @@ namespace Cirnix.Forms
             // 
             this.Label_CommandListBox.BackColor = System.Drawing.Color.Transparent;
             this.Label_CommandListBox.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.Label_CommandListBox.Location = new System.Drawing.Point(6, 3);
+            this.Label_CommandListBox.Location = new System.Drawing.Point(11, 3);
             this.Label_CommandListBox.Name = "Label_CommandListBox";
-            this.Label_CommandListBox.Size = new System.Drawing.Size(50, 15);
+            this.Label_CommandListBox.Size = new System.Drawing.Size(67, 15);
             this.Label_CommandListBox.TabIndex = 3;
             this.Label_CommandListBox.Text = "리스트";
-            this.Label_CommandListBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Label_CommandListBox.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // CommandListBox
             // 
@@ -2863,7 +2861,19 @@ namespace Cirnix.Forms
             this.TB_Help.ReadOnly = true;
             this.TB_Help.Size = new System.Drawing.Size(530, 232);
             this.TB_Help.TabIndex = 3;
-            this.TB_Help.Text = resources.GetString("TB_Help.Text");
+            this.TB_Help.Text = @"- 개발 기간: 2017-07-16 ~ ...
+
+해당 프로그램은 Cirnix의 오픈소스 프로젝트인 OpenCirnix입니다.
+https://github.com/BlacklightsC/OpenCirnix
+
+
+---------- 후원 안내 ----------
+
+농협중앙회 302-0627-1751-31 박성현
+카카오뱅크 3333-09-4274361 박성현
+투네이션: https://toon.at/donate/637131255322131449
+페이팔(해외): https://www.paypal.me/BlacklightsC
+Patreon(해외 정기후원): https://www.patreon.com/cirnix";
             // 
             // Toggle_CommandHide
             // 
@@ -2892,17 +2902,12 @@ namespace Cirnix.Forms
             // CommandHideText
             // 
             this.CommandHideText.Font = new System.Drawing.Font("맑은 고딕", 10F);
-            this.CommandHideText.Location = new System.Drawing.Point(469, 40);
+            this.CommandHideText.Location = new System.Drawing.Point(425, 40);
             this.CommandHideText.Name = "CommandHideText";
-            this.CommandHideText.Size = new System.Drawing.Size(98, 19);
+            this.CommandHideText.Size = new System.Drawing.Size(142, 19);
             this.CommandHideText.TabIndex = 45;
             this.CommandHideText.Text = "명령어 숨기기";
-            this.CommandHideText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // metroContextMenu1
-            // 
-            this.metroContextMenu1.Name = "metroContextMenu1";
-            this.metroContextMenu1.Size = new System.Drawing.Size(61, 4);
+            this.CommandHideText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // OptionForm
             // 
@@ -3163,7 +3168,6 @@ namespace Cirnix.Forms
         private TextBox IPTextBox;
         private TextBox IdTextBox;
         private Button button1;
-        private MetroFramework.Controls.MetroContextMenu metroContextMenu1;
         private Button button2;
     }
 }

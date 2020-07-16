@@ -1,20 +1,17 @@
 ﻿using Cirnix.Global;
 using Cirnix.KeyHook;
 using Cirnix.Memory;
-using System.Collections.Generic;
 using ModernFolderBrowserDialog;
-
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-
-
 using static Cirnix.Forms.NativeMethods;
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.Hotkey;
+using static Cirnix.Global.Locale;
 using static Cirnix.Worker.MainWorker;
 
 namespace Cirnix.Forms
@@ -162,8 +159,8 @@ namespace Cirnix.Forms
             #endregion
             #region [    Auto Mouse Showing Status Initialize    ]
             Toggle_AutoMouse.Checked = autoMouse.Enabled;
-            BTN_AutoLeftMouseOn.Text = autoMouse.LeftStartKey == 0 ? "시작" : "해제";
-            BTN_AutoRightMouseOn.Text = autoMouse.RightStartKey == 0 ? "시작" : "해제";
+            BTN_AutoLeftMouseOn.Text = autoMouse.LeftStartKey == 0 ? "좌클" : "해제";
+            BTN_AutoRightMouseOn.Text = autoMouse.RightStartKey == 0 ? "우클" : "해제";
             BTN_AutoMouseOff.Text = autoMouse.EndKey == 0 ? "종료" : "해제";
             Label_AutoLeftMouseOn.Text = GetHotkeyString(autoMouse.LeftStartKey);
             Label_AutoRightMouseOn.Text = GetHotkeyString(autoMouse.RightStartKey);
@@ -1819,10 +1816,7 @@ namespace Cirnix.Forms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (banlistview.SelectedItems.Count <= 0)
-            {
-                return;
-            }
+            if (banlistview.SelectedItems.Count <= 0) return;
             this.DelSave((BanlistModel)this.banlistview.SelectedItems[0].Tag);
         }
 

@@ -117,22 +117,5 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TB_Help.Text" xml:space="preserve">
-    <value> - 개발 기간: 2017-07-16 ~ ...
 
-해당 프로그램은 Cirnix의 오픈소스 프로젝트인 OpenCirnix입니다.
-https://github.com/BlacklightsC/OpenCirnix
-
-
----------- 후원 안내 ----------
-
-농협중앙회 302-0627-1751-31 박성현
-카카오뱅크 3333-09-4274361 박성현
-투네이션: https://toon.at/donate/637131255322131449
-페이팔(해외): https://www.paypal.me/BlacklightsC
-Patreon(해외 정기후원): https://www.patreon.com/cirnix</value>
-  </data>
-  <metadata name="metroContextMenu1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
 </root>
