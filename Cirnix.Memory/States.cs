@@ -59,6 +59,8 @@ namespace Cirnix.Memory
 
         public static int PlayerNumber => GetOsTcpOffset() ? BitConverter.ToInt32(Bring(OsTcpOffset + 0x33C, 4), 0) : 0;
 
+        public static int PlayerCount => GetOsTcpOffset() ? BitConverter.ToInt32(Bring(OsTcpOffset + 0x340, 4), 0) : 0;
+
         public static bool IsHostPlayer => GetOsTcpOffset() && BitConverter.ToInt32(Bring(OsTcpOffset + 0x210, 4), 0) == 2;
     }
 }
