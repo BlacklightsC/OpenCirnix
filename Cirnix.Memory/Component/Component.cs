@@ -147,6 +147,7 @@ namespace Cirnix.Memory
         {
             public uint ID => (uint)(_Process?.Id ?? 0);
             public IntPtr BaseAddress => _Process?.MainModule.BaseAddress ?? IntPtr.Zero;
+            public IntPtr MainWindowHandle => _Process?.MainWindowHandle ?? IntPtr.Zero;
             public IntPtr Handle { get; private set; }
             private Process _Process;
             public Process Process {

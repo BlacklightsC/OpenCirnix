@@ -14,14 +14,14 @@ namespace Cirnix.Memory
         public static bool ForegroundWar3()
         {
             if (Warcraft3Info.Process == null) return false;
-            return Warcraft3Info.Process.MainWindowHandle == GetForegroundWindow();
+            return Warcraft3Info.MainWindowHandle == GetForegroundWindow();
         }
 
         public static RECT GetWar3Rect()
         {
             RECT lpRect = new RECT();
             if (Warcraft3Info.Process != null)
-                GetWindowRect(Warcraft3Info.Process.MainWindowHandle, out lpRect);
+                GetWindowRect(Warcraft3Info.MainWindowHandle, out lpRect);
             else
                 lpRect.Left = lpRect.Top = lpRect.Right = lpRect.Bottom = 0;
             return lpRect;

@@ -40,13 +40,13 @@ namespace Cirnix.Memory
                 byte[] buffer = new byte[0x100];
                 if (Settings.IsAutoFrequency)
                     for (int i = 0; i < 20; i++)
-                        if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x86 + (0x110 * i), buffer, 2, out _))
+                        if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x86 + 0x110 * i, buffer, 2, out _))
                         {
                             if (!CompareArrays(MessageDialogPattern, buffer, 2)) continue;
-                            if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + (0x110 * i), buffer, 0x100, out _))
+                            if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + 0x110 * i, buffer, 0x100, out _))
                                 return ConvertToString(buffer);
                         }
-                else if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), buffer, 0x100, out _))
+                else if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + 0x110 * Settings.ChatFrequency, buffer, 0x100, out _))
                     return ConvertToString(buffer);
             }
             CEditBoxOffset = IntPtr.Zero;
@@ -114,7 +114,7 @@ namespace Cirnix.Memory
 
         public static void SetEmpty()
         {
-            DirectPatch(Settings.IsAutoFrequency ? MessageOffset : (CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency)), 0);
+            DirectPatch(Settings.IsAutoFrequency ? MessageOffset : (CEditBoxOffset + 0x88 + 0x110 * Settings.ChatFrequency), 0);
         }
 
         public static void CheckErrorChat()
@@ -169,12 +169,12 @@ namespace Cirnix.Memory
             if (IsPush)
             {
                 if (Settings.IsAutoFrequency) ReadProcessMemory(Warcraft3Info.Handle, MessageOffset, Stack, 0x100, out _);
-                else ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), Stack, 0x100, out _);
+                else ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + 0x110 * Settings.ChatFrequency, Stack, 0x100, out _);
             }
             else
             {
                 if (Settings.IsAutoFrequency) WriteProcessMemory(Warcraft3Info.Handle, MessageOffset, Stack, 0x100, out _);
-                else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), Stack, 0x100, out _);
+                else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + 0x110 * Settings.ChatFrequency, Stack, 0x100, out _);
                 for (int i = 0; i < 0x100; i++) Stack[i] = 0;
             }
         }
@@ -183,18 +183,18 @@ namespace Cirnix.Memory
         {
             if (!States.IsChatBoxOpen)
             {
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 13, 0);
                 if (TryHide) Thread.Sleep(50);
             }
             if (TryHide) MessageHide();
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 13, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 13, 0);
             Thread.Sleep(50);
             if (States.IsChatBoxOpen)
             {
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 13, 0);
             }
         }
 
@@ -223,7 +223,7 @@ namespace Cirnix.Memory
             }
 
             if (Settings.IsAutoFrequency) WriteProcessMemory(Warcraft3Info.Handle, MessageOffset, bytes, bytes.Length + 1, out _);
-            else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * Settings.ChatFrequency), bytes, bytes.Length + 1, out _);
+            else WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + 0x110 * Settings.ChatFrequency, bytes, bytes.Length + 1, out _);
             if (bytes[0] != 0) ApplyChat(IsHide && Settings.IsCommandHide);
         }
 
@@ -244,14 +244,14 @@ namespace Cirnix.Memory
             {
                 if (delay > 0) Thread.Sleep(delay);
                 if (!string.IsNullOrEmpty(arg))
-                    MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg, IsHide);
+                    MessageCut((UseTitle ? $"\x1{Theme.MsgTitle} {Theme.MsgColor}" : string.Empty) + arg, IsHide);
             }
             return true;
         }
         public static bool SendInstantMsg(bool UseTitle, string arg, bool IsHide = true)
         {
             if (Warcraft3Info.Process == null || string.IsNullOrEmpty(arg)) return false;
-            MessageCut((UseTitle ? $"{Theme.MsgTitle} " : string.Empty) + arg, IsHide);
+            MessageCut((UseTitle ? $"\x1{Theme.MsgTitle} {Theme.MsgColor}" : string.Empty) + arg, IsHide);
             return true;
         }
     }

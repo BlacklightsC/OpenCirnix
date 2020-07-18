@@ -90,10 +90,10 @@ namespace Cirnix.Memory
             //keybd_event(0x22, 0, 2, 0x21);
             #endregion
             if (!Message.GetSelectedReceiveStatus()) return;
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 27, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 27, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 46, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 46, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 27, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 27, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 46, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 46, 0);
         }
         public static float CameraDistance {
             get {

@@ -12,18 +12,18 @@ namespace Cirnix.Memory
         public static async void RoomJoin(string roomname)
         {
             if (roomname.Length == 0) return;
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 71, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 71, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 71, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 71, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
             await Task.Delay(3000);
 
             if (GetOffset())
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
                 WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x6E8, buffer, buffer.Length + 1, out _);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 13, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 13, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 13, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 13, 0);
             }
         }
 
@@ -31,15 +31,15 @@ namespace Cirnix.Memory
         {
             if (roomname.Length == 0) return;
             
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 71, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 71, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 71, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 71, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
             await Task.Delay(3000);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 67, 0);
-            PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 67, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 67, 0);
+            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
             await Task.Delay(1000);
 
             if (GetOffset())
@@ -47,10 +47,10 @@ namespace Cirnix.Memory
                 byte[] buffer = Encoding.UTF8.GetBytes(roomname.Trim());
                 WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x6E8, buffer, buffer.Length + 1, out _);
                 await Task.Delay(3000);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 67, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 67, 0);
-                PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 67, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 67, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
             }
         }
     }
