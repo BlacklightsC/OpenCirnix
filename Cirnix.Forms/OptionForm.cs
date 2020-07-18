@@ -1,13 +1,17 @@
-﻿using Cirnix.Global;
-using Cirnix.KeyHook;
-using Cirnix.Memory;
-using ModernFolderBrowserDialog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using Cirnix.Global;
+using Cirnix.KeyHook;
+using Cirnix.Memory;
+using Cirnix.Worker;
+
+using ModernFolderBrowserDialog;
+
 using static Cirnix.Forms.NativeMethods;
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.Hotkey;
@@ -158,15 +162,15 @@ namespace Cirnix.Forms
             CurrentChatIndex = 0;
             #endregion
             #region [    Auto Mouse Showing Status Initialize    ]
-            Toggle_AutoMouse.Checked = autoMouse.Enabled;
-            BTN_AutoLeftMouseOn.Text = autoMouse.LeftStartKey == 0 ? "좌클" : "해제";
-            BTN_AutoRightMouseOn.Text = autoMouse.RightStartKey == 0 ? "우클" : "해제";
-            BTN_AutoMouseOff.Text = autoMouse.EndKey == 0 ? "종료" : "해제";
-            Label_AutoLeftMouseOn.Text = GetHotkeyString(autoMouse.LeftStartKey);
-            Label_AutoRightMouseOn.Text = GetHotkeyString(autoMouse.RightStartKey);
-            Label_AutoMouseOff.Text = GetHotkeyString(autoMouse.EndKey);
-            Label_AutoMouseDelay.Text = $"{autoMouse.interval} ms";
-            TrB_AutoMouseDelay.Value = autoMouse.interval;
+            Toggle_AutoMouse.Checked = AutoMouse.Enabled;
+            BTN_AutoLeftMouseOn.Text = AutoMouse.LeftStartKey == 0 ? "좌클" : "해제";
+            BTN_AutoRightMouseOn.Text = AutoMouse.RightStartKey == 0 ? "우클" : "해제";
+            BTN_AutoMouseOff.Text = AutoMouse.EndKey == 0 ? "종료" : "해제";
+            Label_AutoLeftMouseOn.Text = GetHotkeyString(AutoMouse.LeftStartKey);
+            Label_AutoRightMouseOn.Text = GetHotkeyString(AutoMouse.RightStartKey);
+            Label_AutoMouseOff.Text = GetHotkeyString(AutoMouse.EndKey);
+            Label_AutoMouseDelay.Text = $"{AutoMouse.Interval} ms";
+            TrB_AutoMouseDelay.Value = AutoMouse.Interval;
             #endregion
             #endregion
             Toggle_AutoFrequency.Checked = Settings.IsAutoFrequency;
@@ -1454,11 +1458,11 @@ namespace Cirnix.Forms
         private void Toggle_AutoMouse_CheckedChanged(object sender, EventArgs e)
         {
             if (IsUpdating) return;
-            if ((autoMouse.LeftStartKey != 0
-             || autoMouse.RightStartKey != 0)
-             && autoMouse.EndKey != 0)
+            if ((AutoMouse.LeftStartKey != 0
+             || AutoMouse.RightStartKey != 0)
+             && AutoMouse.EndKey != 0)
             {
-                autoMouse.Enabled = Toggle_AutoMouse.Checked;
+                AutoMouse.Enabled = Toggle_AutoMouse.Checked;
                 return;
             }
             MetroDialog.OK("미지정 단축키 발견", "지정되지 않은 단축키가 있습니다.\n최소한 한쪽 시작 단축키는 지정해주세요.");
@@ -1468,13 +1472,13 @@ namespace Cirnix.Forms
         }
         private void BTN_AutoLeftMouseOn_Click(object sender, EventArgs e)
         {
-            if (autoMouse.Enabled && autoMouse.RightStartKey == 0)
-                autoMouse.Enabled = Toggle_AutoMouse.Checked = false;
-            if (IsAutoMouseInput || autoMouse.LeftStartKey != 0)
+            if (AutoMouse.Enabled && AutoMouse.RightStartKey == 0)
+                AutoMouse.Enabled = Toggle_AutoMouse.Checked = false;
+            if (IsAutoMouseInput || AutoMouse.LeftStartKey != 0)
             {
                 Label_AutoLeftMouseOn.Text = "없음";
                 BTN_AutoLeftMouseOn.Text = "좌클";
-                autoMouse.LeftStartKey = 0;
+                AutoMouse.LeftStartKey = 0;
                 return;
             }
             TargetMouse = SelectedAutoMouseType.Left;
@@ -1483,13 +1487,13 @@ namespace Cirnix.Forms
         }
         private void BTN_AutoRightMouseOn_Click(object sender, EventArgs e)
         {
-            if (autoMouse.Enabled && autoMouse.LeftStartKey == 0)
-                autoMouse.Enabled = Toggle_AutoMouse.Checked = false;
-            if (IsAutoMouseInput || autoMouse.RightStartKey != 0)
+            if (AutoMouse.Enabled && AutoMouse.LeftStartKey == 0)
+                AutoMouse.Enabled = Toggle_AutoMouse.Checked = false;
+            if (IsAutoMouseInput || AutoMouse.RightStartKey != 0)
             {
                 Label_AutoRightMouseOn.Text = "없음";
                 BTN_AutoRightMouseOn.Text = "우클";
-                autoMouse.RightStartKey = 0;
+                AutoMouse.RightStartKey = 0;
                 return;
             }
             TargetMouse = SelectedAutoMouseType.Right;
@@ -1498,13 +1502,13 @@ namespace Cirnix.Forms
         }
         private void BTN_AutoMouseOff_Click(object sender, EventArgs e)
         {
-            if (autoMouse.Enabled)
-                autoMouse.Enabled = Toggle_AutoMouse.Checked = false;
-            if (IsAutoMouseInput || autoMouse.EndKey != 0)
+            if (AutoMouse.Enabled)
+                AutoMouse.Enabled = Toggle_AutoMouse.Checked = false;
+            if (IsAutoMouseInput || AutoMouse.EndKey != 0)
             {
                 Label_AutoMouseOff.Text = "없음";
                 BTN_AutoMouseOff.Text = "종료";
-                autoMouse.EndKey = 0;
+                AutoMouse.EndKey = 0;
                 return;
             }
             TargetMouse = SelectedAutoMouseType.Off;
@@ -1515,7 +1519,7 @@ namespace Cirnix.Forms
         {
             if (IsUpdating) return;
             Label_AutoMouseDelay.Text = $"{TrB_AutoMouseDelay.Value} ms";
-            autoMouse.interval = TrB_AutoMouseDelay.Value;
+            AutoMouse.Interval = TrB_AutoMouseDelay.Value;
         }
         private void AutoMouse_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -1525,7 +1529,7 @@ namespace Cirnix.Forms
             foreach (string item in new string[] { "Control", "Alt", "Shift", "Menu" })
                 if (KeyText.IndexOf(item) != -1)
                     return;
-            if (hotkeyList.IsRegistered(hotkey) || isKeyReMapped(hotkey) || autoMouse.IsRegistered(hotkey))
+            if (hotkeyList.IsRegistered(hotkey) || isKeyReMapped(hotkey) || AutoMouse.IsRegistered(hotkey))
             {
                 MetroDialog.OK("이미 등록된 단축키", "해당 키가 이미 단축키로 등록되어 있습니다.\n스마트키나 키리맵핑, 채팅 단축키에서 먼저 해제해주시기 바랍니다.");
                 switch (TargetMouse)
@@ -1533,17 +1537,17 @@ namespace Cirnix.Forms
                     case SelectedAutoMouseType.Off:
                         Label_AutoMouseOff.Text = "없음";
                         BTN_AutoMouseOff.Text = "종료";
-                        autoMouse.EndKey = 0;
+                        AutoMouse.EndKey = 0;
                         break;
                     case SelectedAutoMouseType.Left:
                         Label_AutoLeftMouseOn.Text = "없음";
                         BTN_AutoLeftMouseOn.Text = "좌클";
-                        autoMouse.LeftStartKey = 0;
+                        AutoMouse.LeftStartKey = 0;
                         break;
                     case SelectedAutoMouseType.Right:
                         Label_AutoRightMouseOn.Text = "없음";
                         BTN_AutoRightMouseOn.Text = "우클";
-                        autoMouse.RightStartKey = 0;
+                        AutoMouse.RightStartKey = 0;
                         break;
                 }
             }
@@ -1555,17 +1559,17 @@ namespace Cirnix.Forms
                     case SelectedAutoMouseType.Off:
                         Label_AutoMouseOff.Text = KeyText;
                         BTN_AutoMouseOff.Text = "해제";
-                        autoMouse.EndKey = hotkey;
+                        AutoMouse.EndKey = hotkey;
                         break;
                     case SelectedAutoMouseType.Left:
                         Label_AutoLeftMouseOn.Text = KeyText;
                         BTN_AutoLeftMouseOn.Text = "해제";
-                        autoMouse.LeftStartKey = hotkey;
+                        AutoMouse.LeftStartKey = hotkey;
                         break;
                     case SelectedAutoMouseType.Right:
                         Label_AutoRightMouseOn.Text = KeyText;
                         BTN_AutoRightMouseOn.Text = "해제";
-                        autoMouse.RightStartKey = hotkey;
+                        AutoMouse.RightStartKey = hotkey;
                         break;
                 }
             }
@@ -1579,17 +1583,17 @@ namespace Cirnix.Forms
                 case SelectedAutoMouseType.Off:
                     Label_AutoMouseOff.Text = "없음";
                     BTN_AutoMouseOff.Text = "종료";
-                    autoMouse.EndKey = 0;
+                    AutoMouse.EndKey = 0;
                     break;
                 case SelectedAutoMouseType.Left:
                     Label_AutoLeftMouseOn.Text = "없음";
                     BTN_AutoLeftMouseOn.Text = "좌클";
-                    autoMouse.LeftStartKey = 0;
+                    AutoMouse.LeftStartKey = 0;
                     break;
                 case SelectedAutoMouseType.Right:
                     Label_AutoRightMouseOn.Text = "없음";
                     BTN_AutoRightMouseOn.Text = "우클";
-                    autoMouse.RightStartKey = 0;
+                    AutoMouse.RightStartKey = 0;
                     break;
             }
             IsAutoMouseInput = false;

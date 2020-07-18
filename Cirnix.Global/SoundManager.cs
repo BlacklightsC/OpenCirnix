@@ -1,21 +1,18 @@
 ﻿using System.IO;
+
 using NAudio.Wave;
-using Cirnix.Global.Properties;
 
 namespace Cirnix.Global
 {
-    public class SoundManager
+    public static class SoundManager
     {
-        public static void Play()
+        public static void Play(byte[] data)
         {
-            byte[] mp3Path = Resources.max;
-            MemoryStream ms = new MemoryStream(mp3Path);
+            MemoryStream ms = new MemoryStream(data);
             WaveStream ws = new Mp3FileReader(ms);
             WaveOutEvent output = new WaveOutEvent();
             output.Init(ws);
             output.Play();
-
         }
-
     }
 }

@@ -14,7 +14,9 @@ namespace Cirnix.Global
 
         public static string Title { get; private set; } = "Cirnix";
 
-        public static string MsgTitle { get; private set; } = "「Cirnix」";
+        public static string MsgTitle { get; set; } = "|CFF33CCFF「Cirnix」";
+
+        public static string MsgColor { get; set; } = "|CFF66FF99";
 
 
         public static void LoadTheme()
@@ -32,6 +34,8 @@ namespace Cirnix.Global
                 if (!string.IsNullOrWhiteSpace(title)) Title = title;
                 string msgTitle = theme[nameof(MsgTitle)]?.Value<string>();
                 if (!string.IsNullOrWhiteSpace(msgTitle)) MsgTitle = msgTitle;
+                string msgColor = theme[nameof(MsgColor)]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(msgColor)) MsgTitle = msgColor;
             }
         }
     }

@@ -1,8 +1,4 @@
-﻿using Cirnix.Global;
-using Cirnix.KeyHook;
-using Cirnix.Memory;
-using Cirnix.ServerStatus;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,9 +6,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Cirnix.Global;
+using Cirnix.Global.Properties;
+using Cirnix.KeyHook;
+using Cirnix.Memory;
+using Cirnix.ServerStatus;
+
 using static Cirnix.Global.Globals;
-using static Cirnix.Global.Locale;
 using static Cirnix.Global.Hotkey;
+using static Cirnix.Global.Locale;
+using static Cirnix.Global.NativeMethods;
+using static Cirnix.Global.SoundManager;
 using static Cirnix.Global.TgaReader;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.ControlDelay;
@@ -20,8 +24,6 @@ using static Cirnix.Memory.GameDll;
 using static Cirnix.Memory.Message;
 using static Cirnix.Memory.States;
 using static Cirnix.Worker.Actions;
-using static Cirnix.Global.NativeMethods;
-using static Cirnix.Global.SoundManager;
 
 namespace Cirnix.Worker
 {
@@ -123,8 +125,7 @@ namespace Cirnix.Worker
         private static bool State=false;
         private static int Max;
         private static int Min;
-
-        internal static string GetFullArgs(bool isLower = false)
+        internal static string GetSafeFullArgs(bool isLower = false)
         {
             StringBuilder arg = new StringBuilder();
             for (int i = 1; i < args.Count - 1; i++)
@@ -134,13 +135,34 @@ namespace Cirnix.Worker
             }
             return isLower ? arg.ToString().ToLower() : arg.ToString();
         }
-        internal static string GetMixArgs(int start, int end = -1, bool isLower = false)
+        internal static string GetFullArgs(bool isLower = false)
+        {
+            StringBuilder arg = new StringBuilder();
+            for (int i = 1; i < args.Count - 1; i++)
+            {
+                arg.Append(args[i]);
+                if (i + 1 != args.Count - 1) arg.Append(" ");
+            }
+            return isLower ? arg.ToString().ToLower() : arg.ToString();
+        }
+        internal static string GetSafeMixArgs(int start, int end = -1, bool isLower = false)
         {
             StringBuilder arg = new StringBuilder();
             if (end == -1) end = args.Count - 1;
             for (int i = start; i < end; i++)
             {
                 arg.Append(GetDirectorySafeName(args[i]));
+                if (i + 1 != end) arg.Append(" ");
+            }
+            return isLower ? arg.ToString().ToLower() : arg.ToString();
+        }
+        internal static string GetMixArgs(int start, int end = -1, bool isLower = false)
+        {
+            StringBuilder arg = new StringBuilder();
+            if (end == -1) end = args.Count - 1;
+            for (int i = start; i < end; i++)
+            {
+                arg.Append(args[i]);
                 if (i + 1 != end) arg.Append(" ");
             }
             return isLower ? arg.ToString().ToLower() : arg.ToString();
@@ -280,7 +302,7 @@ namespace Cirnix.Worker
         {
             if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
             {
-                string saveName = GetFullArgs();
+                string saveName = GetSafeFullArgs();
                 string path = $"{GetCurrentPath(0)}\\{saveName}";
                 if (!Directory.Exists(path))
                 {
@@ -318,7 +340,7 @@ namespace Cirnix.Worker
         {
             if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
             {
-                string saveName = GetFullArgs();
+                string saveName = GetSafeFullArgs();
                 string path = $"{GetCurrentPath(0)}\\{saveName}";
                 SendMsg(false, new string[] { path });
                 if (!Directory.Exists(path))
@@ -355,7 +377,7 @@ namespace Cirnix.Worker
         {
             if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
             {
-                string saveName = GetFullArgs();
+                string saveName = GetSafeFullArgs();
                 string path = $"{GetCurrentPath(0)}\\{saveName}";
                 SendMsg(false, new string[] { path });
                 if (!Directory.Exists(path))
@@ -509,7 +531,7 @@ namespace Cirnix.Worker
         }
         internal static void SetSave()
         {
-            string saveName = GetFullArgs();
+            string saveName = GetSafeFullArgs();
             if (string.IsNullOrEmpty(saveName))
             {
                 List<string> list = new List<string>();
@@ -519,14 +541,18 @@ namespace Cirnix.Worker
                 {
                     if (isFirst)
                     {
-                        builder.Append($"{Theme.MsgTitle} 분류: ");
+                        builder.Append($"\x1{Theme.MsgTitle} {Theme.MsgColor}분류: ");
                         isFirst = false;
                     }
                     else
+                    {
+                        if (builder.Length == 0)
+                            builder.Append($"\x1{Theme.MsgColor}");
                         builder.Append(", ");
+                    }
                     builder.Append(item.Name);
                     string buffer;
-                    if (Encoding.UTF8.GetByteCount(buffer = builder.ToString()) >= 100)
+                    if (Encoding.UTF8.GetByteCount(buffer = builder.ToString()) >= 80)
                     {
                         list.Add(buffer);
                         builder.Clear();
@@ -551,7 +577,7 @@ namespace Cirnix.Worker
         }
         internal static void SetMap()
         {
-            string saveName = GetFullArgs();
+            string saveName = GetSafeFullArgs();
             foreach (var item in saveFilePath)
             {
                 if (item.nameEN.ToLower().IndexOf(saveName) == -1
@@ -628,25 +654,25 @@ namespace Cirnix.Worker
             //    SendMsg(true, "이미 게임을 플레이 하는 중입니다.");
             //    return;
             //}
-            if (MainWorker.autoRG.isRunning)
+            if (AutoRG.IsRunning)
             {
                 SendMsg(true, "자동 RG 기능이 종료되었습니다.");
-                MainWorker.autoRG.CancelAsync();
+                AutoRG.CancelAsync();
                 return;
             }
             if (!int.TryParse(args[1], out int value) || value <= 0) goto Error;
             SendMsg(true, $"자동 RG 기능이 시작되었습니다. ▷반복: {args[1]}회");
-            MainWorker.autoRG.RunWorkerAsync(value);
+            AutoRG.RunWorkerAsync(value);
             return;
         Error:
             SendMsg(true, "자동 RG 기능이 시작되었습니다. ▷반복: 무제한");
-            MainWorker.autoRG.RunWorkerAsync(-1);
+            AutoRG.RunWorkerAsync(-1);
         }
         internal static async void RpgSave()
         {
             if (!IsInGame) return;
             IsSaved = true;
-            name = GetFullArgs();
+            name = GetSafeFullArgs();
             string[] FileName;
             try
             {
@@ -721,7 +747,9 @@ namespace Cirnix.Worker
                 || !GameModule.WarcraftCheck())
             {
                 InitializedWarcraft = false;
-
+                if (AutoRG.IsRunning)
+                    AutoRG.CancelAsync();
+                AutoMouse.CheckOff();
                 // 프로그램을 찾지 못할 경우 검색 간격 증가
                 Thread.Sleep(800);
 
@@ -770,7 +798,7 @@ namespace Cirnix.Worker
             {
                 if (!GetSelectedReceiveStatus()) return;
                 WaitGameStart = false;
-                MainWorker.autoRG.CancelAsync();
+                AutoRG.CancelAsync();
                 MainWorker.MapFileWatcher.EnableRaisingEvents = false;
                 await Task.Delay(500);
                 CameraInit();
@@ -1048,18 +1076,15 @@ namespace Cirnix.Worker
                     }
                     while (Max > PlayerNumber);
                     SendMsg(true, $"'{Max}'명 이상이 되었습니다.");
-                    Play();
+                    Play(Resources.max);
                     State = false;
                     Max = 0;
-
                 }
             }
             catch
             {
                 SendMsg(true, "알림설정을 실패하였습니다.");
             }
-
-
         }
 
 
@@ -1084,18 +1109,15 @@ namespace Cirnix.Worker
                     }
                     while (Min < PlayerNumber);
                     SendMsg(true, $"'{Min}'명 이하가 되었습니다.");
-                    Play();
+                    Play(Resources.max);
                     State = false;
                     Min = 0;
-
                 }
             }
             catch
             {
                 SendMsg(true, "알림설정을 실패하였습니다.");
             }
-
-
         }
 
         internal async static void AutoStarter()
@@ -1118,7 +1140,7 @@ namespace Cirnix.Worker
                         await Task.Delay(500);
                     }
                     while (Max > PlayerNumber);
-                    Play();
+                    Play(Resources.max);
                     for (int i = 10; i > 0; i--)
                     {
                         if (Max > PlayerNumber)
@@ -1129,10 +1151,10 @@ namespace Cirnix.Worker
                         SendMsg(true, $"{i}초후 게임을 시작합니다.");
                         await Task.Delay(1000);
                     }
-                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 18, 0);
-                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x100, 83, 0);
-                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 18, 0);
-                    PostMessage(Warcraft3Info.Process.MainWindowHandle, 0x101, 83, 0);
+                    PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
+                    PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 83, 0);
+                    PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
+                    PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 83, 0);
                 }
                 Max = 0;
             }
