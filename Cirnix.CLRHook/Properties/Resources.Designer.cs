@@ -119,15 +119,5 @@ namespace Cirnix.CLRHook.Properties {
                 return ((byte[])(obj));
             }
         }
-        
-        /// <summary>
-        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static byte[] M16 {
-            get {
-                object obj = ResourceManager.GetObject("M16", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

@@ -133,9 +133,6 @@
   <data name="EasyLoad32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EasyLoad32.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="M16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Mixtape\M16.mix;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="Cirnix_JassNative_Runtime" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Cirnix.JassNative.Runtime.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

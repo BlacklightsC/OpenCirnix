@@ -68,7 +68,6 @@
     <Content Include="Resources\Plugins\Cirnix.JassNative.Common.dll" />
     <Content Include="Resources\Plugins\Cirnix.JassNative.dll" />
     <Content Include="Resources\Cirnix.JassNative.Runtime.dll" />
-    <None Include="Mixtape\M16.mix" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
