@@ -1074,7 +1074,7 @@ namespace Cirnix.Worker
                     {
                         await Task.Delay(500);
                     }
-                    while (Max > PlayerNumber);
+                    while (Max > PlayerCount);
                     SendMsg(true, $"'{Max}'명 이상이 되었습니다.");
                     Play(Resources.max);
                     State = false;
@@ -1107,7 +1107,7 @@ namespace Cirnix.Worker
                     {
                         await Task.Delay(500);
                     }
-                    while (Min < PlayerNumber);
+                    while (Min < PlayerCount);
                     SendMsg(true, $"'{Min}'명 이하가 되었습니다.");
                     Play(Resources.max);
                     State = false;
@@ -1139,11 +1139,11 @@ namespace Cirnix.Worker
                     {
                         await Task.Delay(500);
                     }
-                    while (Max > PlayerNumber);
+                    while (Max > PlayerCount);
                     Play(Resources.max);
                     for (int i = 10; i > 0; i--)
                     {
-                        if (Max > PlayerNumber)
+                        if (Max > PlayerCount)
                         {
                             SendMsg(true, "지정된 인원보다 수가 적습니다. 시작을 취소합니다.");
                             return;
