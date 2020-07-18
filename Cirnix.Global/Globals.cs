@@ -365,7 +365,7 @@ namespace Cirnix.Global
             }
         }
 
-        public static string GetDataFromServer(string URL)
+        public static string GetStringFromServer(string URL)
         {
             using (WebClient client = new WebClient())
             {
@@ -375,6 +375,22 @@ namespace Cirnix.Global
                     using (Stream stream = client.OpenRead(URL))
                     using (StreamReader sReader = new StreamReader(stream))
                         return sReader.ReadToEnd();
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static byte[] GetDataFromServer(string URL)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36");
+                try
+                {
+                    return client.DownloadData(URL);
                 }
                 catch
                 {

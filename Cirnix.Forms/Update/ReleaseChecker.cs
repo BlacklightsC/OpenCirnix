@@ -27,7 +27,7 @@ namespace Cirnix.Forms.Update
 
         public static bool GetRelease()
         {
-            string result = Globals.GetDataFromServer("https://api.github.com/repos/BlacklightsC/OpenCirnix/releases");
+            string result = Globals.GetStringFromServer("https://api.github.com/repos/BlacklightsC/OpenCirnix/releases");
             if (result == null) return false;
             try
             {

@@ -273,7 +273,8 @@ namespace Cirnix.Forms
                     }
                 }
                 else return;
-            GameModule.InitWarcraft3Info(CLRHook.Injector.Init(LastInstallPath, MetroDialog.Select("화면 표기 설정", "창 모드", "전체 창", "전체화면"), true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt"))));
+            int pId = CLRHook.Injector.Init(LastInstallPath, MetroDialog.Select("화면 표기 설정", "창 모드", "전체 창", "전체화면"), true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
+            if (pId != 0) GameModule.InitWarcraft3Info(pId);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

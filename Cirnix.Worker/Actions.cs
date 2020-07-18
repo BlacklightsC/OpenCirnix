@@ -763,7 +763,7 @@ namespace Cirnix.Worker
                 GameModule.GetOffset();
                 GameDelay = 50;
                 RefreshCooldown = 0.01f;
-                ColorfulChat = true;
+                //ColorfulChat = true;
                 name = string.Empty;
                 StartDelay = Settings.StartSpeed > 0 ? Settings.StartSpeed : 0.01f;
                 CameraDistance = Settings.CameraDistance;
@@ -1026,9 +1026,12 @@ namespace Cirnix.Worker
                     case "-windows": windowState = 0; break;
                     case "-nativefullscr": windowState = 2; break;
                 }
-            int procId = WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
-            await Task.Delay(5000);
-            GameModule.InitWarcraft3Info(procId);
+            int pId = WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
+            if (pId != 0)
+            {
+                await Task.Delay(5000);
+                GameModule.InitWarcraft3Info(pId);
+            }
         }
 
         internal static void RoomJoin()

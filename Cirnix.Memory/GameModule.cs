@@ -41,18 +41,25 @@ namespace Cirnix.Memory
         public static WarcraftState InitWarcraft3Info()
         {
             if (!Warcraft3Info.HasExited) return WarcraftState.OK;
-            Process[] procs = Process.GetProcessesByName("Warcraft III");
-            if (procs.Length == 0)
+            try
             {
-                procs = Process.GetProcessesByName("war3");
+                Process[] procs = Process.GetProcessesByName("Warcraft III");
                 if (procs.Length == 0)
                 {
-                    if (Warcraft3Info.Process != null)
-                        Warcraft3Info.Reset();
-                    return WarcraftState.Closed;
+                    procs = Process.GetProcessesByName("war3");
+                    if (procs.Length == 0)
+                    {
+                        if (Warcraft3Info.Process != null)
+                            Warcraft3Info.Reset();
+                        return WarcraftState.Closed;
+                    }
                 }
+                return InitWarcraft3Info(procs[0]);
             }
-            return InitWarcraft3Info(procs[0]);
+            catch (InvalidOperationException)
+            {
+                return WarcraftState.Error;
+            }
         }
 
         public static WarcraftState InitWarcraft3Info(string name)
@@ -71,15 +78,22 @@ namespace Cirnix.Memory
 
         public static WarcraftState InitWarcraft3Info(Process proc)
         {
-            if (proc.HasExited)
+            try
             {
-                try { proc.Kill(); } catch { }
-                return WarcraftState.Closed;
+                if (proc.HasExited)
+                {
+                    try { proc.Kill(); } catch { }
+                    return WarcraftState.Closed;
+                }
+                Warcraft3Info.Process = proc;
+                if (Warcraft3Info.Process == null)
+                    return WarcraftState.Error;
+                return WarcraftState.OK;
             }
-            Warcraft3Info.Process = proc;
-            if (Warcraft3Info.Process == null)
+            catch
+            {
                 return WarcraftState.Error;
-            return WarcraftState.OK;
+            }
         }
     }
 }

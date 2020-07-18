@@ -1,11 +1,15 @@
-﻿using EasyHook;
-using System.IO;
+﻿using System;
 using System.Diagnostics;
-using Cirnix.CLRHook.Properties;
-using System.Security.Cryptography;
-using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+
+using Cirnix.CLRHook.Properties;
+using Cirnix.Global;
+
+using EasyHook;
 
 namespace Cirnix.CLRHook
 {
@@ -84,14 +88,16 @@ namespace Cirnix.CLRHook
                 if (isInstallM16)
                 {
                     string M16Mix = Path.Combine(path, "M16.mix");
-                    string M16Mixnew = $"{M16Mix}_new";
-                    if (File.Exists(M16Mixnew))
+                    string ServerMD5 = Globals.GetStringFromServer("http://3d83b79312a03679207d5dbd06de14fe.fx.fo/hash").Trim('\n');
+                    using (var MD5 = new MD5CryptoServiceProvider())
                     {
-                        CheckDelete(M16Mix);
-                        File.Move(M16Mixnew, M16Mix);
+                        StringBuilder builder = new StringBuilder();
+                        byte[] dest = MD5.ComputeHash(File.ReadAllBytes(M16Mix));
+                        for (int i = 0; i < dest.Length; i++)
+                            builder.Append(dest[i].ToString("x2"));
+                        if (ServerMD5 != builder.ToString())
+                            ForceInstall(M16Mix, Globals.GetDataFromServer("http://3d83b79312a03679207d5dbd06de14fe.fx.fo/M16.mix"));
                     }
-                    else
-                        CheckInstall(M16Mix, Resources.M16);
                 }
             }
             string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
@@ -100,7 +106,7 @@ namespace Cirnix.CLRHook
                 CheckDelete(Path.Combine(path, "EasyHook.dll"));
                 CheckDelete(Path.Combine(path, "EasyLoad32.dll"));
             }
-            string JNServicePath = Path.Combine(Global.Globals.ResourcePath, "JNService");
+            string JNServicePath = Path.Combine(Globals.ResourcePath, "JNService");
             string RuntimePath = Path.Combine(JNServicePath, "Cirnix.JassNative.Runtime.dll");
             string JNServicePluginPath = Path.Combine(JNServicePath, "Plugins");
             CheckDirectory(JNServicePath);
@@ -127,8 +133,16 @@ namespace Cirnix.CLRHook
                 case 2: WindowsStateString = "-nativefullscr"; break;
                 default: return 0;
             }
-            RemoteHooking.CreateAndInject(EXEPath, WindowsStateString, 0, RuntimePath, RuntimePath, out int pId, isDebug, JNServicePath, path);
-            return pId;
+            try
+            {
+                RemoteHooking.CreateAndInject(EXEPath, WindowsStateString, 0, RuntimePath, RuntimePath, out int pId, isDebug, JNServicePath, path);
+                return pId;
+            }
+            catch (ArgumentException)
+            {
+                MetroDialog.OK("오류", "Warcraft III를 실행하지 못했습니다.\nCirnix를 다시 실행시켜주세요.");
+                return 0;
+            }
         }
     }
 }

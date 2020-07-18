@@ -19,7 +19,7 @@ namespace Cirnix.Forms
 
         private void HistoryForm_Load(object sender, EventArgs e)
         {
-            TB_History.Text = Global.Globals.GetDataFromServer(URL);
+            TB_History.Text = Global.Globals.GetStringFromServer(URL);
         }
     }
 }
