@@ -1,22 +1,22 @@
-﻿using Cirnix.Global;
-
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+
+using Cirnix.Global;
 
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.NativeMethods;
 
 namespace Cirnix.Worker
 {
-    public sealed class AutoMouse
+    public static class AutoMouse
     {
-        private System.Threading.Timer LeftTimer = new System.Threading.Timer(state => mouse_event(6, 0, 0, 0, 0));
-        private System.Threading.Timer RightTimer = new System.Threading.Timer(state => mouse_event(24, 0, 0, 0, 0));
-        private bool _Enabled;
-        private Keys _LeftStartKey, _RightStartKey, _EndKey;
-        private int _interval;
-        public bool Enabled {
+        private static System.Threading.Timer LeftTimer = new System.Threading.Timer(state => mouse_event(6, 0, 0, 0, 0));
+        private static System.Threading.Timer RightTimer = new System.Threading.Timer(state => mouse_event(24, 0, 0, 0, 0));
+        private static bool _Enabled, _IsRunning;
+        private static Keys _LeftStartKey, _RightStartKey, _EndKey;
+        private static int _Interval;
+        public static bool Enabled {
             get {
                 return _Enabled;
             }
@@ -40,13 +40,14 @@ namespace Cirnix.Worker
                         hotkeyList.UnRegister(_EndKey);
                         LeftTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         RightTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        _IsRunning = false;
                     }
                 }
                 _Enabled = value;
                 Save();
             }
         }
-        public Keys LeftStartKey {
+        public static Keys LeftStartKey {
             get => _LeftStartKey;
             set {
                 if (_Enabled)
@@ -59,7 +60,7 @@ namespace Cirnix.Worker
                 Save();
             }
         }
-        public Keys RightStartKey {
+        public static Keys RightStartKey {
             get => _RightStartKey;
             set {
                 if (_Enabled)
@@ -72,7 +73,7 @@ namespace Cirnix.Worker
                 Save();
             }
         }
-        public Keys EndKey {
+        public static Keys EndKey {
             get => _EndKey;
             set {
                 if(_Enabled)
@@ -84,16 +85,16 @@ namespace Cirnix.Worker
                 Save();
             }
         }
-        public int interval {
-            get => _interval;
+        public static int Interval {
+            get => _Interval;
             set {
-                _interval = value;
+                _Interval = value;
                 Save();
             }
         }
-        public bool IsRegistered(Keys key)
+        public static bool IsRegistered(Keys key)
             => _LeftStartKey == key || _RightStartKey == key || _EndKey == key;
-        internal AutoMouse()
+        static AutoMouse()
         {
             Read();
             if(_Enabled)
@@ -105,44 +106,56 @@ namespace Cirnix.Worker
                 hotkeyList.Register(_EndKey, Off, _EndKey);
             }
         }
-        private void Save()
+        private static void Save()
         {
-            Settings.AutoMouse = $"{_interval}∫{(int)_LeftStartKey}∫{(int)_RightStartKey}∫{(int)_EndKey}∫{_Enabled}";            
+            Settings.AutoMouse = $"{_Interval}∫{(int)_LeftStartKey}∫{(int)_RightStartKey}∫{(int)_EndKey}∫{_Enabled}";            
         }
-        private void Read()
+        private static void Read()
         {
             string[] Text = Settings.AutoMouse.Split(new string[] { "∫" }, StringSplitOptions.None);
             if(Text.Length != 5)
             {
-                _interval = 100;
+                _Interval = 100;
                 _LeftStartKey = _RightStartKey = _EndKey = 0;
                 _Enabled = false;
                 Save();
                 return;
             }
-            if (!int.TryParse(Text[0], out _interval)) _interval = 100;
+            if (!int.TryParse(Text[0], out _Interval)) _Interval = 100;
             _LeftStartKey = int.TryParse(Text[1], out int temp) ? (Keys)temp : 0;
             _RightStartKey = int.TryParse(Text[2], out temp) ? (Keys)temp : 0;
             _EndKey = int.TryParse(Text[3], out temp) ? (Keys)temp : 0;
             if (!bool.TryParse(Text[4], out _Enabled)) _Enabled = false;
         }
-        private void OnLeft(Keys vk)
+        private static void OnLeft(Keys vk)
         {
             if (!_Enabled) return;
+            _IsRunning = true;
             RightTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            LeftTimer.Change(0, _interval);
+            LeftTimer.Change(0, _Interval);
         }
-        private void OnRight(Keys vk)
+        private static void OnRight(Keys vk)
+        {
+            if (!_Enabled) return;
+            _IsRunning = true;
+            LeftTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            RightTimer.Change(0, _Interval);
+        }
+        private static void Off(Keys vk)
         {
             if (!_Enabled) return;
             LeftTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            RightTimer.Change(0, _interval);
-        }
-        private void Off(Keys vk)
-        {
-            if (!_Enabled) return;
-            LeftTimer.Change(Timeout.Infinite, Timeout.Infinite);
             RightTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _IsRunning = false;
+        }
+        internal static void CheckOff()
+        {
+            if (_IsRunning)
+            {
+                LeftTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                RightTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                _IsRunning = false;
+            }
         }
     }
 }

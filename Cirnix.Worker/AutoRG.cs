@@ -1,44 +1,45 @@
-﻿using Cirnix.Global;
-using System;
-using System.Threading;
+﻿using System.Threading;
+
+using Cirnix.Global;
+
 using static Cirnix.Memory.Message;
 
-namespace Cirnix.Worker.InnerWorker
+namespace Cirnix.Worker
 {
-    public sealed class AutoRG
+    internal static class AutoRG
     {
-        private readonly Timer Timer;
-        private readonly HangWatchdog Worker;
-        private int AutoRGCount = 0, LoopedCount = 0;
-        public bool isRunning { get; private set; } = false;
-        internal AutoRG()
+        private static readonly Timer Timer;
+        private static readonly HangWatchdog Worker;
+        private static int AutoRGCount = 0, LoopedCount = 0;
+        internal static bool IsRunning { get; private set; } = false;
+        static AutoRG()
         {
             Worker = new HangWatchdog(0, 0, 10);
-            Worker.Condition = () => isRunning;
+            Worker.Condition = () => IsRunning;
             Worker.Actions += Worker_Actions;
 
             Timer = new Timer(state => Worker.Check());
         }
 
-        internal void RunWorkerAsync(int count)
+        internal static void RunWorkerAsync(int count)
         {
-            if (isRunning || count == 0) return;
+            if (IsRunning || count == 0) return;
             Timer.Change(0, 1000);
-            isRunning = true;
+            IsRunning = true;
             AutoRGCount = count;
             Worker_Actions();
         }
 
-        internal void CancelAsync()
+        internal static void CancelAsync()
         {
-            if (!isRunning) return;
+            if (!IsRunning) return;
             Worker.Reset();
             Timer.Change(Timeout.Infinite, Timeout.Infinite);
-            isRunning = false;
+            IsRunning = false;
             AutoRGCount = LoopedCount = 0;
         }
 
-        private void Worker_Actions()
+        private static void Worker_Actions()
         {
             SendMsg(false, "/rg");
             if (AutoRGCount > 0)

@@ -1,5 +1,5 @@
 ﻿using Cirnix.Global;
-using CirnoLib;
+
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -7,22 +7,21 @@ using System.Threading.Tasks;
 using static Cirnix.Global.Globals;
 using static Cirnix.Memory.Message;
 
-namespace Cirnix.Worker.InnerWorker
+namespace Cirnix.Worker
 {
-    internal sealed class Commands
+    internal static class Commands
     {
-        private BackgroundWorker Worker;
-        private string LastChat;
+        private static BackgroundWorker Worker;
+        private static string LastChat;
 
-        internal Commands()
+        static Commands()
         {
             Worker = new BackgroundWorker();
             Worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
             Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-            Worker.RunWorkerAsync();
         }
 
-        private async void Worker_DoWork(object sender, DoWorkEventArgs e)
+        private static async void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -81,10 +80,12 @@ namespace Cirnix.Worker.InnerWorker
             UserState = CommandTag.None;
         }
 
-        private async void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private static async void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             await Task.Delay(200);
             Worker.RunWorkerAsync();
         }
+
+        internal static void StartDetect() => Worker.RunWorkerAsync();
     }
 }

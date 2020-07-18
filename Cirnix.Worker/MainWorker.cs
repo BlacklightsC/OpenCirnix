@@ -1,15 +1,12 @@
-﻿using Cirnix.Global;
-using Cirnix.Worker.InnerWorker;
-
-using System.IO;
+﻿using System.IO;
 using System.Threading;
+
+using Cirnix.Global;
 
 namespace Cirnix.Worker
 {
     public static class MainWorker
     {
-        private static Commands commands = null;
-        internal static AutoRG autoRG = null;
         internal static ManualResetEvent WorkerReset;
         internal static FileSystemWatcher SaveFileWatcher { get; private set; }
         internal static System.Windows.Forms.Timer SaveWatcherTimer { get; private set; }
@@ -17,7 +14,6 @@ namespace Cirnix.Worker
         public static FileSystemWatcher ScreenShotWatcher { get; private set; }
         public static FileSystemWatcher MapFileWatcher { get; private set; }
         public static ChatHotkeyList chatHotkeyList { get; private set; }
-        public static AutoMouse autoMouse { get; private set; }
         private static bool isInitialaized = false; 
 
         private static void CheckPath(string path)
@@ -31,9 +27,8 @@ namespace Cirnix.Worker
             if (isInitialaized) return;
             isInitialaized = true;
             WorkerReset = new ManualResetEvent(false);
-            commands = new Commands();
-            autoRG = new AutoRG();
-            autoMouse = new AutoMouse();
+            Commands.StartDetect();
+
 
             string path = $"{Globals.DocumentPath}\\CustomMapData";
             CheckPath(path);
