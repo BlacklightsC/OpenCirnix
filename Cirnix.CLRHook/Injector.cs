@@ -88,18 +88,22 @@ namespace Cirnix.CLRHook
                 if (isInstallM16)
                 {
                     string M16Mix = Path.Combine(path, "M16.mix");
-                    string ServerMD5 = Globals.GetStringFromServer("http://3d83b79312a03679207d5dbd06de14fe.fx.fo/hash").Trim('\n');
-                    using (var MD5 = new MD5CryptoServiceProvider())
+                    if (File.Exists(M16Mix))
                     {
-                        StringBuilder builder = new StringBuilder();
-                        byte[] dest = MD5.ComputeHash(File.ReadAllBytes(M16Mix));
-                        for (int i = 0; i < dest.Length; i++)
-                            builder.Append(dest[i].ToString("x2"));
-                        if (ServerMD5 != builder.ToString())
-                            ForceInstall(M16Mix, Globals.GetDataFromServer("http://3d83b79312a03679207d5dbd06de14fe.fx.fo/M16.mix"));
+                        string ServerMD5 = Globals.GetStringFromServer("http://3d83b79312a03679207d5dbd06de14fe.fx.fo/hash").Trim('\n');
+                        using (var MD5 = new MD5CryptoServiceProvider())
+                        {
+                            StringBuilder builder = new StringBuilder();
+                            byte[] dest = MD5.ComputeHash(File.ReadAllBytes(M16Mix));
+                            for (int i = 0; i < dest.Length; i++)
+                                builder.Append(dest[i].ToString("x2"));
+                            if (ServerMD5 == builder.ToString()) goto Continue;
+                        }
                     }
+                    ForceInstall(M16Mix, Globals.GetDataFromServer("http://3d83b79312a03679207d5dbd06de14fe.fx.fo/M16.mix"));
                 }
             }
+            Continue:
             string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             if (!CirnixPath.Equals(path, StringComparison.OrdinalIgnoreCase))
             {
