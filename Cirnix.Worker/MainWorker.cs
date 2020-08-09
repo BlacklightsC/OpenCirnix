@@ -28,7 +28,7 @@ namespace Cirnix.Worker
             isInitialaized = true;
             WorkerReset = new ManualResetEvent(false);
             Commands.StartDetect();
-
+            AutoMouse.CheckOff();
 
             string path = $"{Globals.DocumentPath}\\CustomMapData";
             CheckPath(path);
