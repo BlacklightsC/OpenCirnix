@@ -158,6 +158,11 @@ namespace Cirnix.Forms
             }
             CommandPreset = Settings.SelectedCommand;
             isUpdating = false;
+#if DEBUG
+#else
+            using (DonateForm donate = new DonateForm())
+                donate.ShowDialog();
+#endif
         }
 
         private void MainForm_Update(object sender, EventArgs e)
