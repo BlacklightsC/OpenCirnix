@@ -15,7 +15,6 @@ namespace Cirnix.Memory
     {
         private static readonly byte[] MessageSearchPattern = { 0x94, 0x28, 0x49, 0x65, 0x94 };
         private static readonly byte[] MessageAdditionalPattern = { 0x65, 0x9B, 3, 0x36, 0x65 };
-        private static readonly byte[] MessageDialogPattern = { 0x6D, 0x6F };
         private static readonly byte[] SelectedReceiverPattern = { 0xD3, 0xAF, 0x2A, 0x26, 0xD3 }; // 0x260
         private static readonly byte[] TargetReceiverPattern = { 0xB0, 0x32, 0x5B, 0x2C, 0xB0 }; // 0x2A8
         internal static IntPtr CEditBoxOffset = IntPtr.Zero;
@@ -38,15 +37,7 @@ namespace Cirnix.Memory
             if (GetOffset())
             {
                 byte[] buffer = new byte[0x100];
-                if (Settings.IsAutoFrequency)
-                    for (int i = 0; i < 20; i++)
-                        if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x86 + 0x110 * i, buffer, 2, out _))
-                        {
-                            if (!CompareArrays(MessageDialogPattern, buffer, 2)) continue;
-                            if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + 0x110 * i, buffer, 0x100, out _))
-                                return ConvertToString(buffer);
-                        }
-                else if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + 0x110 * Settings.ChatFrequency, buffer, 0x100, out _))
+                if (ReadProcessMemory(Warcraft3Info.Handle, MessageOffset = CEditBoxOffset + 0x88 + (Settings.IsAutoFrequency ? 0 : 0x110 * Settings.ChatFrequency), buffer, 0x100, out _))
                     return ConvertToString(buffer);
             }
             CEditBoxOffset = IntPtr.Zero;
@@ -72,17 +63,17 @@ namespace Cirnix.Memory
         {
             if (!GetOffset()) return;
             byte[] buffer = new byte[1];
-            byte[] bytes = Encoding.UTF8.GetBytes($"{Theme.MsgTitle} 채팅 주파수 검색 중...");
+            byte[] bytes = Encoding.UTF8.GetBytes($"\x1{Theme.MsgTitleColor}{Theme.MsgTitle} {Theme.MsgColor}채팅 주파수 검색 중...");
             for (int i = 0; i < 20; i++)
-                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * i), bytes, bytes.Length + 1, out _);
+                WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + 0x110 * i, bytes, bytes.Length + 1, out _);
             ApplyChat(false);
             await Task.Delay(200);
             for (int i = 0; i < 20; i++)
-                if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * i), buffer, 1, out _) && buffer[0] == 0)
+                if (ReadProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + 0x110 * i, buffer, 1, out _) && buffer[0] == 0)
                 {
                     Settings.ChatFrequency = i;
                     for (int j = 0; j < 20; j++)
-                        WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + (0x110 * j), new byte[] { 0 }, 1, out _);
+                        WriteProcessMemory(Warcraft3Info.Handle, CEditBoxOffset + 0x88 + 0x110 * j, new byte[] { 0 }, 1, out _);
                     return;
                 }
         }
@@ -244,14 +235,14 @@ namespace Cirnix.Memory
             {
                 if (delay > 0) Thread.Sleep(delay);
                 if (!string.IsNullOrEmpty(arg))
-                    MessageCut((UseTitle ? $"\x1{Theme.MsgTitle} {Theme.MsgColor}" : string.Empty) + arg, IsHide);
+                    MessageCut((UseTitle ? $"\x1{Theme.MsgTitleColor}{Theme.MsgTitle} {Theme.MsgColor}" : string.Empty) + arg, IsHide);
             }
             return true;
         }
         public static bool SendInstantMsg(bool UseTitle, string arg, bool IsHide = true)
         {
             if (Warcraft3Info.Process == null || string.IsNullOrEmpty(arg)) return false;
-            MessageCut((UseTitle ? $"\x1{Theme.MsgTitle} {Theme.MsgColor}" : string.Empty) + arg, IsHide);
+            MessageCut((UseTitle ? $"\x1{Theme.MsgTitleColor}{Theme.MsgTitle} {Theme.MsgColor}" : string.Empty) + arg, IsHide);
             return true;
         }
     }

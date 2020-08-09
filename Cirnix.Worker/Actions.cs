@@ -541,7 +541,7 @@ namespace Cirnix.Worker
                 {
                     if (isFirst)
                     {
-                        builder.Append($"\x1{Theme.MsgTitle} {Theme.MsgColor}분류: ");
+                        builder.Append($"\x1{Theme.MsgTitleColor}{Theme.MsgTitle} {Theme.MsgColor}분류: ");
                         isFirst = false;
                     }
                     else
@@ -751,7 +751,7 @@ namespace Cirnix.Worker
                     AutoRG.CancelAsync();
                 AutoMouse.CheckOff();
                 // 프로그램을 찾지 못할 경우 검색 간격 증가
-                Thread.Sleep(800);
+                await Task.Delay(800);
 
                 return true;
             }

@@ -1,6 +1,8 @@
-﻿using Cirnix.Global;
+﻿using System.Collections.Generic;
+
+using Cirnix.Global;
+
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Cirnix.Forms.Update
 {

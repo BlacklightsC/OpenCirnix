@@ -129,7 +129,7 @@ namespace Cirnix.Global
                     DirectoryInfo di = new DirectoryInfo(directory);
                     foreach (FileInfo item in di.GetFiles())
                     {
-                        if ((!isOnlyTXT) || item.Extension.ToLower() == ".txt")
+                        if (!isOnlyTXT || item.Extension.ToLower() == ".txt")
                             names.Add(item.Name);
                     }
                 }

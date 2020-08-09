@@ -14,7 +14,9 @@ namespace Cirnix.Global
 
         public static string Title { get; private set; } = "Cirnix";
 
-        public static string MsgTitle { get; set; } = "|CFF33CCFF「Cirnix」";
+        public static string MsgTitleColor { get; set; } = "|CFF33CCFF";
+
+        public static string MsgTitle { get; set; } = "「Cirnix」";
 
         public static string MsgColor { get; set; } = "|CFF66FF99";
 
@@ -32,10 +34,12 @@ namespace Cirnix.Global
                 if (!string.IsNullOrWhiteSpace(unknownMapPreviewFile)) UnknownMapPreviewFile = unknownMapPreviewFile;
                 string title = theme[nameof(Title)]?.Value<string>();
                 if (!string.IsNullOrWhiteSpace(title)) Title = title;
+                string msgTitleColor = theme[nameof(MsgTitleColor)]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(msgTitleColor)) MsgTitleColor = msgTitleColor;
                 string msgTitle = theme[nameof(MsgTitle)]?.Value<string>();
                 if (!string.IsNullOrWhiteSpace(msgTitle)) MsgTitle = msgTitle;
                 string msgColor = theme[nameof(MsgColor)]?.Value<string>();
-                if (!string.IsNullOrWhiteSpace(msgColor)) MsgTitle = msgColor;
+                if (!string.IsNullOrWhiteSpace(msgColor)) MsgColor = msgColor;
             }
         }
     }

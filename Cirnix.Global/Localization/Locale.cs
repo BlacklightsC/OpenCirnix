@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using static Cirnix.Global.Globals;
 
@@ -18,7 +19,7 @@ namespace Cirnix.Global
                     CultureInfo info = CultureInfo.GetCultureInfo(value);
                     if (File.Exists($"{LocalePath}\\{info.Name}.json"))
                     {
-
+                        
                     }
                 }
                 catch
@@ -27,6 +28,8 @@ namespace Cirnix.Global
                 }
             }
         }
+
+        private static Dictionary<string, string> LangData = new Dictionary<string, string>();
 
         //private static string 
 
