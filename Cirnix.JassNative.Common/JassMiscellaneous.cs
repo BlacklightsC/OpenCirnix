@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Cirnix.JassNative.JassAPI;
 using Cirnix.JassNative.Plugin;
 using Cirnix.JassNative.Runtime.Windows;
+using Cirnix.JassNative.WarAPI;
 
 using static Cirnix.JassNative.Common.Component;
 
@@ -49,7 +50,6 @@ namespace Cirnix.JassNative.Common
 
         public void Initialize()
         {
-            GameDllOffset = Kernel32.GetModuleHandle("game.dll");
             Natives.Add(new WriteLogPrototype(WriteLog));
             Natives.Add(new GetLocalDateTimePrototype(GetLocalDateTime));
             Natives.Add(new GetUnitDefensePrototype(GetUnitDefense));
@@ -58,11 +58,13 @@ namespace Cirnix.JassNative.Common
             Natives.Add(new SetMaxAttackSpeedPrototype(SetMaxAttackSpeed));
         }
 
-        public void OnGameLoad() { }
+        public void OnGameLoad()
+        {
+            GameDllOffset = Kernel32.GetModuleHandle("game.dll");
+        }
 
         public void OnMapStart()
         {
-            Patch(GameDllOffset + 0xD33DA4, BitConverter.GetBytes(5f));
         }
 
         public void OnMapEnd()

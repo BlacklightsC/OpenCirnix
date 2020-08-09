@@ -142,35 +142,37 @@ namespace Cirnix.CLRHook
             if (!(File.Exists(EXEPath) || File.Exists(EXEPath = $"{path}\\war3.exe")) 
              || FileVersionInfo.GetVersionInfo(EXEPath).FileVersion != "1.28.5.7680")
                 return 0;
+
+            string JNServicePath = $"{Globals.ResourcePath}\\JNService";
+            string RuntimePath = $"{JNServicePath}\\Cirnix.JassNative.Runtime.dll";
             if (!isDebug)
             {
                 CheckDelete($"{path}\\m16l.mix");
                 if (isInstallM16) InstallM16Mix(path);
+                string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                if (!CirnixPath.Equals(path, StringComparison.OrdinalIgnoreCase))
+                {
+                    CheckDelete($"{path}\\EasyHook.dll");
+                    CheckDelete($"{path}\\EasyLoad32.dll");
+                }
+                CheckDirectory(JNServicePath);
+                try
+                {
+                    FileInfo DebugLog = new FileInfo($"{JNServicePath}\\debug.log");
+                    if (DebugLog.Exists && DebugLog.Length > 0x100000)
+                        DebugLog.Delete();
+                }
+                catch { }
+
+                string JNServicePluginPath = $"{JNServicePath}\\Plugins";
+                CheckInstall(RuntimePath, Resources.Cirnix_JassNative_Runtime);
+                CheckInstall($"{JNServicePath}\\Cirnix.JassNative.Plugin.dll", Resources.Cirnix_JassNative_Plugin);
+                CheckDirectory(JNServicePluginPath);
+                CheckInstall($"{JNServicePluginPath}\\Cirnix.JassNative.dll", Resources.Cirnix_JassNative);
+                CheckInstall($"{JNServicePluginPath}\\Cirnix.JassNative.Common.dll", Resources.Cirnix_JassNative_Common);
+                CheckInstall($"{JNServicePluginPath}\\Cirnix.JassNative.YDWE.dll", Resources.Cirnix_JassNative_YDWE);
+                InstallYDWE(JNServicePath);
             }
-            string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            if (!CirnixPath.Equals(path, StringComparison.OrdinalIgnoreCase))
-            {
-                CheckDelete($"{path}\\EasyHook.dll");
-                CheckDelete($"{path}\\EasyLoad32.dll");
-            }
-            string JNServicePath = $"{Globals.ResourcePath}\\JNService";
-            string RuntimePath = $"{JNServicePath}\\Cirnix.JassNative.Runtime.dll";
-            string JNServicePluginPath = $"{JNServicePath}\\Plugins";
-            CheckDirectory(JNServicePath);
-            try
-            {
-                FileInfo DebugLog = new FileInfo($"{JNServicePath}\\debug.log");
-                if (DebugLog.Exists && DebugLog.Length > 0x100000)
-                    DebugLog.Delete();
-            }
-            catch { }
-            CheckInstall(RuntimePath, Resources.Cirnix_JassNative_Runtime);
-            CheckInstall($"{JNServicePath}\\Cirnix.JassNative.Plugin.dll", Resources.Cirnix_JassNative_Plugin);
-            CheckDirectory(JNServicePluginPath);
-            CheckInstall($"{JNServicePluginPath}\\Cirnix.JassNative.dll", Resources.Cirnix_JassNative);
-            CheckInstall($"{JNServicePluginPath}\\Cirnix.JassNative.Common.dll", Resources.Cirnix_JassNative_Common);
-            CheckInstall($"{JNServicePluginPath}\\Cirnix.JassNative.YDWE.dll", Resources.Cirnix_JassNative_YDWE);
-            InstallYDWE(JNServicePath);
             //Global.LogManager.Write($"InEXEPath = {EXEPath}\n"
             //                      + $"InCommandLine = {((windowState == 0) ? "-window" : ((windowState == 1) ? "-nativefullscr" : ""))}\n"
             //                      + $"InProcessCreationFlags = 0\n"
