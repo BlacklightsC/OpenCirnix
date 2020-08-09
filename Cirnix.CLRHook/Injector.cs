@@ -72,11 +72,16 @@ namespace Cirnix.CLRHook
         public static void InstallHookLib()
         {
             string CirnixPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+#if DEBUG
+            CheckInstall($"{CirnixPath}\\EasyHook.dll", Resources.EasyHook);
+            CheckInstall($"{CirnixPath}\\EasyLoad32.dll", Resources.EasyLoad32);
+#else
             string FilePath = $"{CirnixPath}\\EasyHook.dll";
             if (CheckInstall(FilePath, Resources.EasyHook))
                 File.SetAttributes(FilePath, FileAttributes.Hidden);
             if (CheckInstall(FilePath = $"{CirnixPath}\\EasyLoad32.dll", Resources.EasyLoad32))
                 File.SetAttributes(FilePath, FileAttributes.Hidden);
+#endif
         }
 
         public static void InstallM16Mix(string path)
