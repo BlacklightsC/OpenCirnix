@@ -79,35 +79,6 @@ namespace Cirnix.Memory
             MEM_PRIVATE = 0x20000
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct MODULEENTRY32
-        {
-            public uint dwSize;
-            public uint th32ModuleID;
-            public uint th32ProcessID;
-            public uint GlblcntUsage;
-            public uint ProccntUsage;
-            public IntPtr modBaseAddr;
-            public uint modBaseSize;
-            public IntPtr hModule;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szModule;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szExePath;
-        }
-
-        [Flags]
-        internal enum SnapshotFlags : uint
-        {
-            All = TH32CS_SNAPHEAPLIST | TH32CS_SNAPMODULE | TH32CS_SNAPPROCESS | TH32CS_SNAPTHREAD,
-            TH32CS_SNAPHEAPLIST = 0x00000001,
-            TH32CS_SNAPPROCESS = 0x00000002,
-            TH32CS_SNAPTHREAD = 0x00000004,
-            TH32CS_SNAPMODULE = 0x00000008,
-            TH32CS_SNAPMODULE32 = 0x00000010,
-            TH32CS_INHERIT = 0x80000000
-        }
-
         public enum WarcraftState : byte
         {
             None = 0,
@@ -132,14 +103,6 @@ namespace Cirnix.Memory
             InGameDefault = 3,
             InGameCustom = 4,
             Stopped = 5
-        }
-
-        public enum HackState : byte
-        {
-            Off = 0,
-            Semi = 1,
-            Share = 2,
-            Full = 3
         }
         #endregion
 

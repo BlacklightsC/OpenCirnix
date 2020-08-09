@@ -44,7 +44,7 @@ namespace Cirnix.Worker
             SendMsg(false, "/rg");
             if (AutoRGCount > 0)
             {
-                SendMsg(true, $"자동 RG 사용 중: {++LoopedCount}회");
+                SendMsg(true, string.Format("자동 RG 사용 중: {0}회", ++LoopedCount));
                 if (LoopedCount >= AutoRGCount)
                 {
                     CancelAsync();

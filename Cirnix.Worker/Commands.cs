@@ -1,5 +1,7 @@
 ﻿using Cirnix.Global;
 
+using CirnoLib;
+
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -26,10 +28,10 @@ namespace Cirnix.Worker
             try
             {
                 if (await Actions.ProcessCheck()) return;
-                //string LastChat = Memory.MessageFrame.GetLastChat();
-                //if (!string.IsNullOrEmpty(LastChat) && this.LastChat != LastChat)
+                //string lastChat = Memory.MessageFrame.GetLastChat();
+                //if (!string.IsNullOrEmpty(LastChat) && LastChat != lastChat)
                 //{
-                //    var match = System.Text.RegularExpressions.Regex.Match(this.LastChat = LastChat, "\\|[Cc][0-9a-fA-F]{8,8}(.+?): ?\\|[Rr] ?(\\|[Cc][0-9a-fA-F]{8,8})?(.+?) ?(\\|[Rr])?$");
+                //    var match = System.Text.RegularExpressions.Regex.Match(LastChat = lastChat, "\\|[Cc][0-9a-fA-F]{8,8}(.+?): ?\\|[Rr] ?(\\|[Cc][0-9a-fA-F]{8,8})?(.+?) ?(\\|[Rr])?$");
                 //    if (match.Success)
                 //    {
                 //        string ID = match.Groups[1].Value.Trim();

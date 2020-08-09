@@ -59,29 +59,6 @@ namespace Cirnix.Memory
         );
 
         [DllImport("kernel32", SetLastError = true)]
-        internal static extern IntPtr CreateToolhelp32Snapshot
-        (
-            [In]SnapshotFlags dwFlags,
-            [In]uint th32ProcessID
-        );
-
-        [DllImport("kernel32")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool Module32First
-        (
-            [In]IntPtr hSnapshot,
-            [In, Out]ref MODULEENTRY32 lpme
-        );
-
-        [DllImport("kernel32", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool Module32Next
-        (
-            [In]IntPtr hSnapshot,
-            [In, Out]ref MODULEENTRY32 lpme
-        );
-
-        [DllImport("kernel32", SetLastError = true)]
         internal static extern IntPtr OpenProcess
         (
             [In]uint dwDesiredAccess,
