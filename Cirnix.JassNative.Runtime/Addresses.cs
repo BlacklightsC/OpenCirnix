@@ -45,6 +45,6 @@
         // 8. sub_6F3A2EC0 is the game_state function.
         // 7. Using the image base, you rebase this address like this:
         //     6F3A2EC0 - 6F000000 = 003A2EC0
-        public const int Unknown__SetStateOffset = 0x212370;
+        internal const int Unknown__SetStateOffset = 0x212370;
     }
 }

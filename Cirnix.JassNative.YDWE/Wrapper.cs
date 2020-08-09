@@ -5,15 +5,12 @@ using System.IO;
 using System.Runtime.InteropServices;
 
 using Cirnix.JassNative.Plugin;
+using Cirnix.JassNative.Runtime.Windows;
 
 namespace Cirnix.JassNative.YDWE
 {
     public class Wrapper : IPlugin
     {
-        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi)]
-        private static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
-        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
-        private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate void InitializePrototype();
 
@@ -21,7 +18,7 @@ namespace Cirnix.JassNative.YDWE
 
         private IntPtr LoadLibraryA(string path)
         {
-            IntPtr BaseAddr = LoadLibrary(path);
+            IntPtr BaseAddr = Kernel32.LoadLibrary(path);
             if (BaseAddr == IntPtr.Zero)
                 Trace.WriteLine($"{path} Load Failed!");
             else
@@ -61,7 +58,7 @@ namespace Cirnix.JassNative.YDWE
                 Trace.Write("YDWE Engine Initializing . . . ");
                 foreach (var plugin in plugins)
                 {
-                    IntPtr pInit = GetProcAddress(plugin, "Initialize");
+                    IntPtr pInit = Kernel32.GetProcAddress(plugin, "Initialize");
                     if (pInit != IntPtr.Zero)
                         Marshal.GetDelegateForFunctionPointer<InitializePrototype>(pInit)();
                 }
