@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+
 using Cirnix.JassNative.Runtime.Windows;
 
 namespace Cirnix.JassNative.Runtime.Blizzard.Storm
 {
-    public unsafe class SMem
+    public static unsafe class SMem
     {
         private const string MODULE_NAME = "Storm.dll";
 
@@ -134,8 +135,6 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
             var stackframe = new StackFrame(1, true);
             return ReAlloc(location, amount, stackframe.GetFileName(), stackframe.GetFileLineNumber(), defaultValue);
         }
-
-        private SMem() { }
     }
 
     public enum LogLine : int

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Cirnix.JassNative.Runtime.Blizzard.Storm
 {
@@ -28,11 +25,9 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
 
         public override long Length { get; }
 
-        public override long Position
-        {
-            get { throw new NotSupportedException(); }
-
-            set { Seek(value, SeekOrigin.Begin); }
+        public override long Position {
+            get => throw new NotSupportedException();
+            set => Seek(value, SeekOrigin.Begin);
         }
 
         public override void Flush() { /* Do nothing? */ }

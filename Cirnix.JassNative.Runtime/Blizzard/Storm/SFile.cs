@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Cirnix.JassNative.Runtime.Blizzard.Storm
 {
-    public unsafe class SFile
+    public static unsafe class SFile
     {
         [DllImport("storm.dll", EntryPoint = "#253")]
         public static extern bool CloseFile(IntPtr handle);
@@ -21,10 +21,7 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
         [DllImport("storm.dll", EntryPoint = "#269")]
         public static extern int SetFilePointer(IntPtr handle, int filePosition, out int filePositionHigh, uint moveMethod);
 
-        public static int GetFileSize(IntPtr handle)
-        {
-            return GetFileSize(handle, out int high);
-        }
+        public static int GetFileSize(IntPtr handle) => GetFileSize(handle, out _);
 
         public static long GetFileSizeLong(IntPtr handle)
         {
@@ -73,10 +70,10 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
 
         public static long SetFilePointerLong(IntPtr handle, long filePosition, uint moveMethod)
         {
-            int high = (int)(filePosition >> 32);
+            //int high = (int)(filePosition >> 32);
             int low = (int)(filePosition & uint.MaxValue);
 
-            low = SetFilePointer(handle, low, out high, moveMethod);
+            low = SetFilePointer(handle, low, out int high, moveMethod);
 
             return unchecked((long)high << 32 | (uint)low);
         }
@@ -85,7 +82,5 @@ namespace Cirnix.JassNative.Runtime.Blizzard.Storm
         {
             return SetFilePointerLong(handle, filePosition, (uint)moveMethod);
         }
-
-        private SFile() { }
     }
 }

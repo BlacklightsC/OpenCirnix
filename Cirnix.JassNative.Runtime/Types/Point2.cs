@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace TinkerWorX.SharpCraft.Types
+namespace Cirnix.JassNative.Runtime.Types
 {
     [StructLayout(LayoutKind.Sequential)]
     [Serializable]
     public struct Point2
     {
-        public Int32 X;
+        public int X, Y;
 
-        public Int32 Y;
-
-        public Point2(Int32 x, Int32 y)
+        public Point2(int x, int y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
-        public override String ToString()
-        {
-            return String.Format("({0}; {1})", this.X, this.Y);
-        }
+        public override string ToString() => $"({X}; {Y})";
     }
 }

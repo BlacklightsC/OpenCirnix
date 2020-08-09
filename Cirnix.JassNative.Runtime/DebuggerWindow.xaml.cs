@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
+using Cirnix.JassNative.Plugin;
 using Cirnix.JassNative.Runtime.Utilities;
 
 namespace Cirnix.JassNative.Runtime
@@ -16,9 +17,7 @@ namespace Cirnix.JassNative.Runtime
         public DebuggerWindow(string hackPath)
         {
             InitializeComponent();
-
             Trace.Listeners.Add(listener);
-
             CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
 
@@ -26,9 +25,7 @@ namespace Cirnix.JassNative.Runtime
         {
             StringBuilder messages = new StringBuilder();
             while (listener.Messages.TryTake(out string message))
-            {
                 messages.Append(message);
-            }
             if (messages.Length > 0)
             {
                 OutputTextBox.Text += messages.ToString();
@@ -42,7 +39,6 @@ namespace Cirnix.JassNative.Runtime
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-
                 OutputTextBox.ScrollToEnd();
                 InputTextBox.Clear();
             }

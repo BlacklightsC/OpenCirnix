@@ -1,14 +1,14 @@
-﻿using Cirnix.JassNative.Plugin;
-using Cirnix.JassNative.Runtime.Blizzard.Storm;
-using Cirnix.JassNative.Runtime.Utilities;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+
+using Cirnix.JassNative.Plugin;
+using Cirnix.JassNative.Runtime.Blizzard.Storm;
+using Cirnix.JassNative.Runtime.Utilities;
 
 namespace Cirnix.JassNative.Runtime
 {
@@ -22,14 +22,11 @@ namespace Cirnix.JassNative.Runtime
 
         private static Dictionary<string, string> assemblies = new Dictionary<string, string>();
 
-        static PluginSystem() { }
-
         public static void LoadPlugins(string folder)
         {
             try
             {
                 PluginSystem.folder = folder;
-                //Assembly.ReflectionOnlyLoadFrom(Path.Combine(folder, "Cirnix.JassNative.Runtime.dll"));
                 var list = new DependencySorter<string>();
                 Trace.WriteLine("Locating plugins . . .");
                 Trace.Indent();
@@ -71,14 +68,12 @@ namespace Cirnix.JassNative.Runtime
                         Trace.WriteLine("Exception: " + e);
                         Trace.Indent();
                         foreach (var exception in e.LoaderExceptions)
-                        {
                             Trace.WriteLine("LoaderException: " + exception);
-                        }
                         Trace.Unindent();
                     }
                 }
                 sw.Stop();
-                Trace.WriteLine("Done! (" + sw.Elapsed.TotalMilliseconds.ToString("0.00") + " ms)");
+                Trace.WriteLine($"Done! ({sw.Elapsed.TotalMilliseconds:0.00} ms)");
                 Trace.Unindent();
 
                 Trace.WriteLine("Loading plugin assemblies and instanciating types. . .");
@@ -86,11 +81,11 @@ namespace Cirnix.JassNative.Runtime
                 sw.Restart();
                 foreach (var s in list.Sort())
                 {
-                    Trace.WriteLine("Loading assembly '" + Path.GetFileName(assemblies[s]) + "' for type '" + s + "'");
+                    Trace.WriteLine($"Loading assembly '{Path.GetFileName(assemblies[s])}' for type '{s}'");
                     plugins.Add((IPlugin)Activator.CreateInstance(assemblies[s], s).Unwrap());
                 }
                 sw.Stop();
-                Trace.WriteLine("Done! (" + sw.Elapsed.TotalMilliseconds.ToString("0.00") + " ms)");
+                Trace.WriteLine($"Done! ({sw.Elapsed.TotalMilliseconds:0.00} ms)");
                 Trace.Unindent();
 
                 Trace.WriteLine("Initializing plugins . . .");
@@ -111,16 +106,14 @@ namespace Cirnix.JassNative.Runtime
                     Trace.Unindent();
                 }
                 sw.Stop();
-                Trace.WriteLine("Done! (" + sw.Elapsed.TotalMilliseconds.ToString("0.00") + " ms)");
+                Trace.WriteLine($"Done! ({sw.Elapsed.TotalMilliseconds:0.00} ms)");
                 Trace.Unindent();
             }
             catch (Exception exception)
             {
                 MessageBox.Show(
-                    "Fatal exception!" + Environment.NewLine +
-                    exception + Environment.NewLine +
-                    "Aborting execution!",
-                    typeof(PluginSystem) + ".Initialize()", MessageBoxButton.OK, MessageBoxImage.Error);
+                    $"Fatal exception!{Environment.NewLine}{exception}{Environment.NewLine}Aborting execution!",
+                    $"{typeof(PluginSystem)}.Initialize()", MessageBoxButton.OK, MessageBoxImage.Error);
                 Process.GetCurrentProcess().Kill();
             }
         }
@@ -140,20 +133,18 @@ namespace Cirnix.JassNative.Runtime
                     }
                     catch (Exception e)
                     {
-                        Trace.WriteLine("OnGameLoad(" + plugin + "): " + e);
+                        Trace.WriteLine($"OnGameLoad({plugin}): {e}");
                     }
                 }
                 sw.Stop();
-                Trace.WriteLine("Done! (" + sw.Elapsed.TotalMilliseconds.ToString("0.00") + " ms)");
+                Trace.WriteLine($"Done! ({sw.Elapsed.TotalMilliseconds:0.00} ms)");
                 Trace.Unindent();
             }
             catch (Exception exception)
             {
                 MessageBox.Show(
-                    "Fatal exception!" + Environment.NewLine +
-                    exception + Environment.NewLine +
-                    "Aborting execution!",
-                    typeof(PluginSystem) + ".OnGameLoad()", MessageBoxButton.OK, MessageBoxImage.Error);
+                    $"Fatal exception!{Environment.NewLine}{exception}{Environment.NewLine}Aborting execution!",
+                    $"{typeof(PluginSystem)}.OnGameLoad()", MessageBoxButton.OK, MessageBoxImage.Error);
                 Process.GetCurrentProcess().Kill();
             }
         }
@@ -168,7 +159,7 @@ namespace Cirnix.JassNative.Runtime
                 var files = listfile.Replace("\r\n", "*").Replace("\r", "*").Replace("\n", "*").Split('*');
                 for (var i = 0; i < files.Length - 1; i++)
                 {
-                    Trace.WriteLine(" * '" + files[i] + "'");
+                    Trace.WriteLine($" * '{files[i]}'");
                     if (files[i].EndsWith(".dll"))
                     {
                         using (var pluginStream = new StormFileStream(SFile.OpenFileEx(IntPtr.Zero, files[i], 0)))
@@ -193,7 +184,7 @@ namespace Cirnix.JassNative.Runtime
         public static void OnMapEnd()
         {
             foreach (var plugin in plugins)
-                plugin.OnMapStart();
+                plugin.OnMapEnd();
             foreach (var mapPlugin in mapPlugins)
                 mapPlugin.OnMapEnd();
             mapPlugins.Clear();

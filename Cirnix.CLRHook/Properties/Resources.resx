@@ -136,4 +136,10 @@
   <data name="Cirnix_JassNative_Runtime" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Cirnix.JassNative.Runtime.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Cirnix_JassNative_YDWE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Plugins\Cirnix.JassNative.YDWE.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="YDWE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\YDWE.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

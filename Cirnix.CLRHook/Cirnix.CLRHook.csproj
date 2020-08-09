@@ -34,15 +34,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cirnix.Worker\Cirnix.Worker.csproj">
-      <Project>{2d803e40-f816-4508-897c-b8e906048782}</Project>
-      <Name>Cirnix.Worker</Name>
-    </ProjectReference>
+    <None Include="Resources\Plugins\Cirnix.JassNative.dll" />
+    <None Include="Resources\Plugins\Cirnix.JassNative.Common.dll" />
+    <None Include="Resources\Plugins\Cirnix.JassNative.YDWE.dll" />
+    <None Include="Resources\Cirnix.JassNative.Plugin.dll" />
+    <None Include="Resources\Cirnix.JassNative.Runtime.dll" />
+    <None Include="Resources\EasyHook.dll" />
+    <None Include="Resources\EasyLoad32.dll" />
+    <None Include="YDWE.zip" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Windows.Forms" />
     <Compile Include="Injector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -62,12 +62,8 @@
     <PackageReference Include="EasyHook">
       <Version>2.7.7097</Version>
     </PackageReference>
-    <Content Include="Resources\Cirnix.JassNative.Plugin.dll" />
-    <None Include="Resources\EasyLoad32.dll" />
-    <None Include="Resources\EasyHook.dll" />
-    <Content Include="Resources\Plugins\Cirnix.JassNative.Common.dll" />
-    <Content Include="Resources\Plugins\Cirnix.JassNative.dll" />
-    <Content Include="Resources\Cirnix.JassNative.Runtime.dll" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

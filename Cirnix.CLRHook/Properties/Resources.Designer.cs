@@ -103,6 +103,16 @@ namespace Cirnix.CLRHook.Properties {
         /// <summary>
         ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static byte[] Cirnix_JassNative_YDWE {
+            get {
+                object obj = ResourceManager.GetObject("Cirnix_JassNative_YDWE", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static byte[] EasyHook {
             get {
                 object obj = ResourceManager.GetObject("EasyHook", resourceCulture);
@@ -116,6 +126,16 @@ namespace Cirnix.CLRHook.Properties {
         internal static byte[] EasyLoad32 {
             get {
                 object obj = ResourceManager.GetObject("EasyLoad32", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static byte[] YDWE {
+            get {
+                object obj = ResourceManager.GetObject("YDWE", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -1,10 +1,12 @@
-﻿using System.Diagnostics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+
 using Cirnix.JassNative.JassAPI;
 using Cirnix.JassNative.Plugin;
 
 namespace Cirnix.JassNative.Common
 {
+    [Requires(typeof(JassAPIPlugin))]
     public sealed class JassStopwatch : IPlugin
     {
         private int SwId = -1;

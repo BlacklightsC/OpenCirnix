@@ -2,9 +2,9 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("Cirnix.JassNative.Runtime")]
-[assembly: AssemblyProduct("Cirnix.JassNative.Runtime")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTitle("Cirnix.JassNative.Plugin - JN 핵심 런타임")]
+[assembly: AssemblyProduct("Cirnix - Warcraft III 보조 도구")]
+[assembly: AssemblyCopyright("Copyright © BlacklightsC 2017 - 2020")]
 
 [assembly: ComVisible(false)]
 

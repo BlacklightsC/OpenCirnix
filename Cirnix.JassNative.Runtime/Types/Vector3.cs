@@ -1,35 +1,28 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace TinkerWorX.SharpCraft.Types
+namespace Cirnix.JassNative.Runtime.Types
 {
     [StructLayout(LayoutKind.Sequential)]
     [Serializable]
     public struct Vector3
     {
-        public Single X;
+        public float X, Y, Z;
 
-        public Single Y;
-
-        public Single Z;
-
-        public Vector3(Single x, Single y, Single z)
+        public Vector3(float x, float y, float z)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
-        public Vector3(Vector2 vector, Single z)
+        public Vector3(Vector2 vector, float z)
         {
-            this.X = vector.X;
-            this.Y = vector.Y;
-            this.Z = z;
+            X = vector.X;
+            Y = vector.Y;
+            Z = z;
         }
 
-        public override String ToString()
-        {
-            return String.Format("({0}; {1}; {2})", this.X, this.Y, this.Z);
-        }
+        public override string ToString() => $"({X}; {Y}; {Z})";
     }
 }
