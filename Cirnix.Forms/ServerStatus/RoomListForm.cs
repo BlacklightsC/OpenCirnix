@@ -38,7 +38,7 @@ namespace Cirnix.Forms.ServerStatus
             FormEnable = false;
             RoomList.Items.Clear();
             ReleaseFormInfo();
-            BTN_MapLog.Visible = CB_DisplayAll.Visible = CB_ShowPrivate.Visible = Label_StartTime.Visible = TB_StartTime.Visible = false;
+            CB_DisplayAll.Visible = CB_ShowPrivate.Visible = false;
             CB_RealTimeSet.Location = new Point(8, 43);
         }
         private void RoomListForm_Shown(object sender, EventArgs e)

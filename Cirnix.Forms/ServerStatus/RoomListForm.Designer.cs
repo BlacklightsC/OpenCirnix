@@ -765,7 +765,6 @@
             this.BTN_MapLog.TabIndex = 56;
             this.BTN_MapLog.Text = "기록";
             this.BTN_MapLog.UseVisualStyleBackColor = true;
-            this.BTN_MapLog.Visible = false;
             this.BTN_MapLog.Click += new System.EventHandler(this.BTN_MapLog_Click);
             // 
             // BTN_RoomJoin
@@ -780,7 +779,7 @@
             this.BTN_RoomJoin.UseVisualStyleBackColor = true;
             this.BTN_RoomJoin.Click += new System.EventHandler(this.BTN_RoomJoin_Click);
             // 
-            // TB_Name
+            // RTB_Name
             // 
             this.RTB_Name.BackColor = System.Drawing.Color.White;
             this.RTB_Name.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -789,7 +788,7 @@
             this.RTB_Name.Location = new System.Drawing.Point(196, 49);
             this.RTB_Name.Margin = new System.Windows.Forms.Padding(1);
             this.RTB_Name.Multiline = false;
-            this.RTB_Name.Name = "TB_Name";
+            this.RTB_Name.Name = "RTB_Name";
             this.RTB_Name.ReadOnly = true;
             this.RTB_Name.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.RTB_Name.Size = new System.Drawing.Size(176, 15);

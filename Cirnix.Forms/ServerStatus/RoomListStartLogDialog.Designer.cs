@@ -42,7 +42,7 @@
             this.Label_Title.Name = "Label_Title";
             this.Label_Title.Size = new System.Drawing.Size(120, 20);
             this.Label_Title.TabIndex = 9;
-            this.Label_Title.Text = "구 버전 맵 시작 기록";
+            this.Label_Title.Text = "특정 맵 시작 기록";
             this.Label_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // BTN_StartLog
