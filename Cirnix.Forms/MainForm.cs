@@ -15,7 +15,7 @@ namespace Cirnix.Forms
         internal Action TrayCheck;
         internal Action optionForm;
         internal Action infoForm;
-        internal Action roomListForm;
+        internal Action<string[]> roomListForm;
         internal Action additonalToolForm;
         internal Action selectProcess;
         private bool isUpdating;
@@ -45,7 +45,7 @@ namespace Cirnix.Forms
 
         private void BTN_RoomList_Click(object sender, EventArgs e)
         {
-            roomListForm();
+            roomListForm(null);
         }
 
         private void BTN_AdditionalTool_Click(object sender, EventArgs e)

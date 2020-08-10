@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -59,7 +60,7 @@ namespace Cirnix.Forms
                 MainWorker.RunWorkers();
                 CLRHook.Injector.InstallHookLib();
                 WarcraftInit = CLRHook.Injector.Init;
-                commandList.Register("rl", "기", () => Invoke(new Action(InitRoomListForm)));
+                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm)));
                 channel = new ChannelChatForm();
                 InitBanList();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
@@ -93,17 +94,6 @@ namespace Cirnix.Forms
             Memory.Message.SendMsg(true, $"Debug Mode On, Version: {version[0]}.{version[1]}");
         }
 
-        internal static string GetFullArgs(bool isLower = false)
-        {
-            StringBuilder arg = new StringBuilder();
-            for (int i = 1; i < Globals.args.Count - 1; i++)
-            {
-                arg.Append(Globals.args[i]);
-                if (i + 1 != Globals.args.Count - 1) arg.Append(" ");
-            }
-            return isLower ? arg.ToString().ToLower() : arg.ToString();
-        }
-
         private void InitBanList()
         {
             List<BanlistModel> list = Memory.SaveBanlistUsers.Load();
@@ -112,8 +102,6 @@ namespace Cirnix.Forms
                     if (banlistModel != null)
                         Memory.BanList.Add(banlistModel);
         }
-
-
 
         private void InitMainForm()
         {
@@ -204,16 +192,26 @@ namespace Cirnix.Forms
             licenceForm.Show();
             licenceForm.Activate();
         }
-        private void InitRoomListForm()
+        private void InitRoomListForm(string[] args)
         {
-            string arg = GetFullArgs();
+            string value = string.Empty;
+            if (args != null)
+            {
+                StringBuilder arg = new StringBuilder();
+                for (int i = 1; i < args.Length; i++)
+                {
+                    arg.Append(args[i]);
+                    if (i + 1 != args.Length) arg.Append(" ");
+                }
+                value = arg.ToString();
+            }
             if (!(room == null
              || room.IsDisposed))
             {
                 room.Activate();
                 return;
             }
-            room = new RoomListForm(arg);
+            room = new RoomListForm(value);
             room.Show();
             room.Activate();
         }

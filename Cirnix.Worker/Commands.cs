@@ -67,17 +67,16 @@ namespace Cirnix.Worker
                         UserState = CommandTag.None;
                         return;
                     }
-                    Globals.args.AddRange(args);
-                    Globals.args.Add(null);
-                    string command = Globals.args[0].ToLower();
-                    commandList.Find(item => item.Tag == UserState && item.CompareCommand(command))?.Function();
-                    Globals.args.RemoveRange(0, Globals.args.Count);
+                    if (args.Length > 0)
+                    {
+                        string command = args[0];
+                        commandList.Find(item => item.Tag == UserState && item.CompareCommand(command))?.Function(args);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 ExceptionSender.ExceptionSendAsync(ex);
-                Globals.args.RemoveRange(0, Globals.args.Count);
             }
             UserState = CommandTag.None;
         }
