@@ -113,7 +113,7 @@ namespace Cirnix.Worker
             commandList.Register("va", "ㅍㅁ", IpAddrMaching);
             commandList.Register("max", "ㅡㅁㅌ", MaxRoom);
             commandList.Register("min", "ㅡㅑㅜ", MinRoom);
-            commandList.Register("as", "ㅁㄴ", AutoStarter);
+            commandList.Register("as", "ㅁㄴ", AutoStarters);
         }
     }
 
@@ -1123,48 +1123,25 @@ namespace Cirnix.Worker
             }
         }
 
-        internal async static void AutoStarter()
+        internal static void AutoStarters()
         {
-            string arg = GetFullArgs();
-            try
+            Max = Convert.ToInt32(args[1]);
+            if (AutoStarter.IsRunning)
             {
-                if (arg == "off")
-                {
-                    SendMsg(true," 자동 시작을 취소합니다.");
-                    return;
-                }
-                else
-                {
-                    Max = Convert.ToInt32(arg);
-                    SendMsg(true, $"'{Max}'명 입장시 10초후 시작합니다.");
-                    SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
-                    do
-                    {
-                        await Task.Delay(500);
-                    }
-                    while (Max > PlayerCount);
-                    Play(Resources.max);
-                    for (int i = 10; i > 0; i--)
-                    {
-                        if (Max > PlayerCount)
-                        {
-                            SendMsg(true, "지정된 인원보다 수가 적습니다. 시작을 취소합니다.");
-                            return;
-                        }
-                        SendMsg(true, $"{i}초후 게임을 시작합니다.");
-                        await Task.Delay(1000);
-                    }
-                    PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
-                    PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 83, 0);
-                    PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
-                    PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 83, 0);
-                }
-                Max = 0;
+                SendMsg(true, "자동 시작을 취소합니다.");
+                AutoStarter.CancelAsync();
+                return;
             }
-            catch
-            {
-                SendMsg(true, "알림설정을 실패하였습니다.");
-            }
+            if (!int.TryParse(args[1], out int value) || value <= 0) goto Error;
+            SendMsg(true, $"'{Max}'명 입장시 10초후 시작합니다.");
+            SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
+            AutoStarter.RunWorkerAsync(Max);
+            return;
+        Error:
+            SendMsg(true, "자동 시작을 취소합니다.");
+            AutoStarter.CancelAsync();
+            return;
         }
+        
     }
 }
