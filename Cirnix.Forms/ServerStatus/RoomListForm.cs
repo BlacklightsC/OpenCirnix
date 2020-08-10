@@ -33,13 +33,13 @@ namespace Cirnix.Forms.ServerStatus
             Label_Title.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
             Label_Title.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
             Label_Title.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
+            TB_Search.Text = arg;
             MapImage.InitialImage = MapImage.ErrorImage = Properties.Resources.Unknown;
-            
             FormEnable = false;
             RoomList.Items.Clear();
             ReleaseFormInfo();
             CB_DisplayAll.Visible = CB_ShowPrivate.Visible = false;
-            CB_RealTimeSet.Location = new Point(8, 43);
+            CB_RealTimeSet.Location = new Point(8, 43); 
         }
         private void RoomListForm_Shown(object sender, EventArgs e)
         {
@@ -472,6 +472,16 @@ namespace Cirnix.Forms.ServerStatus
         private void Label_Loading_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void RoomList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Point point = e.Location;
+            int selectedIndex = RoomList.IndexFromPoint(point);
+            if (selectedIndex != -1)
+            {
+                Join.RoomJoin(CurrentField.gname);
+            }
         }
 
         private void BTN_SearchPlayer_Click(object sender, EventArgs e)

@@ -26,6 +26,7 @@ namespace Cirnix.Global
         public static bool isOnline { get; set; }
         public static bool isUpdated { get; set; }
         public static CommandTag UserState;
+        public static List<string> args = new List<string>();
         public static Action ProgramShutDown;
         public static Func<string, int, bool, bool, int> WarcraftInit;
         public static Action<int> ListUpdate;
