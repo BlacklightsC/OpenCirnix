@@ -35,6 +35,7 @@ namespace Cirnix.Worker
         internal static void RunWorkerAsync(int Max)
         {
             if (IsRunning) return;
+            Timer.Change(0, 1000);
             IsRunning = true;
             Maxs = Max;
             Worker_Actions();
@@ -44,6 +45,7 @@ namespace Cirnix.Worker
         {
             if (!IsRunning) return;
             Worker.Reset();
+            Timer.Change(Timeout.Infinite, Timeout.Infinite);
             IsRunning = false;
         }
 
