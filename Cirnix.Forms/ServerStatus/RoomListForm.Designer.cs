@@ -116,6 +116,7 @@
             this.RoomList.TabIndex = 1;
             this.RoomList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.RoomList_DrawItem);
             this.RoomList.SelectedIndexChanged += new System.EventHandler(this.RoomList_SelectedIndexChanged);
+            this.RoomList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.RoomList_MouseDoubleClick);
             // 
             // TB_ID
             // 

@@ -474,6 +474,16 @@ namespace Cirnix.Forms.ServerStatus
 
         }
 
+        private void RoomList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Point point = e.Location;
+            int selectedIndex = RoomList.IndexFromPoint(point);
+            if (selectedIndex != -1)
+            {
+                Join.RoomJoin(CurrentField.gname);
+            }
+        }
+
         private void BTN_SearchPlayer_Click(object sender, EventArgs e)
         {
             if (infoList.Count <= 0)
