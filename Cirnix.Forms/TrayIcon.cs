@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -58,7 +59,7 @@ namespace Cirnix.Forms
                 MainWorker.RunWorkers();
                 CLRHook.Injector.InstallHookLib();
                 WarcraftInit = CLRHook.Injector.Init;
-                commandList.Register("rl", "기", () => Invoke(new Action(InitRoomListForm)));
+                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm)));
                 channel = new ChannelChatForm();
                 InitBanList();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
@@ -190,15 +191,26 @@ namespace Cirnix.Forms
             licenceForm.Show();
             licenceForm.Activate();
         }
-        private void InitRoomListForm()
+        private void InitRoomListForm(string[] args)
         {
+            string value = string.Empty;
+            if (args != null)
+            {
+                StringBuilder arg = new StringBuilder();
+                for (int i = 1; i < args.Length; i++)
+                {
+                    arg.Append(args[i]);
+                    if (i + 1 != args.Length) arg.Append(" ");
+                }
+                value = arg.ToString();
+            }
             if (!(room == null
              || room.IsDisposed))
             {
                 room.Activate();
                 return;
             }
-            room = new RoomListForm();
+            room = new RoomListForm(value);
             room.Show();
             room.Activate();
         }

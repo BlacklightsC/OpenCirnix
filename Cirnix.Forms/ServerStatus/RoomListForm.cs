@@ -26,7 +26,7 @@ namespace Cirnix.Forms.ServerStatus
         private bool IsMapSearch = false, IsSearchResult = false;
         private RoomInformation.Field CurrentField;
         private string FilePath, FilterMapName = null;
-        internal RoomListForm()
+        internal RoomListForm(string arg)
         {
             InitializeComponent();
             Icon = Global.Properties.Resources.CirnixIcon;

@@ -18,14 +18,14 @@ namespace Cirnix.Global
         public string CommandEng { get; private set; }
         public string CommandKor { get; private set; }
         public CommandTag Tag { get; private set; }
-        public Action Function { get; private set; }
+        public Action<string[]> Function { get; private set; }
 
         // Description Elements
         public string Name { get; internal set; }
         public string Params { get; internal set; }
         public string Description { get; internal set; }
 
-        internal CommandComponent(string CommandEng, string CommandKor, CommandTag Tag, Action Function)
+        internal CommandComponent(string CommandEng, string CommandKor, CommandTag Tag, Action<string[]> Function)
         {
             this.CommandEng = CommandEng;
             this.CommandKor = CommandKor;
@@ -38,7 +38,7 @@ namespace Cirnix.Global
 
     public sealed class CommandList : List<CommandComponent>
     {
-        public void Register(string CommandEng, string CommandKor, Action Function, CommandTag Tag = CommandTag.Default)
+        public void Register(string CommandEng, string CommandKor, Action<string[]> Function, CommandTag Tag = CommandTag.Default)
         {
             if (string.IsNullOrEmpty(CommandEng)) CommandEng = "CirnixNullCommandMessage";
             if (string.IsNullOrEmpty(CommandKor)) CommandKor = "CirnixNullCommandMessage";

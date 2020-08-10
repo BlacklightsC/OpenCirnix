@@ -118,37 +118,39 @@ namespace Cirnix.Worker
     }
 
     internal static class Actions
-    {
-        internal static List<string> args = new List<string>();
+    {        
         private static string name = string.Empty;
         private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false;
-        private static bool State=false;
+        private static bool State = false;
         private static int Max;
         private static int Min;
-        internal static string GetSafeFullArgs(bool isLower = false)
+        internal static string GetSafeFullArgs(string[] args, bool isLower = false)
         {
+            if (args == null) return string.Empty;
             StringBuilder arg = new StringBuilder();
-            for (int i = 1; i < args.Count - 1; i++)
+            for (int i = 1; i < args.Length; i++)
             {
                 arg.Append(GetDirectorySafeName(args[i]));
-                if (i + 1 != args.Count - 1) arg.Append(" ");
+                if (i + 1 != args.Length) arg.Append(" ");
             }
             return isLower ? arg.ToString().ToLower() : arg.ToString();
         }
-        internal static string GetFullArgs(bool isLower = false)
+        internal static string GetFullArgs(string[] args, bool isLower = false)
         {
+            if (args == null) return string.Empty;
             StringBuilder arg = new StringBuilder();
-            for (int i = 1; i < args.Count - 1; i++)
+            for (int i = 1; i < args.Length; i++)
             {
                 arg.Append(args[i]);
-                if (i + 1 != args.Count - 1) arg.Append(" ");
+                if (i + 1 != args.Length) arg.Append(" ");
             }
             return isLower ? arg.ToString().ToLower() : arg.ToString();
         }
-        internal static string GetSafeMixArgs(int start, int end = -1, bool isLower = false)
+        internal static string GetSafeMixArgs(string[] args, int start, int end = -1, bool isLower = false)
         {
+            if (args == null) return string.Empty;
             StringBuilder arg = new StringBuilder();
-            if (end == -1) end = args.Count - 1;
+            if (end == -1) end = args.Length;
             for (int i = start; i < end; i++)
             {
                 arg.Append(GetDirectorySafeName(args[i]));
@@ -156,10 +158,11 @@ namespace Cirnix.Worker
             }
             return isLower ? arg.ToString().ToLower() : arg.ToString();
         }
-        internal static string GetMixArgs(int start, int end = -1, bool isLower = false)
+        internal static string GetMixArgs(string[] args, int start, int end = -1, bool isLower = false)
         {
+            if (args == null) return string.Empty;
             StringBuilder arg = new StringBuilder();
-            if (end == -1) end = args.Count - 1;
+            if (end == -1) end = args.Length;
             for (int i = start; i < end; i++)
             {
                 arg.Append(args[i]);
@@ -298,11 +301,11 @@ namespace Cirnix.Worker
             SendMsg(true, $"판독 결과: 치트맵{(IsCheatMap(e.FullPath) ? " 인것이 확인되었습" : "이 아닙")}니다.");
             MainWorker.MapFileWatcher.EnableRaisingEvents = false;
         }
-        internal static async void LoadCode()
+        internal static async void LoadCode(string[] args)
         {
-            if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
+            if (args?.Length > 1 && !string.IsNullOrEmpty(args[1]))
             {
-                string saveName = GetSafeFullArgs();
+                string saveName = GetSafeFullArgs(args);
                 string path = $"{GetCurrentPath(0)}\\{saveName}";
                 if (!Directory.Exists(path))
                 {
@@ -336,11 +339,11 @@ namespace Cirnix.Worker
             SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
 
-        internal static async void LoadCode2()
+        internal static async void LoadCode2(string[] args)
         {
-            if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
+            if (args?.Length > 1 && !string.IsNullOrEmpty(args[1]))
             {
-                string saveName = GetSafeFullArgs();
+                string saveName = GetSafeFullArgs(args);
                 string path = $"{GetCurrentPath(0)}\\{saveName}";
                 SendMsg(false, new string[] { path });
                 if (!Directory.Exists(path))
@@ -373,11 +376,11 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
-        internal static async void LoadCode3()
+        internal static async void LoadCode3(string[] args)
         {
-            if (args.Count > 1 && !string.IsNullOrEmpty(args[1]))
+            if (args?.Length > 1 && !string.IsNullOrEmpty(args[1]))
             {
-                string saveName = GetSafeFullArgs();
+                string saveName = GetSafeFullArgs(args);
                 string path = $"{GetCurrentPath(0)}\\{saveName}";
                 SendMsg(false, new string[] { path });
                 if (!Directory.Exists(path))
@@ -411,14 +414,12 @@ namespace Cirnix.Worker
             SendMsg(true, "Error - 기록된 코드가 없거나, 파일을 읽을 수 없습니다.");
         }
 
-        internal static void LoadCommands()
+        internal static void LoadCommands(string[] args)
         {
-            if (string.IsNullOrEmpty(args[1]))
-            {
+            if (args?.Length > 1 && !string.IsNullOrEmpty(args[1]))
+                TypeCommands(int.Parse(args[1]));
+            else
                 SendMsg(true, "Error - 프리셋을 지정해주세요. (1 ~ 3)");
-                return;
-            }
-            TypeCommands(int.Parse(args[1]));
         }
 
         private static async void TypeCommands(int index = -1)
@@ -529,9 +530,9 @@ namespace Cirnix.Worker
                 }
             }
         }
-        internal static void SetSave()
+        internal static void SetSave(string[] args)
         {
-            string saveName = GetSafeFullArgs();
+            string saveName = GetSafeFullArgs(args);
             if (string.IsNullOrEmpty(saveName))
             {
                 List<string> list = new List<string>();
@@ -575,9 +576,9 @@ namespace Cirnix.Worker
                 ListUpdate(2);
             }
         }
-        internal static void SetMap()
+        internal static void SetMap(string[] args)
         {
-            string saveName = GetSafeFullArgs();
+            string saveName = GetSafeFullArgs(args);
             foreach (var item in saveFilePath)
             {
                 if (item.nameEN.ToLower().IndexOf(saveName) == -1
@@ -592,9 +593,10 @@ namespace Cirnix.Worker
             }
             SendMsg(true, $"{IsKoreanBlock(saveName, "과", "와")} 유사한 이름을 찾지 못했습니다.");
         }
-        internal static void SetGameDelay()
+        internal static void SetGameDelay(string[] args)
         {
-            if (string.IsNullOrEmpty(args[1])
+            if (!(args?.Length > 1)
+             || string.IsNullOrEmpty(args[1])
              || !int.TryParse(args[1], out int delay)
              || delay < 0 || delay > 550)
                 goto Error;
@@ -605,9 +607,10 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "Error - Delay 값 범위: 0 ~ 550");
         }
-        internal static void SetStartSpeed()
+        internal static void SetStartSpeed(string[] args)
         {
-            if (string.IsNullOrEmpty(args[1])
+            if (!(args?.Length > 1)
+             || string.IsNullOrEmpty(args[1])
              || !int.TryParse(args[1], out int delay)
              || delay < 0 || delay > 6)
                 goto Error;
@@ -620,16 +623,16 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "Error - StartSpeed 값 범위: 0 ~ 6");
         }
-        internal static void SetHPView()
+        internal static void SetHPView(string[] args)
         {
             bool value = HPView;
             SendMsg(true, $"HP 최대값 표기가 {(value ? "나타납" : "사라집")}니다.");
             HPView = !value;
         }
-        internal static void RollDice()
+        internal static void RollDice(string[] args)
         {
             int diceNumber;
-            if (string.IsNullOrEmpty(args[1])) diceNumber = 100;
+            if (!(args?.Length > 1) || string.IsNullOrEmpty(args[1])) diceNumber = 100;
             else
             {
                 try
@@ -647,7 +650,7 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "Error - 주사위 범위: 0 ~ 2,147,483,646");
         }
-        internal static void ExecuteRG()
+        internal static void ExecuteRG(string[] args)
         {
             //if (CurrentGameState == GameState.StartedGame)
             //{
@@ -660,7 +663,7 @@ namespace Cirnix.Worker
                 AutoRG.CancelAsync();
                 return;
             }
-            if (!int.TryParse(args[1], out int value) || value <= 0) goto Error;
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) goto Error;
             SendMsg(true, $"자동 RG 기능이 시작되었습니다. ▷반복: {args[1]}회");
             AutoRG.RunWorkerAsync(value);
             return;
@@ -668,11 +671,11 @@ namespace Cirnix.Worker
             SendMsg(true, "자동 RG 기능이 시작되었습니다. ▷반복: 무제한");
             AutoRG.RunWorkerAsync(-1);
         }
-        internal static async void RpgSave()
+        internal static async void RpgSave(string[] args)
         {
             if (!IsInGame) return;
             IsSaved = true;
-            name = GetSafeFullArgs();
+            name = GetSafeFullArgs(args);
             string[] FileName;
             try
             {
@@ -692,9 +695,10 @@ namespace Cirnix.Worker
         Error:
             MainWorker.SaveWatcherTimer.Enabled = MainWorker.SaveFileWatcher.EnableRaisingEvents = true;
         }
-        internal static void CamDistance()
+        internal static void CamDistance(string[] args)
         {
-            if (string.IsNullOrEmpty(args[1])
+            if (!(args?.Length > 1)
+             || string.IsNullOrEmpty(args[1])
              || !float.TryParse(args[1], out float value)
              || value > 6000 || value < 0)
                 goto Error;
@@ -705,9 +709,10 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "Error - 시야 범위: 0 ~ 6000");
         }
-        internal static void CamAngleX()
+        internal static void CamAngleX(string[] args)
         {
-            if (string.IsNullOrEmpty(args[1])
+            if (!(args?.Length > 1)
+             || string.IsNullOrEmpty(args[1])
              || !float.TryParse(args[1], out float value)
              || value > 360 || value < 0)
                 goto Error;
@@ -718,9 +723,10 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "Error - X축 각도 범위: 0 ~ 360");
         }
-        internal static void CamAngleY()
+        internal static void CamAngleY(string[] args)
         {
-            if (string.IsNullOrEmpty(args[1])
+            if (!(args?.Length > 1)
+             || string.IsNullOrEmpty(args[1])
              || !float.TryParse(args[1], out float value)
              || value > 360 || value < 0)
                 goto Error;
@@ -732,7 +738,7 @@ namespace Cirnix.Worker
             SendMsg(true, "Error - Y축 각도 범위: 0 ~ 360");
         }
 
-        internal static void ProgramExit()
+        internal static void ProgramExit(string[] args)
         {
             //SendMsg(true, new string[] { "프로그램을 종료합니다." });
             Warcraft3Info.Close();
@@ -778,7 +784,7 @@ namespace Cirnix.Worker
             StatusCheck();
             return false;
         }
-        internal static async void MemoryOptimize()
+        internal static async void MemoryOptimize(string[] args)
         {
             if (Settings.IsMemoryOptimize) MemoryOptimizeChecker.Restart();
             SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
@@ -838,7 +844,7 @@ namespace Cirnix.Worker
                 WaitGameStart = true;
             }
         }
-        internal static void CheatCheck()
+        internal static void CheatCheck(string[] args)
         {
             if (!LoadedFiles.IsLoadedMap(out string MapPath))
             {
@@ -851,7 +857,7 @@ namespace Cirnix.Worker
             else
                 SendMsg(true, "판독 결과: 치트맵이 아닌 것 같습니다.");
         }
-        internal static void ShowMapPath()
+        internal static void ShowMapPath(string[] args)
         {
             if (!LoadedFiles.IsLoadedMap(out string MapPath))
             {
@@ -866,12 +872,12 @@ namespace Cirnix.Worker
             await Task.Delay(1);
             KeyboardHooker.HookStart();
         }
-        internal static void KeyDebug()
+        internal static void KeyDebug(string[] args)
         {
             KeyDebugFunc();
             SendMsg(true, "단축키 후킹 상태를 재설정하였습니다.");
         }
-        internal static void ToggleKeyRemapping()
+        internal static void ToggleKeyRemapping(string[] args)
         {
             if (!Settings.IsKeyRemapped
              && (hotkeyList.IsRegistered((Keys)Settings.KeyMap7)
@@ -917,9 +923,9 @@ namespace Cirnix.Worker
                 SendMsg(true, "키 리맵핑을 사용하지 않습니다.");
             }
         }
-        internal static void SearchRoomListRoom()
+        internal static void SearchRoomListRoom(string[] args)
         {
-            string SearchText = GetFullArgs(true);
+            string SearchText = GetFullArgs(args, true);
             if (string.IsNullOrEmpty(SearchText))
             {
                 SendMsg(true, "Error - 검색할 방 제목을 입력해주세요.");
@@ -942,9 +948,9 @@ namespace Cirnix.Worker
                  && item.status == "open"
                  && item.gname.ToLower().IndexOf(SearchText) != -1), Disconnect);
         }
-        internal static void SearchRoomListMap()
+        internal static void SearchRoomListMap(string[] args)
         {
-            string SearchText = GetFullArgs(true);
+            string SearchText = GetFullArgs(args, true);
             if (string.IsNullOrEmpty(SearchText))
             {
                 SendMsg(true, "Error - 검색할 맵 파일명을 입력해주세요.");
@@ -992,8 +998,7 @@ namespace Cirnix.Worker
 
         internal static async void LoadCodeSelect()
         {
-            string MapPath;
-            if (!LoadedFiles.IsLoadedMap(out MapPath))
+            if (!LoadedFiles.IsLoadedMap(out string MapPath))
             {
                 SendMsg(true, "로드된 맵이 없습니다.");
                 return;
@@ -1003,25 +1008,25 @@ namespace Cirnix.Worker
             if (MapPath.Contains("twrpg"))
             {
                 await Task.Delay(3000);
-                LoadCode2();
+                LoadCode2(null);
             }
             else
             {
-                LoadCode();
+                LoadCode(null);
             }
         }
 
-        internal static async void Rework()
+        internal static async void Rework(string[] args)
         {
             string LastInstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
             Settings.InstallPath = LastInstallPath;
-            string[] args = GetArguments(Warcraft3Info.ID);
+            string[] procArgs = GetArguments(Warcraft3Info.ID);
             Warcraft3Info.Close();
 
             await Task.Delay(2000);
             int windowState = 1;
-            if (args.Length != 0)
-                switch(args[0].ToLower())
+            if (procArgs.Length != 0)
+                switch(procArgs[0].ToLower())
                 {
                     case "-windows": windowState = 0; break;
                     case "-nativefullscr": windowState = 2; break;
@@ -1034,33 +1039,33 @@ namespace Cirnix.Worker
             }
         }
 
-        internal static void RoomJoin()
+        internal static void RoomJoin(string[] args)
         {
-            string arg = GetFullArgs();
+            string arg = GetFullArgs(args);
             SendMsg(true, $"'{arg}'에 입장합니다.");
             Join.RoomJoin(arg);
         }
 
-        internal static void RoomCreate()
+        internal static void RoomCreate(string[] args)
         {
-            string arg = GetFullArgs();
+            string arg = GetFullArgs(args);
             SendMsg(true, $"'{arg}'방을 생성합니다.");
             Join.RoomCreate(arg);
         }
 
-        internal static void BanlistCheck()
+        internal static void BanlistCheck(string[] args)
         {
             BanList.CheckBanList();
         }
 
-        internal static void IpAddrMaching()
+        internal static void IpAddrMaching(string[] args)
         {
             BanList.IPAddrMaching();
         }
 
-        internal async static void MaxRoom()
+        internal async static void MaxRoom(string[] args)
         {
-            string arg = GetFullArgs();
+            string arg = GetFullArgs(args);
             State = true;
             try
             {
@@ -1090,10 +1095,9 @@ namespace Cirnix.Worker
             }
         }
 
-
-        internal async static void MinRoom()
+        internal async static void MinRoom(string[] args)
         {
-            string arg = GetFullArgs();
+            string arg = GetFullArgs(args);
             State = true;
             try
             {
@@ -1123,9 +1127,9 @@ namespace Cirnix.Worker
             }
         }
 
-        internal async static void AutoStarter()
+        internal async static void AutoStarter(string[] args)
         {
-            string arg = GetFullArgs();
+            string arg = GetFullArgs(args);
             try
             {
                 if (arg == "off")
