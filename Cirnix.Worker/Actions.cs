@@ -118,7 +118,7 @@ namespace Cirnix.Worker
     }
 
     internal static class Actions
-    {        
+    {
         private static string name = string.Empty;
         private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false;
         private static bool State = false;
@@ -477,7 +477,7 @@ namespace Cirnix.Worker
                 }
                 list.RemoveAt(0);
             }
-            EndPreprocess:
+        EndPreprocess:
             if (index != -1 && !Silent) SendMsg(true, $"명령어 프리셋 {index}을 입력합니다.");
             for (; line < list.Count; line++)
             {
@@ -485,48 +485,48 @@ namespace Cirnix.Worker
                 switch (item[0])
                 {
                     case '#':
-                    {
-                        string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (str.Length < 2) break;
-                        switch (str[0].ToLower())
                         {
-                            case "delay":
+                            string[] str = item.Substring(1).Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (str.Length < 2) break;
+                            switch (str[0].ToLower())
                             {
-                                if (int.TryParse(str[1], out int result))
-                                    await Task.Delay(result);
-                                break;
-                            }
-                            case "globaldelay":
-                            {
-                                if (int.TryParse(str[1], out int result))
-                                    GlobalDelay = result;
-                                break;
-                            }
-                            case "title":
-                            {
-                                switch (str[1].ToLower())
-                                {
-                                    case "on":
-                                    case "true":
-                                        UseTitle = true;
+                                case "delay":
+                                    {
+                                        if (int.TryParse(str[1], out int result))
+                                            await Task.Delay(result);
                                         break;
-                                    case "off":
-                                    case "false":
-                                        UseTitle = false;
+                                    }
+                                case "globaldelay":
+                                    {
+                                        if (int.TryParse(str[1], out int result))
+                                            GlobalDelay = result;
                                         break;
-                                }
-                                break;
+                                    }
+                                case "title":
+                                    {
+                                        switch (str[1].ToLower())
+                                        {
+                                            case "on":
+                                            case "true":
+                                                UseTitle = true;
+                                                break;
+                                            case "off":
+                                            case "false":
+                                                UseTitle = false;
+                                                break;
+                                        }
+                                        break;
+                                    }
                             }
+                            break;
                         }
-                        break;
-                    }
                     case '%': break;
                     default:
-                    {
-                        if (GlobalDelay > 0) await Task.Delay(GlobalDelay);
-                        SendInstantMsg(UseTitle, item);
-                        break;
-                    }
+                        {
+                            if (GlobalDelay > 0) await Task.Delay(GlobalDelay);
+                            SendInstantMsg(UseTitle, item);
+                            break;
+                        }
                 }
             }
         }
@@ -1026,7 +1026,7 @@ namespace Cirnix.Worker
             await Task.Delay(2000);
             int windowState = 1;
             if (procArgs.Length != 0)
-                switch(procArgs[0].ToLower())
+                switch (procArgs[0].ToLower())
                 {
                     case "-windows": windowState = 0; break;
                     case "-nativefullscr": windowState = 2; break;
@@ -1129,23 +1129,21 @@ namespace Cirnix.Worker
 
         internal static void AutoStarters(string[] args)
         {
-            Max = Convert.ToInt32(args[1]);
             if (AutoStarter.IsRunning)
             {
                 SendMsg(true, "자동 시작을 취소합니다.");
                 AutoStarter.CancelAsync();
                 return;
             }
-            if (!int.TryParse(args[1], out int value) || value <= 0) goto Error;
-            SendMsg(true, $"'{Max}'명 입장시 10초후 시작합니다.");
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) goto Error;
+            SendMsg(true, $"'{args[1]}'명 입장시 10초후 시작합니다.");
             SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
-            AutoStarter.RunWorkerAsync(Max);
+            AutoStarter.RunWorkerAsync(Convert.ToInt32(args[1]));
             return;
         Error:
             SendMsg(true, "자동 시작을 취소합니다.");
             AutoStarter.CancelAsync();
             return;
         }
-        
     }
 }
