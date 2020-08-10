@@ -1127,11 +1127,11 @@ namespace Cirnix.Worker
             }
         }
 
-        internal async static void AutoStarters(string[] args)
+        internal static void AutoStarters(string[] args)
         {
             Max = Convert.ToInt32(args[1]);
             if (AutoStarter.IsRunning)
-            { 
+            {
                 SendMsg(true, "자동 시작을 취소합니다.");
                 AutoStarter.CancelAsync();
                 return;
