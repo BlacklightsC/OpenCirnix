@@ -5,6 +5,7 @@ using Cirnix.KeyHook;
 using Cirnix.Worker;
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -92,6 +93,17 @@ namespace Cirnix.Forms
             Memory.Message.SendMsg(true, $"Debug Mode On, Version: {version[0]}.{version[1]}");
         }
 
+        internal static string GetFullArgs(bool isLower = false)
+        {
+            StringBuilder arg = new StringBuilder();
+            for (int i = 1; i < Globals.args.Count - 1; i++)
+            {
+                arg.Append(Globals.args[i]);
+                if (i + 1 != Globals.args.Count - 1) arg.Append(" ");
+            }
+            return isLower ? arg.ToString().ToLower() : arg.ToString();
+        }
+
         private void InitBanList()
         {
             List<BanlistModel> list = Memory.SaveBanlistUsers.Load();
@@ -100,6 +112,8 @@ namespace Cirnix.Forms
                     if (banlistModel != null)
                         Memory.BanList.Add(banlistModel);
         }
+
+
 
         private void InitMainForm()
         {
@@ -192,13 +206,14 @@ namespace Cirnix.Forms
         }
         private void InitRoomListForm()
         {
+            string arg = GetFullArgs();
             if (!(room == null
              || room.IsDisposed))
             {
                 room.Activate();
                 return;
             }
-            room = new RoomListForm();
+            room = new RoomListForm(arg);
             room.Show();
             room.Activate();
         }

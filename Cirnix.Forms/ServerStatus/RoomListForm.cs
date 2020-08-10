@@ -26,20 +26,20 @@ namespace Cirnix.Forms.ServerStatus
         private bool IsMapSearch = false, IsSearchResult = false;
         private RoomInformation.Field CurrentField;
         private string FilePath, FilterMapName = null;
-        internal RoomListForm()
+        internal RoomListForm(string arg)
         {
             InitializeComponent();
             Icon = Global.Properties.Resources.CirnixIcon;
             Label_Title.MouseDown += new MouseEventHandler(Label_Title_MouseDown);
             Label_Title.MouseMove += new MouseEventHandler(Label_Title_MouseMove);
             Label_Title.MouseUp += new MouseEventHandler(Label_Title_MouseUp);
+            TB_Search.Text = arg;
             MapImage.InitialImage = MapImage.ErrorImage = Properties.Resources.Unknown;
-            
             FormEnable = false;
             RoomList.Items.Clear();
             ReleaseFormInfo();
             CB_DisplayAll.Visible = CB_ShowPrivate.Visible = false;
-            CB_RealTimeSet.Location = new Point(8, 43);
+            CB_RealTimeSet.Location = new Point(8, 43); 
         }
         private void RoomListForm_Shown(object sender, EventArgs e)
         {

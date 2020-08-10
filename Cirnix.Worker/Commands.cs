@@ -67,17 +67,17 @@ namespace Cirnix.Worker
                         UserState = CommandTag.None;
                         return;
                     }
-                    Actions.args.AddRange(args);
-                    Actions.args.Add(null);
-                    string command = Actions.args[0].ToLower();
+                    Globals.args.AddRange(args);
+                    Globals.args.Add(null);
+                    string command = Globals.args[0].ToLower();
                     commandList.Find(item => item.Tag == UserState && item.CompareCommand(command))?.Function();
-                    Actions.args.RemoveRange(0, Actions.args.Count);
+                    Globals.args.RemoveRange(0, Globals.args.Count);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionSender.ExceptionSendAsync(ex);
-                Actions.args.RemoveRange(0, Actions.args.Count);
+                Globals.args.RemoveRange(0, Globals.args.Count);
             }
             UserState = CommandTag.None;
         }

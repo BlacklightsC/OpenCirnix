@@ -119,7 +119,7 @@ namespace Cirnix.Worker
 
     internal static class Actions
     {
-        internal static List<string> args = new List<string>();
+        //internal static List<string> args = new List<string>();
         private static string name = string.Empty;
         private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false;
         private static bool State=false;
