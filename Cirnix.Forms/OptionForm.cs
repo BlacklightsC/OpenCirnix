@@ -1741,7 +1741,7 @@ namespace Cirnix.Forms
                     Label_CommandTitle.Text = "자동시작";
                     Label_CommandKR.Text = "ㅁㄴ";
                     Label_ParameterValue.Text = "없음";
-                    TB_CommandDescription.Text = "지정 이상의 인원이되면 10초 후 자동으로 시작합니다.\r\n\r\n !as off 로 하게되면 중단합니다.\r\n이미 10초 카운트다운을 하고있다면 중단이 불가능합니다.";
+                    TB_CommandDescription.Text = "지정 이상의 인원이되면 10초 후 자동으로 시작합니다.\r\n\r\n 한번더 !as 명령어를 입력하면 중단합니다.\r\n이미 10초 카운트다운을 하고있다면 중단이 불가능합니다.";
                     break;
                 case "exit":
                     Label_CommandTitle.Text = "워크래프트 종료";
