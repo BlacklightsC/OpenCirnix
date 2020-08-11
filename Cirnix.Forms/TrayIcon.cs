@@ -60,7 +60,7 @@ namespace Cirnix.Forms
                 MainWorker.RunWorkers();
                 CLRHook.Injector.InstallHookLib();
                 WarcraftInit = CLRHook.Injector.Init;
-                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm)));
+                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm), new object[] { args }));
                 channel = new ChannelChatForm();
                 InitBanList();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
