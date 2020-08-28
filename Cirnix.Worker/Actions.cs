@@ -1135,7 +1135,7 @@ namespace Cirnix.Worker
                 AutoStarter.CancelAsync();
                 return;
             }
-            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) goto Error;
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) { goto Error;}
             SendMsg(true, $"'{args[1]}'명 입장시 10초후 시작합니다.");
             SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
             AutoStarter.RunWorkerAsync(Convert.ToInt32(args[1]));
@@ -1143,7 +1143,7 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "자동 시작을 취소합니다.");
             AutoStarter.CancelAsync();
-            return;
+           
         }
     }
 }

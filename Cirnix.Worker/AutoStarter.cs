@@ -25,20 +25,25 @@ namespace Cirnix.Worker
         internal static bool IsRunning { get; private set; } = false;
         static AutoStarter()
         {
-            Worker = new HangWatchdog(0, 0, 10);
+            Worker = new HangWatchdog(999, 999, 999); //시간될대마다 조건무시하고 worker_actions함수 강제발동으로 마서용
             Worker.Condition = () => IsRunning;
             Worker.Actions += Worker_Actions;
 
             Timer = new Timer(state => Worker.Check());
         }
 
-        internal static void RunWorkerAsync(int Max)
+        internal async static void RunWorkerAsync(int Max)
         {
             if (IsRunning) return;
             Timer.Change(0, 1000);
-            IsRunning = true;
             Maxs = Max;
-            Worker_Actions();
+            IsRunning = true;
+            do
+            {
+                await Task.Delay(500);
+            }
+            while (Maxs > PlayerCount);  //타이머 미사용으로 대기 딜레이 다시 추가
+            Worker_Actions(); 
         }
 
         internal static void CancelAsync()
@@ -53,14 +58,11 @@ namespace Cirnix.Worker
         {
             try
             {
-                do
-                {
-                    await Task.Delay(500);
-                }
-                while (Maxs > PlayerCount);
+                if (!IsRunning) return;
                 Play(Resources.max);
                 for (int i = 10; i > 0; i--)
                 {
+                    
                     if (Maxs > PlayerCount)
                     {
                         SendMsg(true, "지정된 인원보다 수가 적습니다. 시작을 취소합니다.");
