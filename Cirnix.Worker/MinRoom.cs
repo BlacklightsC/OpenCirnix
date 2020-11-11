@@ -16,14 +16,14 @@ using Cirnix.Global.Properties;
 
 namespace Cirnix.Worker
 {
-    class AutoStarter
+    class MinRoom
     {
-        private static int Maxs;
+        private static int Mins;
         private static readonly Timer Timer;
         private static readonly HangWatchdog Worker;
         private static int AutoStarterCount = 0, LoopedCount = 0;
         internal static bool IsRunning { get; private set; } = false;
-        static AutoStarter()
+        static MinRoom()
         {
             Worker = new HangWatchdog(999, 999, 999); //시간될대마다 조건무시하고 worker_actions함수 강제발동으로 마서용
             Worker.Condition = () => IsRunning;
@@ -32,18 +32,18 @@ namespace Cirnix.Worker
             Timer = new Timer(state => Worker.Check());
         }
 
-        internal async static void RunWorkerAsync(int Max)
+        internal async static void RunWorkerAsync(int Min)
         {
             if (IsRunning) return;
             Timer.Change(0, 1000);
-            Maxs = Max;
+            Mins = Min;
             IsRunning = true;
             do
             {
                 await Task.Delay(500);
             }
-            while (Maxs > PlayerCount);  //타이머 미사용으로 대기 딜레이 다시 추가
-            Worker_Actions(); 
+            while (Mins < PlayerCount);  //타이머 미사용으로 대기 딜레이 다시 추가
+            Worker_Actions();
         }
 
         internal static void CancelAsync()
@@ -59,26 +59,11 @@ namespace Cirnix.Worker
             try
             {
                 if (!IsRunning) return;
+                SendMsg(true, $"'{Mins}'명 이하가 되었습니다.");
                 Play(Resources.max);
-                for (int i = 10; i > 0; i--)
-                {
-                    
-                    if (Maxs > PlayerCount)
-                    {
-                        SendMsg(true, "지정된 인원보다 수가 적습니다. 시작을 취소합니다.");
-                        CancelAsync();
-                        return;
-                    }
-                    SendMsg(true, $"{i}초후 게임을 시작합니다.");
-                    await Task.Delay(1000);
-                }
-                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
-                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 83, 0);
-                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
-                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 83, 0);
+                Mins = 0;
                 CancelAsync();
             }
-
             catch
             {
                 SendMsg(true, "알림설정을 실패하였습니다.");

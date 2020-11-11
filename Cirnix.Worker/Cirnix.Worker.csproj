@@ -51,6 +51,8 @@
     <Compile Include="Actions.cs" />
     <Compile Include="AutoMouse.cs" />
     <Compile Include="AutoRG.cs" />
+    <Compile Include="MinRoom.cs" />
+    <Compile Include="MaxRoom.cs" />
     <Compile Include="AutoStarter.cs" />
     <Compile Include="ChatHotkey.cs" />
     <Compile Include="Commands.cs" />

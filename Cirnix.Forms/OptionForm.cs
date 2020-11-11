@@ -1729,13 +1729,13 @@ namespace Cirnix.Forms
                     Label_CommandTitle.Text = "방 유저 카운트 알람(MAX)";
                     Label_CommandKR.Text = "ㅡㅁㅌ";
                     Label_ParameterValue.Text = "없음";
-                    TB_CommandDescription.Text = "방의 유저 설정된 수 이상이되면 알립니다.\r\n\r\n !max off 명령어를 입력하면 중단합니다.";
+                    TB_CommandDescription.Text = "방의 유저 설정된 수 이상이되면 알립니다.\r\n\r\n 한번더 !max 명령어를 입력하면 중단합니다.";
                     break;
                 case "min":
                     Label_CommandTitle.Text = "방 유저 카운트 알람(MIN)";
                     Label_CommandKR.Text = "ㅡㅑㅜ";
                     Label_ParameterValue.Text = "없음";
-                    TB_CommandDescription.Text = "방의 유저 설정된 수 이하가되면 알립니다.\r\n\r\n !min off 명령어를 입력하면 중단합니다.";
+                    TB_CommandDescription.Text = "방의 유저 설정된 수 이하가되면 알립니다.\r\n\r\n 한번더 !min 명령어를 입력하면 중단합니다.";
                     break;
                 case "as":
                     Label_CommandTitle.Text = "자동시작";

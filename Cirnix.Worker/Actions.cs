@@ -111,9 +111,9 @@ namespace Cirnix.Worker
             commandList.Register("dbg", "윻", KeyDebug);
             commandList.Register("wa", "ㅈㅁ", BanlistCheck);
             commandList.Register("va", "ㅍㅁ", IpAddrMaching);
-            commandList.Register("max", "ㅡㅁㅌ", MaxRoom);
-            commandList.Register("min", "ㅡㅑㅜ", MinRoom);
-            commandList.Register("as", "ㅁㄴ", AutoStarters);
+            commandList.Register("max", "ㅡㅁㅌ", MaxRoomFunc);
+            commandList.Register("min", "ㅡㅑㅜ", MinRoomFunc);
+            commandList.Register("as", "ㅁㄴ", AutoStartFunc);
         }
     }
 
@@ -1063,71 +1063,48 @@ namespace Cirnix.Worker
             BanList.IPAddrMaching();
         }
 
-        internal async static void MaxRoom(string[] args)
+        
+        internal async static void MinRoomFunc(string[] args)
         {
-            string arg = GetFullArgs(args);
-            State = true;
-            try
+            if (MinRoom.IsRunning)
             {
-                if (arg == "off")
-                {
-                    SendMsg(true, "알림설정을 취소합니다.");
-                    return;
-                }
-                Max = Convert.ToInt32(arg);
-                SendMsg(true, $"'{Max}'명 이상이 될때 알립니다.");
-                if (State)
-                {
-                    do
-                    {
-                        await Task.Delay(500);
-                    }
-                    while (Max > PlayerCount);
-                    SendMsg(true, $"'{Max}'명 이상이 되었습니다.");
-                    Play(Resources.max);
-                    State = false;
-                    Max = 0;
-                }
+                SendMsg(true, "Min알림설정을 취소합니다.");
+                MinRoom.CancelAsync();
+                return;
             }
-            catch
-            {
-                SendMsg(true, "알림설정을 실패하였습니다.");
-            }
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) { goto Error; }
+            SendMsg(true, $"'{args[1]}'명 이하가 될때 알립니다.");
+            MinRoom.RunWorkerAsync(Convert.ToInt32(args[1]));
+            return;
+        Error:
+            SendMsg(true, "Min알림설정을 취소합니다.");
+            MinRoom.CancelAsync();
+            return;
         }
+        
+        
 
-        internal async static void MinRoom(string[] args)
+        internal async static void MaxRoomFunc(string[] args)
         {
-            string arg = GetFullArgs(args);
-            State = true;
-            try
-            {
-                if (arg == "off")
-                {
-                    SendMsg(true, "알림설정을 취소합니다.");
-                    return;
-                }
-                Min = Convert.ToInt32(arg);
-                SendMsg(true, $"'{Min}'명 이하가 될때 알립니다.");
-                if (State)
-                {
-                    do
-                    {
-                        await Task.Delay(500);
-                    }
-                    while (Min < PlayerCount);
-                    SendMsg(true, $"'{Min}'명 이하가 되었습니다.");
-                    Play(Resources.max);
-                    State = false;
-                    Min = 0;
-                }
-            }
-            catch
-            {
-                SendMsg(true, "알림설정을 실패하였습니다.");
-            }
-        }
 
-        internal static void AutoStarters(string[] args)
+            if (MaxRoom.IsRunning)
+            {
+                SendMsg(true, "Max알림설정을 취소합니다.");
+                MaxRoom.CancelAsync();
+                return;
+            }
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) { goto Error; }
+            SendMsg(true, $"'{args[1]}'명 이상이 될때 알립니다.");
+            MaxRoom.RunWorkerAsync(Convert.ToInt32(args[1]));
+            return;
+        Error:
+            SendMsg(true, "Max알림설정을 취소합니다.");
+            MaxRoom.CancelAsync();
+            return;
+        }
+       
+
+        internal static void AutoStartFunc(string[] args)
         {
             if (AutoStarter.IsRunning)
             {
@@ -1143,7 +1120,7 @@ namespace Cirnix.Worker
         Error:
             SendMsg(true, "자동 시작을 취소합니다.");
             AutoStarter.CancelAsync();
-           
+            return;
         }
     }
 }

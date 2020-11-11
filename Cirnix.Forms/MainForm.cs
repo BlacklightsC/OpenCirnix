@@ -160,8 +160,8 @@ namespace Cirnix.Forms
             isUpdating = false;
 #if DEBUG
 #else
-            using (DonateForm donate = new DonateForm())
-                donate.ShowDialog();
+            /*using (DonateForm donate = new DonateForm())
+                donate.ShowDialog();*/  //후원창 비활성화
 #endif
         }
 
