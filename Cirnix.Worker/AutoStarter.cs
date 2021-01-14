@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
+using Cirnix.Global;
 using Cirnix.Global.Properties;
 
 using static Cirnix.Global.NativeMethods;
@@ -13,44 +14,62 @@ namespace Cirnix.Worker
 {
     internal static class AutoStarter
     {
-        private static readonly Timer Timer = new Timer(state => Action());
+        private static readonly Timer Timer;
+        private static readonly HangWatchdog Worker;
+        private static int RequireCount;
         internal static bool IsRunning { get; private set; } = false;
-        internal static int Dest { get; set; }
+        static AutoStarter()
+        {
+            Worker = new HangWatchdog(0, 0, 0); //시간될대마다 조건무시하고 worker_actions함수 강제발동으로 마서용
+            Worker.Condition = () => IsRunning && RequireCount <= PlayerCount;
+            Worker.Actions += Actions;
 
-        internal static void RunWorkerAsync(int dest)
+            Timer = new Timer(state => Worker.Check());
+        }
+
+        internal static void RunWorkerAsync(int count)
         {
             if (IsRunning) return;
-            Dest = dest;
             Timer.Change(0, 500);
             IsRunning = true;
+            RequireCount = count;
+            Worker.Check();
         }
 
         internal static void CancelAsync()
         {
             if (!IsRunning) return;
+            Worker.Reset();
             Timer.Change(Timeout.Infinite, Timeout.Infinite);
             IsRunning = false;
+            RequireCount = 0;
         }
 
-        private async static void Action()
+        private static void Actions()
         {
-            if (Dest > PlayerCount) return;
-            CancelAsync();
-            Play(Resources.max);
-            for (int i = 10; i > 0; i--)
+            try
             {
-                if (Dest > PlayerCount)
+                CancelAsync();
+                Play(Resources.max);
+                for (int i = 10; i > 0; i--)
                 {
-                    SendMsg(true, "지정된 인원보다 수가 적습니다. 시작을 취소합니다.");
-                    return;
+                    if (RequireCount > PlayerCount)
+                    {
+                        SendMsg(true, "지정된 인원보다 수가 적습니다. 시작을 취소합니다.");
+                        return;
+                    }
+                    SendMsg(true, $"{i}초후 게임을 시작합니다.");
+                    Thread.Sleep(1000);
                 }
-                SendMsg(true, $"{i}초후 게임을 시작합니다.");
-                await Task.Delay(1000);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 83, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
+                PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 83, 0);
             }
-            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 18, 0);
-            PostMessage(Warcraft3Info.MainWindowHandle, 0x100, 83, 0);
-            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 18, 0);
-            PostMessage(Warcraft3Info.MainWindowHandle, 0x101, 83, 0);
+            catch
+            {
+                SendMsg(true, "실행 도중 문제가 발생했습니다.");
+            }
         }
     }
 }

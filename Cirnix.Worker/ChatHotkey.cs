@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Text;
-using Cirnix.Global;
-using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Text;
+using System.Windows.Forms;
+
+using Cirnix.Global;
+
 using static Cirnix.Global.Globals;
 using static Cirnix.Memory.Message;
 

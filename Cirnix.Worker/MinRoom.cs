@@ -1,21 +1,25 @@
 ﻿using System.Threading;
 
 using Cirnix.Global;
+using Cirnix.Global.Properties;
 
+using static Cirnix.Global.SoundManager;
 using static Cirnix.Memory.Message;
+using static Cirnix.Memory.States;
+
 
 namespace Cirnix.Worker
 {
-    internal static class AutoRG
+    internal static class MinRoom
     {
         private static readonly Timer Timer;
         private static readonly HangWatchdog Worker;
-        private static int AutoRGCount = 0, LoopedCount = 0;
+        private static int MinCount;
         internal static bool IsRunning { get; private set; } = false;
-        static AutoRG()
+        static MinRoom()
         {
-            Worker = new HangWatchdog(0, 0, 10);
-            Worker.Condition = () => IsRunning;
+            Worker = new HangWatchdog(0, 0, 0);
+            Worker.Condition = () => IsRunning && MinCount >= PlayerCount;
             Worker.Actions += Actions;
 
             Timer = new Timer(state => Worker.Check());
@@ -24,10 +28,10 @@ namespace Cirnix.Worker
         internal static void RunWorkerAsync(int count)
         {
             if (IsRunning || count == 0) return;
-            Timer.Change(0, 1000);
+            Timer.Change(0, 500);
             IsRunning = true;
-            AutoRGCount = count;
-            Actions();
+            MinCount = count;
+            Worker.Check();
         }
 
         internal static void CancelAsync()
@@ -36,21 +40,22 @@ namespace Cirnix.Worker
             Worker.Reset();
             Timer.Change(Timeout.Infinite, Timeout.Infinite);
             IsRunning = false;
-            AutoRGCount = LoopedCount = 0;
+            MinCount = 0;
         }
 
         private static void Actions()
         {
-            SendMsg(false, "/rg");
-            if (AutoRGCount > 0)
+            try
             {
-                SendMsg(true, string.Format("자동 RG 사용 중: {0}회", ++LoopedCount));
-                if (LoopedCount >= AutoRGCount)
-                {
-                    CancelAsync();
-                    SendMsg(true, "자동 RG 기능이 자동적으로 종료되었습니다.");
-                }
+                CancelAsync();
+                SendMsg(true, $"'{MinCount}'명 이하가 되었습니다.");
+                Play(Resources.max);
+            }
+            catch
+            {
+                SendMsg(true, "실행 도중 문제가 발생했습니다.");
             }
         }
     }
 }
+

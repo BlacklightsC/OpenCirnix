@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Cirnix.Global;
-using Cirnix.Global.Properties;
 using Cirnix.KeyHook;
 using Cirnix.Memory;
 using Cirnix.ServerStatus;
@@ -14,7 +13,6 @@ using Cirnix.ServerStatus;
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.Hotkey;
 using static Cirnix.Global.Locale;
-using static Cirnix.Global.SoundManager;
 using static Cirnix.Global.TgaReader;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.ControlDelay;
@@ -109,9 +107,9 @@ namespace Cirnix.Worker
             commandList.Register("dbg", "윻", KeyDebug);
             commandList.Register("wa", "ㅈㅁ", BanlistCheck);
             commandList.Register("va", "ㅍㅁ", IpAddrMaching);
-            commandList.Register("max", "ㅡㅁㅌ", MaxRoom);
-            commandList.Register("min", "ㅡㅑㅜ", MinRoom);
-            commandList.Register("as", "ㅁㄴ", AutoStarters);
+            commandList.Register("max", "ㅡㅁㅌ", MaxRoomFunc);
+            commandList.Register("min", "ㅡㅑㅜ", MinRoomFunc);
+            commandList.Register("as", "ㅁㄴ", AutoStartFunc);
         }
     }
 
@@ -1079,86 +1077,56 @@ namespace Cirnix.Worker
             BanList.IPAddrMaching();
         }
 
-        internal async static void MaxRoom(string[] args)
+        
+        internal static void MinRoomFunc(string[] args)
         {
-            string arg = GetFullArgs(args);
-            State = true;
-            try
+            if (MinRoom.IsRunning)
             {
-                if (arg == "off")
-                {
-                    SendMsg(true, "알림설정을 취소합니다.");
-                    return;
-                }
-                Max = Convert.ToInt32(arg);
-                SendMsg(true, $"'{Max}'명 이상이 될때 알립니다.");
-                if (State)
-                {
-                    do
-                    {
-                        await Task.Delay(500);
-                    }
-                    while (Max > PlayerCount);
-                    SendMsg(true, $"'{Max}'명 이상이 되었습니다.");
-                    Play(Resources.max);
-                    State = false;
-                    Max = 0;
-                }
+                SendMsg(true, "최소 인원 알림을 취소합니다.");
+                MinRoom.CancelAsync();
+                return;
             }
-            catch
-            {
-                SendMsg(true, "알림설정을 실패하였습니다.");
-            }
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) goto Error;
+            SendMsg(true, $"'{args[1]}'명 이하가 될때 알립니다.");
+            MinRoom.RunWorkerAsync(value);
+            return;
+        Error:
+            SendMsg(true, "Error - 최소 인원 알림: 1명 이상");
         }
+        
+        
 
-        internal async static void MinRoom(string[] args)
+        internal static void MaxRoomFunc(string[] args)
         {
-            string arg = GetFullArgs(args);
-            State = true;
-            try
+
+            if (MaxRoom.IsRunning)
             {
-                if (arg == "off")
-                {
-                    SendMsg(true, "알림설정을 취소합니다.");
-                    return;
-                }
-                Min = Convert.ToInt32(arg);
-                SendMsg(true, $"'{Min}'명 이하가 될때 알립니다.");
-                if (State)
-                {
-                    do
-                    {
-                        await Task.Delay(500);
-                    }
-                    while (Min < PlayerCount);
-                    SendMsg(true, $"'{Min}'명 이하가 되었습니다.");
-                    Play(Resources.max);
-                    State = false;
-                    Min = 0;
-                }
+                SendMsg(true, "최소 인원 알림을 취소합니다.");
+                MaxRoom.CancelAsync();
+                return;
             }
-            catch
-            {
-                SendMsg(true, "알림설정을 실패하였습니다.");
-            }
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) goto Error;
+            SendMsg(true, $"'{args[1]}'명 이상이 될때 알립니다.");
+            MaxRoom.RunWorkerAsync(value);
+            return;
+        Error:
+            SendMsg(true, "Error - 최소 인원 알림: 1명 이상");
         }
+       
 
-        internal static void AutoStarters(string[] args)
+        internal static void AutoStartFunc(string[] args)
         {
-            if (AutoStarter.IsRunning
-             || !(args?.Length > 1)
-             || !int.TryParse(args[1], out int value)
-             || value <= 0)
+            if (AutoStarter.IsRunning)
             {
                 SendMsg(true, "자동 시작을 취소합니다.");
                 AutoStarter.CancelAsync();
+                return;
             }
-            else
-            {
-                SendMsg(true, $"'{args[1]}'명 입장시 10초후 시작합니다.");
-                SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
-                AutoStarter.RunWorkerAsync(Convert.ToInt32(args[1]));
-            }
+            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) goto Error;
+            SendMsg(true, $"'{args[1]}'명 입장시 10초후 시작합니다.", "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
+            AutoStarter.RunWorkerAsync(value);
+        Error:
+            SendMsg(true, "Error - 자동 시작 최소 인원: 1명 이상");
         }
     }
 }

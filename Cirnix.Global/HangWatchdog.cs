@@ -31,7 +31,16 @@ namespace Cirnix.Global
 
         public void Check()
         {
-            if (Condition?.Invoke() ?? true)
+            bool? condition;
+            try
+            {
+                condition = Condition?.Invoke();
+            }
+            catch
+            {
+                condition = false;
+            }
+            if (condition ?? true)
             {
                 if (Timer.IsRunning)
                 {
