@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 이러한 특성 값을 변경하세요.
 [assembly: AssemblyTitle("Cirnix.Worker - 명령어 확장 모음")]
 [assembly: AssemblyProduct("Cirnix - Warcraft III 보조 도구")]
-[assembly: AssemblyCopyright("Copyright © BlacklightsC 2017 - 2020")]
+[assembly: AssemblyCopyright("Copyright © BlacklightsC 2017 - 2021")]
 
 // ComVisible을 false로 설정하면 이 어셈블리의 형식이 COM 구성 요소에 
 // 표시되지 않습니다.  COM에서 이 어셈블리의 형식에 액세스하려면 

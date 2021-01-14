@@ -1,6 +1,6 @@
 #include "Warcraft.h"
 
-DWORD g16FF24, g16FF68, a16FF64, a16FF5C, a16FF58, a16FF20, a2C7F10;
+DWORD GetUnitState, GetBarPosition, SetBarPosition, SetBarBounds, CStatBar_CStatBar, GetUnitUIDef, CUnitUpdateHpBar;
 DWORD a16F088;
 DWORD a3000AC;
 
@@ -20,13 +20,13 @@ void ManaBarInit()
 	if (!SettingGet("Mana Bar"))
 		return;
 
-	g16FF24   = dwGameDll + 0x6BB400;	// 27AE90
-	g16FF68   = dwGameDll + 0x3AA5A0;	// 334180
-	a16FF64   = dwGameDll + 0x13FBB0;	// 6061B0
-	a16FF5C   = dwGameDll + 0x13F9B0;	// 605CC0
-	a16FF58   = dwGameDll + 0x3D57F0;	// 359CC0
-	a16FF20   = dwGameDll + 0x378720;	// 32C880
-	a2C7F10   = dwGameDll + 0x688CF0;	// 2C74B0
+	GetUnitState   = dwGameDll + 0x6BB400;	// 27AE90
+	GetBarPosition   = dwGameDll + 0x3AA5A0;	// 334180
+	SetBarPosition   = dwGameDll + 0x13FBB0;	// 6061B0
+	SetBarBounds   = dwGameDll + 0x13F9B0;	// 605CC0
+	CStatBar_CStatBar   = dwGameDll + 0x3D57F0;	// 359CC0
+	GetUnitUIDef   = dwGameDll + 0x378720;	// 32C880
+	CUnitUpdateHpBar   = dwGameDll + 0x688CF0;	// 2C74B0
 
 	DWORD a6F37A563 = dwGameDll + 0x3C67B4; // 379AE3
 	DWORD a6F37A968 = dwGameDll + 0x3C9D6A;	// 379EE8
@@ -64,15 +64,15 @@ void __declspec(naked) f00152750()
 	__asm
 	{
 		push	ebx
-		mov		ebx, a16FF64
+		mov		ebx, SetBarPosition
 		push	edi
-		mov		edi, a16FF5C
+		mov		edi, SetBarBounds
 		push	0
 		push	0
 		push	0
 		xor		edx, edx
 		mov		ecx, esi
-		call	a16FF58
+		call	CStatBar_CStatBar
 		fld		a1649D4
 		push	0
 		fstp	dword ptr [esi+0x58]
@@ -216,7 +216,7 @@ void __declspec(naked) f001527F0()
 		lea		eax, a16F008
 		mov		dword ptr [ebx], eax
 		pop		eax
-		call	g16FF24
+		call	GetUnitState
 		fldz
 		fcomp	dword ptr [esp+0xC]
 		fstsw	ax
@@ -227,7 +227,7 @@ void __declspec(naked) f001527F0()
 		push	ecx
 		xor		edx, edx
 		mov		ecx, edi
-		call	g16FF24
+		call	GetUnitState
 		fldz
 		fcomp	dword ptr [esp+0xC]
 		fstsw	ax
@@ -240,15 +240,15 @@ void __declspec(naked) f001527F0()
 		xor		edx, edx
 		mov		ecx, esi
 		call	eax
-		mov		ebx, a16FF64
-		mov		ebp, a16FF5C
+		mov		ebx, SetBarPosition
+		mov		ebp, SetBarBounds
 		lea		ecx, dword ptr [esp+0x1C]
 		push	ecx
 		lea		edx, dword ptr [esp+0x18]
 		mov		ecx, edi
-		call	g16FF68
+		call	GetBarPosition
 		mov		ecx, dword ptr [edi+0x30]
-		mov		eax, a16FF20
+		mov		eax, GetUnitUIDef
 		lea		edx, a164684
 		call	eax
 		test	eax, eax
@@ -304,7 +304,7 @@ void __declspec(naked) f00152930()
 		mov		a16F004, ecx
 		call	f001527F0
 		popad
-		mov		eax, a2C7F10
+		mov		eax, CUnitUpdateHpBar
 		jmp		eax
 	}
 }

@@ -1,18 +1,12 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 어셈블리에 대한 일반 정보는 다음 특성 집합을 통해 
 // 제어됩니다. 어셈블리와 관련된 정보를 수정하려면
 // 이러한 특성 값을 변경하세요.
-[assembly: AssemblyTitle("Cirnix.KeyHook")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Cirnix.KeyHook")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle("Cirnix.KeyHook - 키후킹 모듈 모음")]
+[assembly: AssemblyProduct("Cirnix - Warcraft III 보조 도구")]
+[assembly: AssemblyCopyright("Copyright © BlacklightsC 2017 - 2021")]
 
 // ComVisible을 false로 설정하면 이 어셈블리의 형식이 COM 구성 요소에 
 // 표시되지 않습니다. COM에서 이 어셈블리의 형식에 액세스하려면
@@ -33,4 +27,3 @@ using System.Runtime.InteropServices;
 // 기본값으로 할 수 있습니다.
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]

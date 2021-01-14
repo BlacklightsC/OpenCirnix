@@ -1,9 +1,10 @@
-﻿using Cirnix.Global;
-using Cirnix.Memory;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+
+using Cirnix.Global;
+using Cirnix.Memory;
+
 using static Cirnix.Global.Globals;
 using static Cirnix.KeyHook.Component;
 using static Cirnix.KeyHook.NativeMethods;

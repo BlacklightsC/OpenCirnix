@@ -219,10 +219,6 @@
       <Project>{66cc81d6-6995-4e70-949a-0acb7519f871}</Project>
       <Name>CirnoLib.MPQ</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cirnix.CLRHook\Cirnix.CLRHook.csproj">
-      <Project>{ddb4a1b6-10b8-4838-b903-25c2a55458b7}</Project>
-      <Name>Cirnix.CLRHook</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cirnix.KeyHook\Cirnix.KeyHook.csproj">
       <Project>{14ea16eb-22ca-43e8-be95-397bc7aa67c7}</Project>
       <Name>Cirnix.KeyHook</Name>

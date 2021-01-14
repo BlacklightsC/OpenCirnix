@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
 using static Cirnix.Global.Component;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
@@ -9,6 +10,9 @@ namespace Cirnix.Memory
 {
     public static class CProcess
     {
+        /// <summary>
+        /// 정리 전 / 정리 직후 / 정리 5초후
+        /// </summary>
         public static long[] MemoryValue = new long[3];
 
         public static bool ForegroundWar3()
@@ -49,7 +53,7 @@ namespace Cirnix.Memory
                                     excludeProcessNames.Any(procName => procName == process.ProcessName))
                                      return;
 
-                                 await TrimProcessMemory(process, false);
+                                 await TrimProcessMemory(process, 0, false);
                              });
         }
 
@@ -58,21 +62,28 @@ namespace Cirnix.Memory
         /// </summary>
         /// <param name="process">메모리 해제를 할 프로세스</param>
         /// <returns>메모리 해제 여부</returns>
-        public static async Task<bool> TrimProcessMemory(Process process, bool NeedResult = false)
+        public static async Task<bool> TrimProcessMemory(Process process, int ResultDelay, bool NeedResult = false)
         {
             if (process == null) return false;
             bool _result;
             try
             {
+                process.Refresh();
                 long oldWorkingSet64 = process.WorkingSet64;
                 _result = EmptyWorkingSet(process.Handle);
                 if (_result && NeedResult)
                 {
                     MemoryValue[0] = oldWorkingSet64;
-                    await Task.Delay(5000);
                     process.Refresh();
                     MemoryValue[1] = process.WorkingSet64;
-                    MemoryValue[2] = oldWorkingSet64 - process.WorkingSet64;
+                    if (ResultDelay > 0)
+                    {
+                        await Task.Delay(ResultDelay);
+                        process.Refresh();
+                        MemoryValue[2] = process.WorkingSet64;
+                    }
+                    else
+                        MemoryValue[2] = MemoryValue[1];
                 }
             }
             catch
@@ -93,12 +104,15 @@ namespace Cirnix.Memory
             Process[] ProcessbyName = Process.GetProcessesByName(ProcessName);
             
             if (ProcessbyName.Length > 0)
-                return await TrimProcessMemory(ProcessbyName[0], NeedResult);
+                return await TrimProcessMemory(ProcessbyName[0], 5000, NeedResult);
 
             return false;
         }
 
         public static async Task<bool> TrimProcessMemory(bool NeedResult = false)
-            => await TrimProcessMemory(Warcraft3Info.Process, NeedResult);
+            => await TrimProcessMemory(Warcraft3Info.Process, 5000, NeedResult);
+
+        public static async Task<bool> TrimProcessMemory(int ResultDelay)
+            => await TrimProcessMemory(Warcraft3Info.Process, ResultDelay * 1000, true);
     }
 }

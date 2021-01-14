@@ -1,11 +1,13 @@
-﻿using CirnoLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+
+using CirnoLib;
+
 using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
@@ -128,8 +130,7 @@ namespace Cirnix.Memory
                             if (Handle == IntPtr.Zero) return;
 
                             value.EnableRaisingEvents = true;
-                            Action ResetAction = Reset;
-                            value.Exited += (sender, e) => ResetAction();
+                            value.Exited += (sender, e) => new Action(Reset)();
                             _Process = value;
                         }
                         catch
@@ -299,7 +300,7 @@ namespace Cirnix.Memory
                     return offset;
                 int newOffset = buffer.ToInt32();
                 if (newOffset == 0) return IntPtr.Zero;
-                offset = new IntPtr(buffer.ToInt32());
+                offset = new IntPtr(newOffset);
             }
         }
 

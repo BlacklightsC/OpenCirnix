@@ -28,7 +28,6 @@ namespace Cirnix.Global
         public static CommandTag UserState;
         public static List<string> args = new List<string>();
         public static Action ProgramShutDown;
-        public static Func<string, int, bool, bool, int> WarcraftInit;
         public static Action<int> ListUpdate;
         public static IntPtr GlobalHandle = IntPtr.Zero;
         private static readonly string[] CheatSetPhases = Properties.Resources.CheatSetPhrase.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
