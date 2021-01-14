@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -58,9 +57,7 @@ namespace Cirnix.Forms
                 if (Settings.IsFixClipboard)
                     ClipboardConverter.FixStart();
                 MainWorker.RunWorkers();
-                CLRHook.Injector.InstallHookLib();
-                WarcraftInit = CLRHook.Injector.Init;
-                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm)));
+                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm), args));
                 channel = new ChannelChatForm();
                 InitBanList();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
@@ -309,7 +306,7 @@ namespace Cirnix.Forms
         }
         private void OpenRoomList_Click(object sender, EventArgs e)
         {
-            
+            InitRoomListForm(null);
         }
         private void OpenAnalyzer_Click(object sender, EventArgs e)
         {

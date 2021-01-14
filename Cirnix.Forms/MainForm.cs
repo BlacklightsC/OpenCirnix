@@ -158,11 +158,6 @@ namespace Cirnix.Forms
             }
             CommandPreset = Settings.SelectedCommand;
             isUpdating = false;
-#if DEBUG
-#else
-            using (DonateForm donate = new DonateForm())
-                donate.ShowDialog();
-#endif
         }
 
         private void MainForm_Update(object sender, EventArgs e)
@@ -221,7 +216,7 @@ namespace Cirnix.Forms
                 return 0;
             }
             set {
-                switch(value)
+                switch (value)
                 {
                     case 1:
                         RB_Preset1.Checked = true;
@@ -247,16 +242,15 @@ namespace Cirnix.Forms
             Settings.SelectedCommand = CommandPreset;
         }
 
-        private void BTN_LaunchWC3_Click(object sender, EventArgs e)
+        private async void BTN_LaunchWC3_Click(object sender, EventArgs e)
         {
             string LastInstallPath = Settings.InstallPath;
-            if (!File.Exists(Path.Combine(LastInstallPath, "Warcraft III.exe"))
-             && !File.Exists(Path.Combine(LastInstallPath, "war3.exe")))
+            if (!File.Exists(Path.Combine(LastInstallPath, "JNLoader.exe")))
             {
                 OpenFileDialog FDialog = new OpenFileDialog
                 {
-                    Title = "워크래프트 실행 파일을 선택하세요.",
-                    Filter = "워크래프트 EXE파일|Warcraft III.exe;war3.exe"
+                    Title = "실행 파일을 선택하세요.",
+                    Filter = "워크래프트 EXE파일|JNLoader.exe;Warcraft III.exe;war3.exe"
                 };
                 if (FDialog.ShowDialog() != DialogResult.OK) return;
                 Settings.InstallPath = LastInstallPath = Path.GetDirectoryName(FDialog.FileName);
@@ -278,8 +272,7 @@ namespace Cirnix.Forms
                     }
                 }
                 else return;
-            int pId = CLRHook.Injector.Init(LastInstallPath, MetroDialog.Select("화면 표기 설정", "창 모드", "전체 창", "전체화면"), true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
-            if (pId != 0) GameModule.InitWarcraft3Info(pId);
+            GameModule.StartWarcraft3(LastInstallPath, MetroDialog.Select("화면 표기 설정", "창 모드", "전체 창", "전체화면"));
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

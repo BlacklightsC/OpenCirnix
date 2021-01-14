@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+
+using Cirnix.Global;
+
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
 
@@ -35,6 +40,36 @@ namespace Cirnix.Memory
             catch
             {
                 return false;
+            }
+        }
+
+        public static async Task<WarcraftState> StartWarcraft3(string path, int windowState = 0)
+        {
+            Global.Registry.Warcraft.SetFullQualityGraphics();
+            string EXEPath = $"{path}\\JNLoader.exe";
+            if (!File.Exists(EXEPath)) return 0;
+
+            string WindowsStateString;
+            switch (windowState)
+            {
+                case 0: WindowsStateString = "-windows"; break;
+                case 1: WindowsStateString = string.Empty; break;
+                case 2: WindowsStateString = "-nativefullscr"; break;
+                default: return 0;
+            }
+            try
+            {
+                Process proc = Process.Start(EXEPath, WindowsStateString);
+                proc.WaitForExit();
+                int procId = proc.ExitCode;
+                if (procId <= 0) return WarcraftState.Error;
+                return InitWarcraft3Info(procId);
+            }
+            catch (ArgumentException ex)
+            {
+                MetroDialog.OK("오류", "Warcraft III를 실행하지 못했습니다.\nCirnix를 다시 실행시켜주세요.");
+                ExceptionSender.ExceptionSendAsync(ex);
+                return 0;
             }
         }
 

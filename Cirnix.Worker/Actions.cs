@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,7 +14,6 @@ using Cirnix.ServerStatus;
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.Hotkey;
 using static Cirnix.Global.Locale;
-using static Cirnix.Global.NativeMethods;
 using static Cirnix.Global.SoundManager;
 using static Cirnix.Global.TgaReader;
 using static Cirnix.Memory.Component;
@@ -787,16 +785,39 @@ namespace Cirnix.Worker
         internal static async void MemoryOptimize(string[] args)
         {
             if (Settings.IsMemoryOptimize) MemoryOptimizeChecker.Restart();
-            SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
-            if (await CProcess.TrimProcessMemory(true))
+            int ResultDelay;
+            if (!(args?.Length > 1) || string.IsNullOrEmpty(args[1]))
             {
-                if (CProcess.MemoryValue[2] < 0)
-                {
-                    SendMsg(true, "최적화할 메모리를 찾을 수 없었습니다.");
-                }
-                else SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(CProcess.MemoryValue[2])} = {ConvertSize(CProcess.MemoryValue[1])}");
+                ResultDelay = 5;
+                SendMsg(true, "워크래프트 3 메모리 최적화를 시도합니다.");
             }
-            else SendMsg(true, "Error - 최적화 중에 예외가 발생했습니다.");
+            else
+            {
+                try
+                {
+                    ResultDelay = int.Parse(args[1]);
+                    if (ResultDelay < 0) ResultDelay = 0;
+                    if (ResultDelay > 10) ResultDelay = 10;
+                }
+                catch
+                {
+                    ResultDelay = 5;
+                }
+                if (ResultDelay > 0)
+                    SendMsg(true, $"워크래프트 3 메모리 최적화를 시도합니다. ({ResultDelay}초 후 결과 계산)");
+            }
+            if (await CProcess.TrimProcessMemory(ResultDelay))
+            {
+                long ChangedMemory = CProcess.MemoryValue[0] - CProcess.MemoryValue[2];
+                if (ChangedMemory < 0)
+                {
+                    SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} + {ConvertSize(-ChangedMemory)} = {ConvertSize(CProcess.MemoryValue[2])}");
+                }
+                else SendMsg(true, $"결과: {ConvertSize(CProcess.MemoryValue[0])} - {ConvertSize(ChangedMemory)} = {ConvertSize(CProcess.MemoryValue[2])}");
+                return;
+            }
+        Error:
+            SendMsg(true, "Error - 최적화 중에 예외가 발생했습니다.");
         }
         internal static async void StatusCheck()
         {
@@ -1031,12 +1052,7 @@ namespace Cirnix.Worker
                     case "-windows": windowState = 0; break;
                     case "-nativefullscr": windowState = 2; break;
                 }
-            int pId = WarcraftInit(LastInstallPath, windowState, true, File.Exists(Path.Combine(ResourcePath, "JNService", "DEBUG.txt")));
-            if (pId != 0)
-            {
-                await Task.Delay(5000);
-                GameModule.InitWarcraft3Info(pId);
-            }
+            await GameModule.StartWarcraft3(LastInstallPath, windowState);
         }
 
         internal static void RoomJoin(string[] args)
@@ -1129,21 +1145,20 @@ namespace Cirnix.Worker
 
         internal static void AutoStarters(string[] args)
         {
-            if (AutoStarter.IsRunning)
+            if (AutoStarter.IsRunning
+             || !(args?.Length > 1)
+             || !int.TryParse(args[1], out int value)
+             || value <= 0)
             {
                 SendMsg(true, "자동 시작을 취소합니다.");
                 AutoStarter.CancelAsync();
-                return;
             }
-            if (!(args?.Length > 1) || !int.TryParse(args[1], out int value) || value <= 0) goto Error;
-            SendMsg(true, $"'{args[1]}'명 입장시 10초후 시작합니다.");
-            SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
-            AutoStarter.RunWorkerAsync(Convert.ToInt32(args[1]));
-            return;
-        Error:
-            SendMsg(true, "자동 시작을 취소합니다.");
-            AutoStarter.CancelAsync();
-            return;
+            else
+            {
+                SendMsg(true, $"'{args[1]}'명 입장시 10초후 시작합니다.");
+                SendMsg(true, "만약 다운로드 유저가 있을시 시작하지 못할 수 있습니다.");
+                AutoStarter.RunWorkerAsync(Convert.ToInt32(args[1]));
+            }
         }
     }
 }
