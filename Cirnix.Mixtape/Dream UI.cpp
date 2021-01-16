@@ -16,7 +16,6 @@ int saveesi = 0;
 int saveedi = 0;
 int saveebp = 0;
 int saveesp = 0;
-int pAttackSpeedLimit = 0;
 
 
 BOOL PlantDetourJMP(BYTE* source, const BYTE* destination, size_t length)
@@ -113,61 +112,51 @@ int __stdcall PrintAttackSpeedAndOtherInfo(int addr, float * attackspeed, float 
 	__asm mov retval, eax;
 	if (unitaddr > 0)
 	{
+		bufferaddr = buffer;
+		float realBAT = *(float*)BAT;
+		float fixedattackspeed = *(float*)attackspeed;
+		float realattackspeed = fixedattackspeed;
+		float maxattackspeed = *(float*)(dwGameDll + 0xD33DA4);
+		if (fixedattackspeed > maxattackspeed)
+			fixedattackspeed = maxattackspeed;
+
+		if (realattackspeed < 0.0f) realattackspeed = 0.01f;
+		if (fixedattackspeed < 0.0f) fixedattackspeed = 0.01f;
+
+		float AttacksPerSec = 0.0f;
+		float AttackReload = 0.0f;
+
+		if (fixedattackspeed != 0.0f && realBAT != 0.0f)
+		{
+			AttacksPerSec = fixedattackspeed / realBAT;
+			AttackReload = 1.0f / (fixedattackspeed / realBAT);
+		}
+
+		float AttackSpeedBonus = realattackspeed * 100.0f - 100.0f;
+
 		if (/*IsNotBadUnit(*unitaddr) && */IsHero(*unitaddr))
 		{
-			bufferaddr = buffer;
-			float realBAT = *(float*)BAT;
-			float fixedattackspeed = *(float*)attackspeed;
-			float realattackspeed = fixedattackspeed;
-			float maxattackspeed = *(float*)(dwGameDll + pAttackSpeedLimit);
-			if (fixedattackspeed > maxattackspeed)
-				fixedattackspeed = maxattackspeed;
-
-			if (realattackspeed  < 0.0f) realattackspeed  = 0.01f;
-			if (fixedattackspeed < 0.0f) fixedattackspeed = 0.01f;
-
-			float AttacksPerSec = 0.0f;
-			float AttackReload = 0.0f;
-
-			if (fixedattackspeed != 0.0f && realBAT != 0.0f)
-			{
-				AttacksPerSec = fixedattackspeed / realBAT;
-				AttackReload = 1.0f / (fixedattackspeed / realBAT);
-			}
-
 			float MaxAttacksPerSec = maxattackspeed / realBAT;
 			float MaxAttackReload = 1.0f / (maxattackspeed / realBAT);
-			float AttackSpeedBonus = realattackspeed * 100.0f - 100.0f;
 #pragma warning(push)
 #pragma warning(disable: 4819)
 			sprintf_s(buffer, sizeof(buffer), "%.1f/초 (주기: %.2f 초)|n공격 속도 보너스: %.0f%%|n한계 속도: %.1f/초 (주기: %.2f 초)|n", AttacksPerSec, AttackReload, AttackSpeedBonus, MaxAttacksPerSec, MaxAttackReload);
 #pragma warning(pop)
-			__asm
-			{
-				PUSH 0x200;
-				PUSH bufferaddr;
-				PUSH addr;
-				CALL Storm503;
-			}
 		}
 		else
 		{
-			bufferaddr = buffer;
-			float oldaddtackspeed = *(float*)attackspeed;
-			float fixedattackspeed = oldaddtackspeed;
-			if (fixedattackspeed > *(float*)(dwGameDll + pAttackSpeedLimit))
-				fixedattackspeed = *(float*)(dwGameDll + pAttackSpeedLimit);
 #pragma warning(push)
 #pragma warning(disable: 4819)
-			sprintf_s(buffer, sizeof(buffer), "%.3f/초 (주기: %.2f 초)", (fixedattackspeed / *(float*)BAT), 1.0f / (fixedattackspeed / *(float*)BAT));
+			sprintf_s(buffer, sizeof(buffer), "%.3f/초 (주기: %.2f 초)|n공격 속도 보너스: %.0f%%", AttacksPerSec, AttackReload, AttackSpeedBonus);
 #pragma warning(pop)
-			__asm
-			{
-				PUSH 0x200;
-				PUSH bufferaddr;
-				PUSH addr;
-				CALL Storm503;
-			}
+		}
+
+		__asm
+		{
+			PUSH 0x200;
+			PUSH bufferaddr;
+			PUSH addr;
+			CALL Storm503;
 		}
 	}
 
@@ -196,6 +185,7 @@ void __declspec(naked)  PrintAttackSpeedAndOtherInfoHook128f()
 	}
 }
 
+/*
 void __declspec(naked) AsToInt()
 {
 	_asm
@@ -221,6 +211,7 @@ void __declspec(naked) AsToInt()
 		RETN
 	}
 }
+*/
 
 void __declspec(naked) MsToInt()
 {
@@ -288,10 +279,8 @@ void DreamUiInit()
 		VirtualProtect((LPVOID)(dwGameDll + 0x3DEE20), 100, PAGE_EXECUTE_READWRITE, &dwOldProtection);
 		*(DWORD *)(dwGameDll + 0x3DEE2B) = (DWORD)MsToInt - (dwGameDll + 0x3DEE2F);
 		VirtualProtect((LPVOID)(dwGameDll + 0x3DEE20), 100, dwOldProtection, NULL);
-		pAttackSpeedLimit = 0xD33DA4;
-		int pDrawAttackSpeed = dwGameDll + 0x3DDF60;
 		//*(DWORD *) (dwGameDll + 0x3DE0BB) = (DWORD)AsToInt - (dwGameDll + 0x3DE0BF);
-		PlantDetourJMP((BYTE*)(pDrawAttackSpeed), (BYTE*)PrintAttackSpeedAndOtherInfoHook128f, 5);
+		PlantDetourJMP((BYTE*)(dwGameDll + 0x3DDF60), (BYTE*)PrintAttackSpeedAndOtherInfoHook128f, 5);
 	}
 
 	// Show HP & MP Regen
