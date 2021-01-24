@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 
 using Cirnix.Global;
 using Cirnix.Global.Properties;
@@ -20,7 +19,7 @@ namespace Cirnix.Worker
         internal static bool IsRunning { get; private set; } = false;
         static AutoStarter()
         {
-            Worker = new HangWatchdog(0, 0, 0); //시간될대마다 조건무시하고 worker_actions함수 강제발동으로 마서용
+            Worker = new HangWatchdog(0, 0, 0);
             Worker.Condition = () => IsRunning && RequireCount <= PlayerCount;
             Worker.Actions += Actions;
 
