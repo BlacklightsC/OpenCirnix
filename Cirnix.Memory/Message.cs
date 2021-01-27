@@ -1,9 +1,10 @@
-﻿using Cirnix.Global;
-
-using System;
+﻿using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Cirnix.Global;
+
 using static Cirnix.Global.Globals;
 using static Cirnix.Global.NativeMethods;
 using static Cirnix.Memory.Component;

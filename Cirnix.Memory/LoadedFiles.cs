@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 
 using static Cirnix.Memory.Component;
@@ -38,24 +39,26 @@ namespace Cirnix.Memory
         public static string LoadedMap {
             get {
                 byte[] buffer = new byte[0x100];
+                ReadProcessMemory(Warcraft3Info.Handle, Offset - 0x80, buffer, 4, out _);
+                int count = BitConverter.ToInt32(buffer, 0);
                 string FilePath;
-                for (int i = 0; i < 0x1F64; i += 0x268)
+                for (int i = 0, ofs = 0; i < count; i++, ofs += 0x268)
                 {
-                    ReadProcessMemory(Warcraft3Info.Handle, Offset + i, buffer, 0x100, out _);
-                    FilePath = Encoding.UTF8.GetString(buffer).Replace("\0", string.Empty);
+                    ReadProcessMemory(Warcraft3Info.Handle, Offset + ofs, buffer, 0x100, out _);
                     string Extention;
                     try
                     {
-                        Extention = System.IO.Path.GetExtension(FilePath).ToLower();
+                        FilePath = Encoding.UTF8.GetString(buffer).Replace("\0", string.Empty);
+                        Extention = Path.GetExtension(FilePath).ToLower();
                     }
                     catch
                     {
                         continue;
                     }
                     if (Extention != ".w3x" && Extention != ".w3m") continue;
-                    ReadProcessMemory(Warcraft3Info.Handle, Offset + i - 0x10, buffer, 3, out _);
-                    if (!CompareArrays(FileLoadedPattern, buffer, 3)) continue;
-                    return FilePath;
+                    ReadProcessMemory(Warcraft3Info.Handle, Offset + ofs - 0x10, buffer, 3, out _);
+                    if (buffer[0] == 0x68 && buffer[1] == 2 && buffer[2] == 4)
+                        return FilePath;
                 }
                 return string.Empty;
             }

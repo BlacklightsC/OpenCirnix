@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+
 using static Cirnix.Global.NativeMethods;
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.Message;

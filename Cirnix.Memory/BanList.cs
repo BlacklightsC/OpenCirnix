@@ -1,14 +1,15 @@
-﻿using Cirnix.Global;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
-using System.Linq;
 using System.Threading.Tasks;
+
+using Cirnix.Global;
+
 using static Cirnix.Memory.Component;
-using static Cirnix.Memory.NativeMethods;
 using static Cirnix.Memory.Message;
+using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
 {

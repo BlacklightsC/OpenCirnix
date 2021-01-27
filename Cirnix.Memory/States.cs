@@ -1,6 +1,7 @@
 ﻿using System;
-using static Cirnix.Memory.Message;
+
 using static Cirnix.Memory.Component;
+using static Cirnix.Memory.Message;
 using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
@@ -31,8 +32,10 @@ namespace Cirnix.Memory
             get {
                 if (GameDllOffset != IntPtr.Zero)
                 {
-                    int A = BitConverter.ToInt32(Bring(GameDllOffset + 0xD32318, 4), 0);
-                    int B = BitConverter.ToInt32(Bring(GameDllOffset + 0xD3231C, 4), 0);
+                    byte[] a = Bring(GameDllOffset + 0xD32318, 4);
+                    byte[] b = Bring(GameDllOffset + 0xD3231C, 4);
+                    int A = BitConverter.ToInt32(a, 0);
+                    int B = BitConverter.ToInt32(b, 0);
                     if (A == 2 && B == 2) return MusicState.Offline;
                     if (A == 16 && B == 10) return MusicState.BattleNet;
                     if (A == 4 && B == 4) return MusicState.InGameDefault;

@@ -1,5 +1,7 @@
-﻿using CirnoLib;
-using System;
+﻿using System;
+
+using CirnoLib;
+
 using static Cirnix.Memory.Component;
 
 namespace Cirnix.Memory

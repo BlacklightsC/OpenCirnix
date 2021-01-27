@@ -117,9 +117,6 @@ namespace Cirnix.Worker
     {
         private static string name = string.Empty;
         private static bool IsSaved = false, IsTime = false, WaitGameStart = false, WaitLobby = false, InitializedWarcraft = false;
-        private static bool State = false;
-        private static int Max;
-        private static int Min;
         internal static string GetSafeFullArgs(string[] args, bool isLower = false)
         {
             if (args == null) return string.Empty;

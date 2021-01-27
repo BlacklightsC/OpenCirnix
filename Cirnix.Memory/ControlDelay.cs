@@ -1,4 +1,5 @@
 ﻿using System;
+
 using static Cirnix.Memory.Component;
 
 namespace Cirnix.Memory

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Text;
+
 using static Cirnix.Memory.Component;
 using static Cirnix.Memory.NativeMethods;
 
 namespace Cirnix.Memory
 {
-    
+
     public static class ChannelChat
     {
         private static readonly byte[] ChannelSignature = { 0x1A, 0x27, 0xBA, 0x66, 0x1A };
