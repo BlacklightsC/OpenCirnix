@@ -57,7 +57,7 @@ namespace Cirnix.Forms
                 if (Settings.IsFixClipboard)
                     ClipboardConverter.FixStart();
                 MainWorker.RunWorkers();
-                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm), args));
+                commandList.Register("rl", "기", args => Invoke(new Action<string[]>(InitRoomListForm), new object[] { args }));
                 channel = new ChannelChatForm();
                 InitBanList();
                 channel.ChatTimer.Enabled = Settings.IsChannelChatDetect;
