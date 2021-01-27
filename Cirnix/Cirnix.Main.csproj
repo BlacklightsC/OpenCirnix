@@ -114,7 +114,6 @@ COPY /Y Cirnix.exe CirnixBeta.exe</PostBuildEvent>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="costura32\EasyHook32.dll" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>

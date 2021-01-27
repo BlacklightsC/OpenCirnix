@@ -3,12 +3,9 @@
   <Costura IncludeDebugSymbols='false'>
     <Unmanaged32Assemblies>
       Magick.Native-Q8-x86
-      EasyHook32
     </Unmanaged32Assemblies>
     <PreloadOrder>
       Magick.Native-Q8-x86
-      EasyHook32
-      EasyLoad32
     </PreloadOrder>
   </Costura>
 </Weavers>
