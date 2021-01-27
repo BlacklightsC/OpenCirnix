@@ -47,7 +47,29 @@ namespace Cirnix.Memory
         {
             Global.Registry.Warcraft.SetFullQualityGraphics();
             string EXEPath = $"{path}\\JNLoader.exe";
-            if (!File.Exists(EXEPath)) return 0;
+            string updaterPath = $"{path}\\JNUpdater.exe";
+            if (!File.Exists(EXEPath) || !File.Exists(updaterPath))
+            {
+                try
+                {
+                    if (File.Exists(updaterPath))
+                        File.Delete(updaterPath);
+                    File.WriteAllBytes(updaterPath, Properties.Resources.JNUpdater);
+                    ProcessStartInfo info = new ProcessStartInfo("JNUpdater.exe", "-updateonly -force");
+                    info.WorkingDirectory = path;
+                    using (Process proc = Process.Start(info))
+                    {
+                        proc.WaitForExit();
+                        int ExitCode = proc.ExitCode;
+                        if (ExitCode >> 16 < 0 || ExitCode << 16 >> 16 < 0)
+                        {
+                            MetroDialog.OK("오류", "JNLoader 설치에 실패했습니다.\n백신에 의해 차단됬을 수도 있습니다.");
+                            return 0;
+                        }
+                    }
+                }
+                catch { return 0; }
+            }
 
             string WindowsStateString;
             switch (windowState)
@@ -59,11 +81,13 @@ namespace Cirnix.Memory
             }
             try
             {
-                Process proc = Process.Start(EXEPath, WindowsStateString);
-                proc.WaitForExit();
-                int procId = proc.ExitCode;
-                if (procId <= 0) return WarcraftState.Error;
-                return InitWarcraft3Info(procId);
+                using (Process proc = Process.Start(EXEPath, WindowsStateString))
+                {
+                    proc.WaitForExit();
+                    int procId = proc.ExitCode;
+                    if (procId <= 0) return WarcraftState.Error;
+                    return InitWarcraft3Info(procId);
+                }
             }
             catch (ArgumentException ex)
             {
