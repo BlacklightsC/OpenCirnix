@@ -37,10 +37,14 @@ namespace Cirnix.Forms
 
         private void Select_Click(object sender, EventArgs e)
         {
-            Process proc = ProcessList.FocusedItem.Tag as Process;       
+            Process proc = ProcessList.FocusedItem.Tag as Process;
+            //MetroDialog.OK("지정 완료", $"{proc.ProcessName} ({proc.Id}) 가 지정되었습니다.");
+            
             switch (GameModule.InitWarcraft3Info(proc))
             {
                 case WarcraftState.OK:
+                    Warcraft3Info.Refresh();
+                    GameModule.GetOffset();
                     MetroDialog.OK("지정 완료", $"{proc.ProcessName} ({proc.Id}) 가 지정되었습니다.");
                     break;
                 case WarcraftState.Closed:
@@ -50,6 +54,7 @@ namespace Cirnix.Forms
                     MetroDialog.OK("오류", "프로세스를 초기화 하는데에 실패했습니다.");
                     break;
             }
+            
             procs.Remove(proc);
             Close();                                
         }
