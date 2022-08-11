@@ -1034,20 +1034,28 @@ namespace Cirnix.Worker
 
         internal static async void Rework(string[] args)
         {
-            string LastInstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
-            Settings.InstallPath = LastInstallPath;
-            string[] procArgs = GetArguments(Warcraft3Info.ID);
-            Warcraft3Info.Close();
+            if (!IsInGame)
+            {
 
-            await Task.Delay(2000);
-            int windowState = 1;
-            if (procArgs.Length != 0)
-                switch (procArgs[0].ToLower())
-                {
-                    case "-windows": windowState = 0; break;
-                    case "-nativefullscr": windowState = 2; break;
-                }
-            await GameModule.StartWarcraft3(LastInstallPath, windowState);
+                string LastInstallPath = Path.GetDirectoryName(Warcraft3Info.Process.MainModule.FileName);
+                Settings.InstallPath = LastInstallPath;
+                string[] procArgs = GetArguments(Warcraft3Info.ID);
+                Warcraft3Info.Close();
+
+                await Task.Delay(2000);
+                int windowState = 1;
+                if (procArgs.Length != 0)
+                    switch (procArgs[0].ToLower())
+                    {
+                        case "-windows": windowState = 0; break;
+                        case "-nativefullscr": windowState = 2; break;
+                        case "-opengl": windowState = 3; break;
+                    }
+                await GameModule.StartWarcraft3(LastInstallPath, windowState);
+            }else
+            {
+                SendMsg(true, "게임진행중엔 리워크 불가능합니다.");
+            }
         }
 
         internal static void RoomJoin(string[] args)
